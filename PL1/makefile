@@ -1,6 +1,6 @@
 CC = gcc
 
-default: create_random_file
+all: create_random_file get_histogram 
 
 library.o: library.c library.h
 	$(CC) -o library.o -c library.c
@@ -8,10 +8,13 @@ library.o: library.c library.h
 create_random_file: create_random_file.c library.o
 	$(CC) -o $@ $< library.o
 
+get_histogram: get_histogram.c library.o
+	$(CC) -o $@ $< library.o
+
 .PHONY: clean
 
 clean:  
-	rm -f *.o create_random_file
+	rm -f *.o create_random_file get_histogram
 
 test:
 	./create_random_file test 100000 10

@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
+#include <sys/timeb.h>
 
 /**
  * populate a random array (which is already
@@ -35,10 +35,13 @@ int get_histogram(
 	long *milliseconds,
 	long *total_bytes_read) {
 
-	clock_t t1, t2;
+	struct timeb _t;
+
 	char *buf = malloc(block_size);
 	
-	t1 = clock();
+	ftime(&_t);
+	long init = _t.time * 1000 + _t.millitm;
+
 	bzero(buf, block_size);
 	fread(buf, 1, block_size, file_ptr);
 
@@ -56,11 +59,13 @@ int get_histogram(
 		fread(buf, 1, block_size, file_ptr);
  	}
 	fclose(file_ptr);
-	t2 = clock();
-	float diff = (((float)t2 - (float)t1) / 1000000.0F ) * 1000;
-	*total_bytes_read = diff;
+
+	ftime(&_t);
+	long done = _t.time * 1000 + _t.millitm;
+	long diff = done - init;
+	*milliseconds = diff;
 	
-	//printf("%f\n",diff);
+	//printf("time: %lu\n", *milliseconds);
 
 	return 0;
 

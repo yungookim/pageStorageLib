@@ -8,7 +8,7 @@ int main(int argc, char *argv[]) {
 		printf( "Must put <filename> <total bytes> <block size>\n" );
 		return 0;
 	}
-
+	printf("1\n");
 	clock_t t1, t2;
 
 	int total_byte = atoi((argv[2]));
@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
 	// Let it flush right to the disk
 	int openFlags = O_CREAT | O_WRONLY | O_SYNC;
 
+	printf("2\n");
 	//Open it and give owner permission!
 	int fd = open(argv[1], openFlags, S_IRUSR | S_IWUSR);
 	int byteWritten;
@@ -31,6 +32,7 @@ int main(int argc, char *argv[]) {
 	//Close the fd
 	close(fd);
 
+	printf("3\n");
 	float diff = (((float)t2 - (float)t1) / 1000000.0F ) * 1000;
 	printf("%f\n",diff);
 
@@ -54,5 +56,4 @@ int main(int argc, char *argv[]) {
 	float diff = (((float)t2 - (float)t1) / 1000000.0F ) * 1000;
 	printf("%f\n",diff);
 */
-	return 0; 
 }

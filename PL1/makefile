@@ -14,9 +14,7 @@ clean:
 	rm -f *.o create_random_file
 
 test:
-	./create_random_file test 100000 10
-	./create_random_file test1 100000 100
-	./create_random_file test2 100000 1000
-	./create_random_file test3 100000 10000
-	rm -f test test1 test2 test3
-
+	./create_random_file 0.test 104857600 10485760
+	./create_random_file 1.test 1048576 1048576
+	./create_random_file 2.test 209715200 1048576
+	./create_random_file 3.test 209715200 10485760

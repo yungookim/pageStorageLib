@@ -46,23 +46,37 @@ int get_histogram(
 	
 	ftime(&_t);
 	long init = _t.time * 1000 + _t.millitm;
-	int i;
 
-	while(!feof(file_ptr)) {
-		bzero(buf, block_size);
-		fread(buf, 1, block_size, file_ptr);
-		i=0;
-		while (i < block_size && buf[i] != '\0') {
+	bzero(buf, block_size);
+	fread(buf, 1, block_size, file_ptr);
+
+		int i = 0;
+		while (i < block_size) {
+			//printf("%d, ", buf[i]-65);
 			hist[(int)buf[i]-65] += 1;
 			i++;
-			*total_bytes_read += 1;
 		}
+	while(!feof(file_ptr)) {
+		i=0;
+		while (i < block_size) {
+			//printf("%d, ", buf[i]-65);
+			hist[(int)buf[i]-65] += 1;
+			i++;
+		}
+		*total_bytes_read += block_size;
 
+		bzero(buf, block_size);
+		fread(buf, 1, block_size, file_ptr);
  	}
 	fclose(file_ptr);
 	ftime(&_t);
 	long done = _t.time * 1000 + _t.millitm;
 	long diff = done - init;
 	*milliseconds = diff;
+	
+	//printf("time: %lu\n", *milliseconds);
+	
+
 	return 0;
+
 }

@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
 	int block_size =  atoi((argv[3]));
 	int written_size = 0;
 
-	char buffer[total_byte];
+	char buffer[block_size];
 	// Let it flush right to the disk
 	int openFlags = O_CREAT | O_WRONLY | O_SYNC;
 

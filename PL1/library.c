@@ -1,4 +1,8 @@
 #include "library.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
 
 /**
  * populate a random array (which is already
@@ -23,6 +27,7 @@ void random_array(char *array, long bytes){
  *
  * returns: -1 if there is an error.
  */
+ 
 int get_histogram(
 	FILE *file_ptr,
 	long hist[],
@@ -30,9 +35,33 @@ int get_histogram(
 	long *milliseconds,
 	long *total_bytes_read) {
 
-
-	//implement this
+	clock_t t1, t2;
+	char *buf = malloc(block_size);
 	
-	return -1;
+	t1 = clock();
+	bzero(buf, block_size);
+	fread(buf, 1, block_size, file_ptr);
+
+	while(!feof(file_ptr)) {
+		int i = 0;
+		while (i < block_size) {
+			//printf("%d, ", buf[i]-65);
+			
+			hist[(int)buf[i]-65] += 1;
+			i += 1;
+		}
+		*total_bytes_read = block_size;
+
+		bzero(buf, block_size);
+		fread(buf, 1, block_size, file_ptr);
+ 	}
+	fclose(file_ptr);
+	t2 = clock();
+	float diff = (((float)t2 - (float)t1) / 1000000.0F ) * 1000;
+	*total_bytes_read = diff;
+	
+	//printf("%f\n",diff);
+
+	return 0;
 
 }

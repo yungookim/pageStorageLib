@@ -15,9 +15,11 @@ get_histogram: get_histogram.c library.o
 
 clean:  
 	rm -f *.o create_random_file get_histogram
+	rm *.test
 
 test:
 	./create_random_file 0.test 104857600 10485760
+	./create_random_file 4.test 104857600 2048
 	./create_random_file 1.test 1048576 1048576
 	./create_random_file 2.test 209715200 1048576
 	./create_random_file 3.test 209715200 10485760

@@ -2,6 +2,12 @@
 #include "library.h"
 int main(int argc, char *argv[]) { 
 
+
+	if (argc != 3){
+                printf( "Must put <filename> <block size>\n" );
+                return 0;
+        }
+
 	long hist[26];
 	long milliseconds;
 	long filelen;

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link href="bootstrap.min.css" rel="stylesheet" media="screen">
+		<style>
+
+
+		</style>
+	</head>
+
+	<body>
+
+	<div id="foo" style="width:60%; height:500px;"></div>
+
+	<script src="/Flotr2.js"></script>
+
+	<script>
+	(function basic(container) {
+
+	  var
+	    d1 = [[0, 3], [4, 8], [8, 5], [9, 13]], // First data series
+	    d2 = [],                                // Second data series
+	    i, graph;
+
+	  // Generate first data set
+	  for (i = 0; i < 14; i += 0.5) {
+	    d2.push([i, Math.sin(i)]);
+	  }
+
+	  // Draw Graph
+	  graph = Flotr.draw(container, [ d1, d2 ], {
+	    xaxis: {
+	      minorTickFreq: 4
+	    }, 
+	    grid: {
+	      minorVerticalLines: true
+	    }
+	  });
+	})(document.getElementById("foo"));
+
+	</script>
+
+
+	</body>
+</html>

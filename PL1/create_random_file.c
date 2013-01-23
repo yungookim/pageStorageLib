@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
 		return 0;
 	}
 	
-	printf("With O_SYNC : ");
+	
 	int total_byte = atoi((argv[2]));
 	int block_size =  atoi((argv[3]));
 	int written_size = 0;
@@ -26,7 +26,6 @@ int main(int argc, char *argv[]) {
 	struct timeb _t;
 	ftime(&_t);
 	long init = _t.time * 1000 + _t.millitm;
-	printf("( - %lu)", init);
 
 	for (byteWritten = 0; byteWritten < total_byte; byteWritten += block_size){
 		random_array(buffer, block_size);
@@ -37,16 +36,13 @@ int main(int argc, char *argv[]) {
 
 	ftime(&_t);
 	long done = _t.time * 1000 + _t.millitm;
-	printf(" + %lu", done);
-	printf(" = %lu\n", done-init);
+	long o_sync_time = done-init;
 
-	printf("Without O_SYNC : ");
 	FILE *file; 
 	file = fopen(argv[1], "w");
 
 	ftime(&_t);
 	init = _t.time * 1000 + _t.millitm;
-	printf("( - %lu)", init);
 	
 	byteWritten = 0;
 	while (byteWritten < total_byte){
@@ -58,9 +54,11 @@ int main(int argc, char *argv[]) {
 
 	ftime(&_t);
 	done = _t.time * 1000 + _t.millitm;
-	printf(" + %lu", done);
-	printf(" = %lu\n", done-init);
+	long no_o_sync_time = done-init;
 	fclose(file); 
+
+	printf("%d\t%d\t%lu\t%lu\n", total_byte, block_size, o_sync_time, no_o_sync_time);
+
 	
 	return 0;
 }

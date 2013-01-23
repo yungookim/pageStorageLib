@@ -19,8 +19,11 @@ clean:
 
 test:
 	rm ./graph/data.tsv
-	echo "total_size\t block_size\t o_sync\t no_o_sync\n" >> ./graph/data.tsv
-	./create_random_file 0.test 104857600 10485760 >> ./graph/data.tsv
-	./create_random_file 1.test 1048576 1048576    >> ./graph/data.tsv
-	./create_random_file 2.test 209715200 1048576  >> ./graph/data.tsv
-	./create_random_file 3.test 209715200 10485760 >> ./graph/data.tsv
+	echo "total_size\tblock_size\to_sync\tno_o_sync"   >> ./graph/data.tsv
+	./create_random_file 0.test 104857600 10485760     >> ./graph/data.tsv
+	./create_random_file 1.test 104857600 1048576      >> ./graph/data.tsv
+	./create_random_file 2.test 104857600 104857       >> ./graph/data.tsv
+	./create_random_file 3.test 104857600 1048         >> ./graph/data.tsv
+	./create_random_file 4.test 104857600 104          >> ./graph/data.tsv
+	./create_random_file 5.test 104857600 10           >> ./graph/data.tsv
+	./create_random_file 6.test 104857600 1            >> ./graph/data.tsv

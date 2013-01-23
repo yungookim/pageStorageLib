@@ -10,33 +10,76 @@
 
 	<body>
 
-	<div id="foo" style="width:60%; height:500px;"></div>
+	<div id="foo" style="width:60%; height:500px; margin-top:50px;"></div>
 
 	<script src="/Flotr2.js"></script>
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script src="http://underscorejs.org/underscore-min.js"></script>
 
 	<script>
-	(function basic(container) {
 
-	  var
-	    d1 = [[0, 3], [4, 8], [8, 5], [9, 13]], // First data series
-	    d2 = [],                                // Second data series
-	    i, graph;
+	$(function(){
 
-	  // Generate first data set
-	  for (i = 0; i < 14; i += 0.5) {
-	    d2.push([i, Math.sin(i)]);
-	  }
+		$.get('/data.tsv', function(ret){
+			var str_array = ret.split('\n');
+			//First two lines are garbage
+			str_array.shift();
+			str_array.shift();
+			str_array.pop();
+			
+			var d1 = [];
+			var d2 = [];
 
-	  // Draw Graph
-	  graph = Flotr.draw(container, [ d1, d2 ], {
-	    xaxis: {
-	      minorTickFreq: 4
-	    }, 
-	    grid: {
-	      minorVerticalLines: true
-	    }
-	  });
-	})(document.getElementById("foo"));
+			str_array = _.sortBy(str_array, function(val){
+				return parseInt(val.split('\t')[1]); 
+			});
+
+			_.each(str_array, function(line){
+				var data = line.split('\t');
+				var total_size = data[0];
+				var block_size = parseInt(data[1]);
+				var o_sync = parseInt(data[2]);
+				var no_o_sync = parseInt(data[3]);
+				
+				d1.push([block_size, o_sync]);
+				d2.push([block_size, no_o_sync]);	
+			});
+		
+			var data = [
+				{ data : d1, label : 'with O_SYNC' },
+				{ data : d2, label : 'without O_SYNC' }	
+			]
+	
+			function labelFn (label) {
+   				 return label;
+			}
+
+
+			(function basic(container) {
+			  var graph;
+
+			  // Draw Graph
+			  graph = Flotr.draw(container, data, {
+			    xaxis: {
+			    },
+			    yaxis: {
+				max : 10000,
+				min : 1000
+			    }, 
+			    grid: {
+			      minorVerticalLines: true
+			    },
+			    legend : {
+				position : 'se',
+				labelFormatter : labelFn,
+				backgroundColor : '#D2E8FF'}
+			  });
+			})(document.getElementById("foo"));
+		});
+
+
+	});
+
 
 	</script>
 

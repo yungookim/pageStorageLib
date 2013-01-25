@@ -19,8 +19,8 @@ int fixed_len_sizeof(Record *record){
  * Serialize the record to a byte array to be stored in buf.
  */
 void fixed_len_write(Record *record, void *buf){
-	if((buf = malloc(record->size() * sizeof record->at(0))) != NULL) {
-		memcpy(buf, &record[0], record->size() * sizeof record->at(0));
+	if((buf = malloc(fixed_len_sizeof(record))) != NULL) {
+		memcpy(buf, &record[0], fixed_len_sizeof(record));
 	} else {
 		printf("Error while serializing\n");
 		exit (EXIT_FAILURE);

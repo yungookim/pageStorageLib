@@ -19,9 +19,9 @@ int fixed_len_sizeof(Record *record){
  * Serialize the record to a byte array to be stored in buf.
  */
 void fixed_len_write(Record *record, void *buf){
-	unsigned char* arr;
-    	for(int i = 0; i < record->size(); i++) {
-		arr[i] = static_cast<unsigned char>(record->at(0)[i]);
+	unsigned char byte[record->size()];
+	for(int i = 0; i < record->size(); i++){
+		byte[i] = *((unsigned char*) record->at(i));
 	}
-	buf = &arr;
+	buf = &byte;
 }

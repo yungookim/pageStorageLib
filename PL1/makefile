@@ -32,3 +32,16 @@ test:
 	rm ./5.test
 	./create_random_file 6.test 104857600 1            >> ./graph/write.tsv
 	rm ./6.test
+
+	echo "total_size\tblock_size\ttime"   > ./graph/read.tsv
+	./get_histogram 0.test 10485760     >> ./graph/read.tsv
+	./get_histogram 0.test 1048576      >> ./graph/read.tsv
+	./get_histogram 0.test 104857       >> ./graph/read.tsv
+	./get_histogram 0.test 1048         >> ./graph/read.tsv
+	./get_histogram 0.test 104          >> ./graph/read.tsv
+	./get_histogram 0.test 10           >> ./graph/read.tsv
+	./get_histogram 0.test 1            >> ./graph/read.tsv
+	rm ./0.test
+
+
+

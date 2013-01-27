@@ -21,7 +21,6 @@ test:
 	rm ./graph/data.tsv
 	echo "total_size\tblock_size\to_sync\tno_o_sync"   >> ./graph/data.tsv
 	./create_random_file 0.test 104857600 10485760     >> ./graph/data.tsv
-	rm ./0.test
 	./create_random_file 1.test 104857600 1048576      >> ./graph/data.tsv
 	rm ./1.test
 	./create_random_file 2.test 104857600 104857       >> ./graph/data.tsv

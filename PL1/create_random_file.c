@@ -13,15 +13,16 @@ int main(int argc, char *argv[]) {
 	
 	int total_byte = atoi((argv[2]));
 	int block_size =  atoi((argv[3]));
-	int written_size = 0;
+	int byteWritten;
+	struct timeb _t;
 
 	char buffer[block_size];
 	// Let it flush right to the disk
 	int openFlags = O_CREAT | O_WRONLY | O_SYNC;
 
+/*
 	//Open it and give owner permission!
 	int fd = open(argv[1], openFlags, S_IRUSR | S_IWUSR);
-	int byteWritten;
 	
 	struct timeb _t;
 	ftime(&_t);
@@ -37,12 +38,15 @@ int main(int argc, char *argv[]) {
 	ftime(&_t);
 	long done = _t.time * 1000 + _t.millitm;
 	long o_sync_time = done-init;
+*/
+	long o_sync_time = 0;
+
 
 	FILE *file; 
 	file = fopen(argv[1], "w");
 
 	ftime(&_t);
-	init = _t.time * 1000 + _t.millitm;
+	long init = _t.time * 1000 + _t.millitm;
 	
 	byteWritten = 0;
 	while (byteWritten < total_byte){
@@ -53,7 +57,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	ftime(&_t);
-	done = _t.time * 1000 + _t.millitm;
+	long done = _t.time * 1000 + _t.millitm;
 	long no_o_sync_time = done-init;
 	fclose(file); 
 

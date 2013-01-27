@@ -61,10 +61,14 @@
 			  // Draw Graph
 			  graph = Flotr.draw(container, data, {
 			    xaxis: {
+				min : -10000,
+				title : "Block Size"
 			    },
 			    yaxis: {
 				max : 10000,
-				min : 1000
+				min : 1000,
+				title : "Time in ms",
+				autoscale : true
 			    }, 
 			    grid: {
 			      minorVerticalLines: true

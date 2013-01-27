@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
 	long no_o_sync_time = done-init;
 	fclose(file); 
 
-	printf("%d\t%d\t%lu\t%lu\n", total_byte, block_size, o_sync_time, no_o_sync_time);
+	printf("%d\t%d\t%lu\t\n", total_byte, block_size, no_o_sync_time);
 
 	
 	return 0;

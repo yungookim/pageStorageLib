@@ -14,21 +14,43 @@ get_histogram: get_histogram.c library.o
 .PHONY: clean
 
 clean:  
-	rm -f *.o create_random_file get_histogram
-	rm *.test
+	rm -f *.o create_random_file get_histogram > /dev/null 2>&1
+	rm ./graph/*.tsv > /dev/null 2>&1
+	rm *.test > /dev/null 2>&1
 
 test:
 	echo "total_size\tblock_size\ttime"   > ./graph/write.tsv
-	./create_random_file 0.test 104857600 10485760     >> ./graph/write.tsv
-	./create_random_file 1.test 104857600 1048576      >> ./graph/write.tsv
-	rm ./1.test
-	./create_random_file 2.test 104857600 104857       >> ./graph/write.tsv
-	rm ./2.test
-	./create_random_file 3.test 104857600 1048         >> ./graph/write.tsv
-	rm ./3.test
-	./create_random_file 4.test 104857600 104          >> ./graph/write.tsv
-	rm ./4.test
-	./create_random_file 5.test 104857600 10           >> ./graph/write.tsv
-	rm ./5.test
-	./create_random_file 6.test 104857600 1            >> ./graph/write.tsv
-	rm ./6.test
+	./create_random_file 0.test 104857600 2      >> ./graph/write.tsv
+	rm 0.test
+	./create_random_file 0.test 104857600 4      >> ./graph/write.tsv
+	rm 0.test
+	./create_random_file 0.test 104857600 8      >> ./graph/write.tsv
+	rm 0.test
+	./create_random_file 0.test 104857600 16     >> ./graph/write.tsv
+	rm 0.test
+	./create_random_file 0.test 104857600 32     >> ./graph/write.tsv
+	rm 0.test
+	./create_random_file 0.test 104857600 64     >> ./graph/write.tsv
+	rm 0.test
+	./create_random_file 0.test 104857600 128    >> ./graph/write.tsv
+	rm 0.test
+	./create_random_file 0.test 104857600 256    >> ./graph/write.tsv
+	rm 0.test
+	./create_random_file 0.test 104857600 512    >> ./graph/write.tsv
+	rm 0.test
+	./create_random_file 0.test 104857600 1024   >> ./graph/write.tsv
+	rm 0.test
+	./create_random_file 0.test 104857600 2048   >> ./graph/write.tsv
+	echo "total_size\tblock_size\ttime"   > ./graph/read.tsv
+	./get_histogram 0.test 2                     >> ./graph/read.tsv
+	./get_histogram 0.test 4                     >> ./graph/read.tsv
+	./get_histogram 0.test 8                     >> ./graph/read.tsv
+	./get_histogram 0.test 16                    >> ./graph/read.tsv
+	./get_histogram 0.test 32                    >> ./graph/read.tsv
+	./get_histogram 0.test 64                    >> ./graph/read.tsv
+	./get_histogram 0.test 128                   >> ./graph/read.tsv
+	./get_histogram 0.test 256                   >> ./graph/read.tsv
+	./get_histogram 0.test 512                   >> ./graph/read.tsv
+	./get_histogram 0.test 1024                  >> ./graph/read.tsv
+	./get_histogram 0.test 2048                  >> ./graph/read.tsv
+	rm ./0.test

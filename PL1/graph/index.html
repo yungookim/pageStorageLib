@@ -10,7 +10,7 @@
 
 	<body>
 
-	<div id="foo" style="width:60%; height:500px; margin-top:50px;"></div>
+	<div id="foo" style="width:100%; height:1200px; margin-top:50px;"></div>
 
 	<script src="/Flotr2.js"></script>
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -21,14 +21,13 @@
 	$(function(){
 
 		$.get('/write.tsv', function(ret){
+		$.get('/read.tsv', function(readRet){
 			var str_array = ret.split('\n');
 			//First two lines are garbage
 			str_array.shift();
-			str_array.shift();
 			str_array.pop();
 			
-			var d1 = [];
-			var d2 = [];
+			var write = [];
 
 			str_array = _.sortBy(str_array, function(val){
 				return parseInt(val.split('\t')[1]); 
@@ -39,12 +38,30 @@
 				var total_size = data[0];
 				var block_size = parseInt(data[1]);
 				var no_o_sync = parseInt(data[2]);
-				
-				d2.push([block_size, no_o_sync]);	
+				write.push([block_size, no_o_sync]);	
 			});
 		
+			var read_array = readRet.split('\n');
+			read_array.shift();
+			read_array.pop();
+			
+			read_array = _.sortBy(read_array, function(val){
+				return parseInt(val.split('\n')[1]);
+			});
+			
+			var read = [];
+
+			_.each(read_array, function(line){
+				var data = line.split('\t');
+				var block_size = parseInt(data[1]);
+				var time = parseInt(data[2]);
+				read.push([block_size, time]);
+			});
+			
+
 			var data = [
-				{ data : d2, label : 'Write' }	
+				{ data : write, label : 'Write' },
+				{ data : read, label : 'Read' }
 			]
 	
 			function labelFn (label) {
@@ -58,12 +75,11 @@
 			  // Draw Graph
 			  graph = Flotr.draw(container, data, {
 			    xaxis: {
-				min : -10000,
-				title : "Block Size"
+				min : 0,
+				title : "Block Size",
+				autoscale : true
 			    },
 			    yaxis: {
-				max : 2000,
-				min : 1000,
 				title : "Time in ms",
 				autoscale : true
 			    }, 
@@ -76,6 +92,7 @@
 				backgroundColor : '#D2E8FF'}
 			  });
 			})(document.getElementById("foo"));
+		});
 		});
 	});
 	</script>

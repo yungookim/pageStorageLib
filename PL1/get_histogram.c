@@ -23,6 +23,7 @@ int main(int argc, char *argv[]) {
 	                         &milliseconds,
 	                         &filelen);
 
+/*
 	printf("Computed the histogram in %lu ms.\n", milliseconds);
 	int i;
 	for(i=0; i < 26; i++) {
@@ -33,6 +34,7 @@ int main(int argc, char *argv[]) {
 	printf("BLOCK SIZE %d bytes\n", block_size);
 	printf("TOTAL BYTES %ld bytes\n", filelen);
 	printf("TIME %lu\n", milliseconds);
-
+*/
+	printf("%lu\t%d\t%lu\n", filelen, block_size, milliseconds);
 	return 0; 
 }

@@ -10,7 +10,8 @@
 
 	<body>
 
-	<div id="foo" style="width:100%; height:1200px; margin-top:50px;"></div>
+	<div id="foo" style="width:80%; height:600px; margin-top:50px;"></div>
+	<div id="foo2" style="width:80%; height:600px; margin-top:50px;"></div>
 
 	<script src="/Flotr2.js"></script>
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -28,7 +29,7 @@
 			str_array.pop();
 			
 			var write = [];
-
+			var writeBps = [];
 			str_array = _.sortBy(str_array, function(val){
 				return parseInt(val.split('\t')[1]); 
 			});
@@ -37,8 +38,9 @@
 				var data = line.split('\t');
 				var total_size = data[0];
 				var block_size = parseInt(data[1]);
-				var no_o_sync = parseInt(data[2]);
-				write.push([block_size, no_o_sync]);	
+				var time = parseInt(data[2]);
+				write.push([block_size, time]);
+				writeBps.push([block_size, total_size/time]);
 			});
 		
 			var read_array = readRet.split('\n');
@@ -50,12 +52,15 @@
 			});
 			
 			var read = [];
+			var readBps = [];
 
 			_.each(read_array, function(line){
 				var data = line.split('\t');
+				var total_size = data[0];
 				var block_size = parseInt(data[1]);
 				var time = parseInt(data[2]);
 				read.push([block_size, time]);
+				readBps.push([block_size, total_size/time]);
 			});
 			
 
@@ -92,6 +97,40 @@
 				backgroundColor : '#D2E8FF'}
 			  });
 			})(document.getElementById("foo"));
+
+
+			var data2 = [
+				{ data : writeBps, label : 'Write BPS'},
+				{ data : readBps, label : 'Read BPS'}
+			];
+			// Draw bps graph
+			(function basic2(container) {
+			  var graph;
+
+			  // Draw Graph
+			  graph = Flotr.draw(container, data2, {
+			    xaxis: {
+				min : 0,
+				title : "Block Size",
+				autoscale : true
+			    },
+			    yaxis: {
+				title : "BPS",
+				autoscale : true
+			    }, 
+			    grid: {
+			      minorVerticalLines: true
+			    },
+			    legend : {
+				position : 'se',
+				labelFormatter : labelFn,
+				backgroundColor : '#D2E8FF'}
+			  });
+			})(document.getElementById("foo2"));
+
+
+
+
 		});
 		});
 	});

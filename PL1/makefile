@@ -41,6 +41,14 @@ test:
 	./create_random_file 0.test 104857600 1024   >> ./graph/write.tsv
 	rm 0.test
 	./create_random_file 0.test 104857600 2048   >> ./graph/write.tsv
+	rm 0.test
+	./create_random_file 0.test 104857600 4096   >> ./graph/write.tsv
+	rm 0.test
+	./create_random_file 0.test 104857600 8192   >> ./graph/write.tsv
+	rm 0.test
+	./create_random_file 0.test 104857600 16384  >> ./graph/write.tsv
+	rm 0.test
+	./create_random_file 0.test 104857600 32768  >> ./graph/write.tsv
 	echo "total_size\tblock_size\ttime"   > ./graph/read.tsv
 	./get_histogram 0.test 2                     >> ./graph/read.tsv
 	./get_histogram 0.test 4                     >> ./graph/read.tsv
@@ -53,4 +61,8 @@ test:
 	./get_histogram 0.test 512                   >> ./graph/read.tsv
 	./get_histogram 0.test 1024                  >> ./graph/read.tsv
 	./get_histogram 0.test 2048                  >> ./graph/read.tsv
+	./get_histogram 0.test 4096                  >> ./graph/read.tsv
+	./get_histogram 0.test 8192                  >> ./graph/read.tsv
+	./get_histogram 0.test 16384                 >> ./graph/read.tsv
+	./get_histogram 0.test 32768                 >> ./graph/read.tsv
 	rm ./0.test

@@ -32,3 +32,31 @@ void fixed_len_write(Record *record, void *buf){
         printf("sdsds %p, %p, %p,%p \n", byte + 1, &byte[0], &byte[1], buf);
  //       printf("in buf: %c, %c, %c\n", buf[0], buf[1], buf[2]);
 }
+
+/**
+* Deserializes from `size` bytes from the buffer, `buf`, and
+* stores the record in `record`.
+*/
+void fixed_len_read(void *buf, int size, Record *record){
+}
+
+/**
+ * Compute the number of bytes required to serialize record
+ */
+int var_len_sizeof(Record *record){
+    return 0;
+}
+   
+/**
+ * Serialize the record using variable record encoding
+ */
+void var_len_write(Record *record, void *buf){
+
+}
+      
+/**
+ * Deserialize the `buf` which contains the variable record encoding.
+ */
+void var_len_read(void *buf, int size, Record *record){
+
+}

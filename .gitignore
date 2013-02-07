@@ -2,6 +2,7 @@
 *.o
 *.swp
 *.test
+*.tsv
 
 # Libraries
 *.lib

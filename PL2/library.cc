@@ -25,3 +25,13 @@ void fixed_len_write(Record *record, void *buf){
 	}
 	buf = &byte;
 }
+
+/**
+ * Deserializes from `size` bytes from the buffer, `buf`, and
+ * stores the record in `record`.
+ */
+void fixed_len_read(void *buf, int size, Record *record){	
+	for (int i = 0; i < 11; i++){
+		buf[i]
+	}
+}

@@ -1,6 +1,7 @@
 # Makefile
-CC = g++ 
+CC = g++
 
+all: foo
 library.o : library.cc library.h
 	$(CC) -o $@ -c library.cc
 

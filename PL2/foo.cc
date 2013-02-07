@@ -11,12 +11,12 @@ int main( int argc, const char* argv[] )
 
 	printf("%d\n", fixed_len_sizeof(&fuckers));
 
-	unsigned char* buffer;
-	fixed_len_write(&fuckers, buffer);
-	/*
-	for (int i = 0; i < 10; i++){
-		printf(fuck[i]);
-		printf("\n");
-	}
-	*/
+	char* buffer;
+ 	fixed_len_write(&fuckers, buffer);
+        printf("%c\n", buffer[0]);
+// // 
+	// for (int i = 0; i < 10; i++){
+	// 	printf("%c\n", buffer[i]);
+	// 	printf("\n");
+	// }
 }

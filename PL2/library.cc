@@ -19,18 +19,12 @@ int fixed_len_sizeof(Record *record){
  * Serialize the record to a byte array to be stored in buf.
  */
 void fixed_len_write(Record *record, void *buf){
-        char  byte[fixed_len_sizeof(record)];
-        int total_byte_written = 0;
+        char* byte = (char *)buf;
 	for(int i = 0; i < record->size(); i++){
                 for (int j = 0; j < strlen(record->at(i)); j++) {
-                    byte[total_byte_written] = record->at(i)[j];
-                    total_byte_written++;
-                }
-        printf("total size: %d, written sofar: %d \n", fixed_len_sizeof(record), total_byte_written);
+                     *(byte++) = record->at(i)[j];
+                 }
 	}
-	buf = byte;
-        printf("sdsds %p, %p, %p,%p \n", byte + 1, &byte[0], &byte[1], buf);
- //       printf("in buf: %c, %c, %c\n", buf[0], buf[1], buf[2]);
 }
 
 /**
@@ -38,6 +32,15 @@ void fixed_len_write(Record *record, void *buf){
 * stores the record in `record`.
 */
 void fixed_len_read(void *buf, int size, Record *record){
+    char* bufptr = (char *)buf;
+    int i = 0;
+    int curVal = 0;
+    char* value; 
+    while (i < size) {
+        record->at(curVal) = strndup(bufptr+i, strlen(record->at(curVal)));
+        i = i + strlen(record->at(curVal));
+        curVal++;
+    }
 }
 
 /**

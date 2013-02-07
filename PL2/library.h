@@ -14,7 +14,22 @@ int fixed_len_sizeof(Record *record);
 void fixed_len_write(Record *record, void *buf);
 
 /**
- * Deserializes from `size` bytes from the buffer, `buf`, and
- * stores the record in `record`.
- */
+* Deserializes from `size` bytes from the buffer, `buf`, and
+* stores the record in `record`.
+*/
 void fixed_len_read(void *buf, int size, Record *record);
+
+/**
+ * Compute the number of bytes required to serialize record
+ */
+int var_len_sizeof(Record *record);
+   
+/**
+ * Serialize the record using variable record encoding
+ */
+void var_len_write(Record *record, void *buf);
+      
+/**
+ * Deserialize the `buf` which contains the variable record encoding.
+ */
+void var_len_read(void *buf, int size, Record *record);

@@ -62,7 +62,7 @@ void var_len_write(Record *record, void *buf){
 	char* byteFields = (char *)buf;
 	int* byteOffsets = (int *)buf;
         char* temp = (char *)buf;
-	*(byteFields+=sizeof(int)*record->size());
+	byteFields += sizeof(int)*record->size();
 
 	// Start from the back of the record because we need to find
 	// the length of each record
@@ -89,7 +89,7 @@ void var_len_read(void *buf, int size, Record *record){
 	int* offsetBytes = (int *)buf;
 	char* fieldBytes = (char *)buf;
 
-	*(fieldBytes+=sizeof(int)*record->size());
+	fieldBytes += sizeof(int)*record->size();
 
 	for (int i = 0; i < record->size(); i++){
 		int charSize = *(offsetBytes++); 

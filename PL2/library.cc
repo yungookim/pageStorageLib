@@ -49,10 +49,11 @@ void fixed_len_read(void *buf, int size, Record *record){
 int var_len_sizeof(Record *record){
 	int total_byte = 0;
 	for (int i = 0; i < record->size(); i++){
-		total_byte += strlen(record->at(i))*sizeof(char);
+		// strlen + 1 for the offset header
+		total_byte += strlen(record->at(i))*sizeof(char) + 1;
 	}
 	// Total byte size plus the header size
-	return total_byte + sizeof(int);
+	return total_byte;
 }
 
 /**
@@ -62,21 +63,21 @@ void var_len_write(Record *record, void *buf){
 	char* byteFields = (char *)buf;
 	char* byteOffsets = (char *)buf;
 
-	for (int i = record->size()-1 ; i > 0 ; i--){
-		*(byteFields++);
+	for (int i = 0 ; i < record->size() ; i++){
+		*(byteFields+=sizeof(int));
 	}	
-	// Shift one more time to prevent overlappint with the header
-	*(byteFields++);
 
 	// Start from the back of the record because we need to find
 	// the length of each record
 	for(int i = 0; i < record->size(); i++){
 		int counter = 0;
 		for (int j = 0; j < strlen(record->at(i)); j++) {
+			printf("%c", record->at(i)[j]);
+
 			*(byteFields++) = record->at(i)[j];
 			counter++;
 		}
-		*(byteOffsets++) = counter;
+		*(byteOffsets+=sizeof(int)) = counter;
 	}
 }
 

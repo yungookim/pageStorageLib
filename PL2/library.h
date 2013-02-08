@@ -28,7 +28,7 @@ int var_len_sizeof(Record *record);
  * Serialize the record using variable record encoding
  */
 void var_len_write(Record *record, void *buf);
-      
+
 /**
  * Deserialize the `buf` which contains the variable record encoding.
  */

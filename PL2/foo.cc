@@ -88,19 +88,21 @@ int main( int argc, const char* argv[] )
 
     var_len_write(&person4, buffer2);
 
-    person3.clear();
+    person3.clear(); 
     nameEmpty1 = "";
     ageEmpty1 = "";
     bdateEmpty1 = "";
+    bdateEmpty2 = "";
     person3.push_back(nameEmpty1);
     person3.push_back(ageEmpty1);
     person3.push_back(bdateEmpty1);
+    person3.push_back(bdateEmpty2);
 
     var_len_read(buffer2, var_len_sizeof(&person4), &person3);
 
     //print out f4
     printf("person3:----after read from buffer (buffer retrieved from person4)---------\n");
-    for (int i = 0; i < 3; i++){
+    for (int i = 0; i < 4; i++){
         printf("size: %d, value: %s\n", (int)strlen(person3.at(i)), person3.at(i));
     }
 }

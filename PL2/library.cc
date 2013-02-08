@@ -74,6 +74,7 @@ void var_len_write(Record *record, void *buf){
 			*(++byteFields) = record->at(i)[j];
 			counter++;
 		}
+
 		*(byteOffsets) = counter;
 		*(byteOffsets+=sizeof(int));
 	}

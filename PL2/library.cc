@@ -34,7 +34,6 @@ void fixed_len_read(void *buf, int size, Record *record){
 	char* bufptr = (char *)buf;
 	int i = 0;
 	int curVal = 0;
-	char* value; 
 	while (i < size) {
 		record->at(curVal) = strndup(bufptr+i, strlen(record->at(curVal)));
 		i = i + strlen(record->at(curVal));
@@ -61,37 +60,40 @@ int var_len_sizeof(Record *record){
  */
 void var_len_write(Record *record, void *buf){
 	char* byteFields = (char *)buf;
-	char* byteOffsets = (char *)buf;
-
+	int* byteOffsets = (int *)buf;
+        char* temp = (char *)buf;
 	*(byteFields+=sizeof(int)*record->size());
 
 	// Start from the back of the record because we need to find
 	// the length of each record
 	for(int i = 0; i < record->size(); i++){
-		int counter = 0;
 		for (int j = 0; j < strlen(record->at(i)); j++) {
 			// printf("%c", record->at(i)[j]);
-			*(++byteFields) = record->at(i)[j];
-			counter++;
+			*(byteFields++) = record->at(i)[j];
 		}
-		*(byteOffsets) = counter;
-		*(byteOffsets+=sizeof(int));
+                *(byteOffsets++) = strlen(record->at(i));
 	}
+        
+        //This should be removed eventually
+        printf("\n\n-------printf from library.cc [");
+        for(int i = 0; i < 100; i++){
+            printf("%c",temp[i] );
+        }
+       printf("]\n\n");
 }
 
 /**
  * Deserialize the `buf` which contains the variable record encoding.
  */
 void var_len_read(void *buf, int size, Record *record){
-	char* offsetBytes = (char *)buf;
+	int* offsetBytes = (int *)buf;
 	char* fieldBytes = (char *)buf;
 
 	*(fieldBytes+=sizeof(int)*record->size());
 
 	for (int i = 0; i < record->size(); i++){
-		int charSize = *(offsetBytes);
-		*(offsetBytes+=sizeof(int));
-		record->at(i) = strndup(fieldBytes+1, charSize);
+		int charSize = *(offsetBytes++); 
+		record->at(i) = strndup(fieldBytes, charSize);
 		*(fieldBytes += charSize);
 	}
 }

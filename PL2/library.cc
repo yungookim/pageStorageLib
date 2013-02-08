@@ -71,11 +71,11 @@ void var_len_write(Record *record, void *buf){
 		int counter = 0;
 		for (int j = 0; j < strlen(record->at(i)); j++) {
 			// printf("%c", record->at(i)[j]);
-
 			*(++byteFields) = record->at(i)[j];
 			counter++;
 		}
-		*(byteOffsets+=sizeof(int)) = counter;
+		*(byteOffsets) = counter;
+		*(byteOffsets+=sizeof(int));
 	}
 }
 
@@ -89,7 +89,8 @@ void var_len_read(void *buf, int size, Record *record){
 	*(fieldBytes+=sizeof(int)*record->size());
 
 	for (int i = 0; i < record->size(); i++){
-		int charSize = *(offsetBytes+=sizeof(int));
+		int charSize = *(offsetBytes);
+		*(offsetBytes+=sizeof(int));
 		record->at(i) = strndup(fieldBytes+1, charSize);
 		*(fieldBytes += charSize);
 	}

@@ -74,31 +74,33 @@ int main( int argc, const char* argv[] )
     }
 
     Record person4;
-    V nameEmpty2 = "asdsfasdfasdfsdf";
-    V ageEmpty2 = "ssdfdsasdfasdfasdfafasdfasdfasdfasdfsdfasdffg";
-    V bdateEmpty2 = "sdfasdfasdfasdfg";
+    V nameEmpty2 = "asdsfasdfakjhkjkjhjkhkjsdfsdf";
+    V ageEmpty2 = "ssdfdsasfasdfafasdfasdfasdfasdfsdfasdffgssdfdsasdfasdfasdfafasdfasdfasdfasdfsdfasdffgssdfdsasdfasdfasdfafasdfasdfasdfasdfsdfasdffg";
+    V bdateEmpty2 = "";
+    V name2 = "asdsfasdfakjhkjkjhjkhkjsdfsdf";
     person4.push_back(nameEmpty2);
     person4.push_back(ageEmpty2);
     person4.push_back(bdateEmpty2);
+    person4.push_back(name2);
 
     char* buffer2;
-    buffer2 = (char *)malloc(sizeof(char *));
+    buffer2 = (char *)malloc(sizeof(char *) * 1000);
 
     var_len_write(&person4, buffer2);
 
-    // // person3.clear();
-    // // nameEmpty1 = "";
-    // // ageEmpty1 = "";
-    // // bdateEmpty1 = "";
-    // // person3.push_back(nameEmpty1);
-    // // person3.push_back(ageEmpty1);
-    // // person3.push_back(bdateEmpty1);
+    person3.clear();
+    nameEmpty1 = "";
+    ageEmpty1 = "";
+    bdateEmpty1 = "";
+    person3.push_back(nameEmpty1);
+    person3.push_back(ageEmpty1);
+    person3.push_back(bdateEmpty1);
 
-    // // var_len_read(buffer2, var_len_sizeof(&person4), &person3);
+    var_len_read(buffer2, var_len_sizeof(&person4), &person3);
 
-    // //print out f4
-    // printf("person3:----after read from buffer (buffer retrieved from person4)---------\n");
-    // for (int i = 0; i < 3; i++){
-    //     printf("size: %d, value: %s\n", (int)strlen(person3.at(i)), person3.at(i));
-    // }
+    //print out f4
+    printf("person3:----after read from buffer (buffer retrieved from person4)---------\n");
+    for (int i = 0; i < 3; i++){
+        printf("size: %d, value: %s\n", (int)strlen(person3.at(i)), person3.at(i));
+    }
 }

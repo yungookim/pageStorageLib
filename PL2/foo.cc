@@ -35,7 +35,7 @@ int main( int argc, const char* argv[] )
     }
 
     char* buffer;
-    buffer = (char *)malloc(sizeof(char *));
+    buffer = (char *)malloc(sizeof(char)*23);
     
     //write person1 to buffer   
     fixed_len_write(&person1, buffer);
@@ -51,8 +51,9 @@ int main( int argc, const char* argv[] )
 
     // Prepare a fresh buffer
     char* buffer1;
-    buffer1 = (char *)malloc(sizeof(char *));
+    buffer1 = (char *)malloc(sizeof(char)*100);
 
+    printf("\nBytes required for serialization of person2: %d\n", var_len_sizeof(&person2));
     var_len_write(&person2, buffer1);
 
     Record person3;
@@ -63,10 +64,10 @@ int main( int argc, const char* argv[] )
     person3.push_back(ageEmpty1);
     person3.push_back(bdateEmpty1);
 
-    printf("\nSize of the var_ serialized record person3: %d\n", var_len_sizeof(&person1));
 
     var_len_read(buffer1, var_len_sizeof(&person2), &person3);
-
+    
+    printf("%s\n", buffer1);
     //print out f3
     printf("person3:----after read from buffer (buffer retrieved from person2)---------\n");
     for (int i = 0; i < 3; i++){
@@ -74,35 +75,41 @@ int main( int argc, const char* argv[] )
     }
 
     Record person4;
-    V nameEmpty2 = "asdsfasdfakjhkjkjhjkhkjsdfsdf";
-    V ageEmpty2 = "ssdfdsasfasdfafasdfasdfasdfasdfsdfasdffgssdfdsasdfasdfasdfafasdfasdfasdfasdfsdfasdffgssdfdsasdfasdfasdfafasdfasdfasdfasdfsdfasdffg";
-    V bdateEmpty2 = "";
-    V name2 = "asdsfasdfakjhkjkjhjkhkjsdfsdf";
+    V nameEmpty2 = "SasdsfasdfasdfsdfT";
+    V ageEmpty2 = "ssdfdsasdsdsdjkjkjkjkjkjkjkjkjkjkjkjkjkjjkjkjkjkjkjksdjksjdksjdksjkdjskdjksjdksjdkjskdjskjdksjdksjkdjskdjksjdksjdkjskdjksjdksjdksjdkjskdjksjdksjdkjskdjskjdksjdksjdkjskdjskdjksjdksjdksjkdjskdjskjdksjdkjskdjskjdksjdksjdksjdksjkdjskdjskjdsjdksjdksjkdjskdjskjdksdjksjdksjdksjdkjskdjskdjksdjksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjkdjskdjskjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdsdfasdfasdfafasdfasdfasdfasdfsdfasdffg";
+    V bdateEmpty2 = "sdfasdfasdfasdfE";
+    V name2 = "SasdsfasdfasdfsdfT";
     person4.push_back(nameEmpty2);
     person4.push_back(ageEmpty2);
     person4.push_back(bdateEmpty2);
     person4.push_back(name2);
 
     char* buffer2;
-    buffer2 = (char *)malloc(sizeof(char *) * 1000);
-
+    buffer2 = (char *)malloc(sizeof(char)*1000);
+    
+    printf("\nBytes required for serialization of person4: %d\n", var_len_sizeof(&person4));
     var_len_write(&person4, buffer2);
 
-    person3.clear(); 
+    person3.clear();
     nameEmpty1 = "";
+    V name1 = "";
     ageEmpty1 = "";
     bdateEmpty1 = "";
-    bdateEmpty2 = "";
     person3.push_back(nameEmpty1);
     person3.push_back(ageEmpty1);
     person3.push_back(bdateEmpty1);
-    person3.push_back(bdateEmpty2);
+    person3.push_back(name1);
 
     var_len_read(buffer2, var_len_sizeof(&person4), &person3);
 
     //print out f4
     printf("person3:----after read from buffer (buffer retrieved from person4)---------\n");
+    int data = 0;
+    int header = 0;
     for (int i = 0; i < 4; i++){
         printf("size: %d, value: %s\n", (int)strlen(person3.at(i)), person3.at(i));
+        data = data + strlen(person3.at(i)); 
+        header = header + sizeof(int);
     }
+    printf("Total Data written: %d, Header: %d, Actual Data: %d\n", data + header, header, data);
 }

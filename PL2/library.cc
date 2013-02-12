@@ -94,17 +94,20 @@ int fixed_len_page_capacity(Page *page){
 }
 
 int fixed_len_page_freeslots(Page *page){
-	char* header = (char *)page->data;
+	int* header = (int *)page->data;
 	int numb_slots 
 	= floor((page->page_size-sizeof(int)) / (page->slot_size + sizeof(int)));
 
 	// Move to end of the header
-	header+=page->page_size-4;
+	header+=page->page_size-sizeof(int);
+	header-=sizeof(int);
+
 	int count = 0;
 	for (int i = 0; i < numb_slots; i++){
-		if (*(--header) == 0){
+		if (*(header) == 0){
 			count++;
 		}
+		header-=sizeof(int);
 	}
 	return count;
 }
@@ -114,7 +117,7 @@ int add_fixed_len_page(Page *page, Record *r){
 	= floor((page->page_size-sizeof(int)) / (page->slot_size + sizeof(int)));
 	int* header = (int *)page->data;
 	// Go to header location
-	header+=page->page_size-4;
+	header+=page->page_size-sizeof(int);
 
 	if (fixed_len_page_freeslots(page) == 0){
 		return -1;
@@ -134,7 +137,7 @@ int add_fixed_len_page(Page *page, Record *r){
 
 			return 0;
 		}
-		header-= sizeof(int);
+		header -= sizeof(int);
 	}
 }
 

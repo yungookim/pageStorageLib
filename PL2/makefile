@@ -8,6 +8,9 @@ library.o : library.cc library.h
 foo : foo.cc library.o
 	$(CC) -o $@ $< library.o
 
+debug : foo.cc library.o
+	g++ -g library.cc library.h foo.cc -o foo
+
 .PHONY: clean
 
 clean : 

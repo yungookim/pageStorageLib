@@ -3,9 +3,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-/**
- * Compute the number of bytes required to serialize record
- */
 int fixed_len_sizeof(Record *record){
 	int total_byte = 0;
 	for (int i = 0; i < record->size(); i++){
@@ -14,9 +11,6 @@ int fixed_len_sizeof(Record *record){
 	return total_byte;
 }
 
-/**
- * Serialize the record to a byte array to be stored in buf.
- */
 void fixed_len_write(Record *record, void *buf){
 	char* byte = (char *)buf;
 	for(int i = 0; i < record->size(); i++){
@@ -26,10 +20,6 @@ void fixed_len_write(Record *record, void *buf){
 	}
 }
 
-/**
-* Deserializes from `size` bytes from the buffer, `buf`, and
-* stores the record in `record`.
-*/
 void fixed_len_read(void *buf, int size, Record *record){
 	char* bufptr = (char *)buf;
 	int i = 0;
@@ -42,9 +32,6 @@ void fixed_len_read(void *buf, int size, Record *record){
 	free(bufptr);
 }
 
-/**
- * Compute the number of bytes required to serialize record
- */
 int var_len_sizeof(Record *record){
 	int total_byte = 0;
 	for (int i = 0; i < record->size(); i++){
@@ -55,33 +42,20 @@ int var_len_sizeof(Record *record){
 	return total_byte;
 }
 
-/**
- * Serialize the record using variable record encoding
- */
 void var_len_write(Record *record, void *buf){
 	char* byteFields = (char *)buf;
 	int* byteOffsets = (int *)buf;
-        char* temp = (char *)buf;
+				char* temp = (char *)buf;
 	byteFields += sizeof(int)*record->size();
 
 	for(int i = 0; i < record->size(); i++){
 		for (int j = 0; j < strlen(record->at(i)); j++) {
 			*(byteFields++) = record->at(i)[j];
 		}
-    *(byteOffsets++) = strlen(record->at(i));
+		*(byteOffsets++) = strlen(record->at(i));
 	}
-        
-	//This should be removed eventually
-	printf("\n\n-------printf from library.cc [");
-	for(int i = 0; i < 100; i++){
-	printf("%c",temp[i] );
-	}
-	printf("]\n\n");
 }
 
-/**
- * Deserialize the `buf` which contains the variable record encoding.
- */
 void var_len_read(void *buf, int size, Record *record){
 	int* offsetBytes = (int *)buf;
 	char* fieldBytes = (char *)buf;
@@ -93,4 +67,35 @@ void var_len_read(void *buf, int size, Record *record){
 		record->at(i) = strndup(fieldBytes, charSize);
 		*(fieldBytes += charSize);
 	}
+}
+
+void init_fixed_len_page(Page *page, int page_size, int slot_size){	 
+	page = (Page *)malloc(sizeof(Page));
+	page->page_size = page_size;
+	page->slot_size = slot_size;
+	// Page size + header size one by
+	page->data = (char *)malloc(page_size + page_size/slot_size);
+}
+
+int fixed_len_page_capacity(Page *page){
+	return page->page_size/page->slot_size;
+}
+
+int fixed_len_page_freeslots(Page *page){
+	// Move to the header
+	for (int i = 0; i < numb_slots+1; i++){
+		header += sizeof(char);
+	}
+	return 0;
+}
+
+int add_fixed_len_page(Page *page, Record *r){
+	int numb_slots = page->page_size/page->slot_size;
+	char* header = (char *)page->data;
+
+	if (fixed_len_page_freeslots(page) == 0){
+		return -1;
+	}
+
+	
 }

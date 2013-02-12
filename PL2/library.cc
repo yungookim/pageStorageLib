@@ -140,15 +140,17 @@ int add_fixed_len_page(Page *page, Record *r){
 }
 
 void write_fixed_len_page(Page *page, int slot, Record *r){
-
-
+	char* ptr = (char *)page->data;
+  ptr = ptr + slot*page->slot_size;
+  fixed_len_write(r, ptr);
+  int* ptr2 = (int *)page->data;
+  ptr2 = ptr2 - (4 + slot);
+  *ptr2 = 1; 
 }
 
 void read_fixed_len_page(Page *page, int slot, Record *r){
 	char* _slot = (char *)page->data;
 	_slot += page->slot_size * slot;
 
-	char* buffer = (char *)malloc(sizeof(char)*1000);
-
-	fixed_len_read(buffer, page->slot_size, r);
+	fixed_len_read(_slot, page->slot_size, r);
 }

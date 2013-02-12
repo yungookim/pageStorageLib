@@ -113,5 +113,22 @@ int main( int argc, const char* argv[] )
 	}
 	printf("Total Data written: %d, Header: %d, Actual Data: %d\n", data + header, header, data);
 
+
+
+	printf("=====================================================\n");
+
+	Page* page = (Page *)malloc(sizeof(Page));
+
+	init_fixed_len_page(page, 10000, 1000);
+
+	printf("Page capacity : %d =? 9\n", fixed_len_page_capacity(page));
+	printf("Page freeslots : %d =? 9\n", fixed_len_page_freeslots(page));
+
+	add_fixed_len_page(page, &person1);
+	add_fixed_len_page(page, &person1);
+	add_fixed_len_page(page, &person1);
+	add_fixed_len_page(page, &person1);
+	printf("Page freeslots : %d =? 5\n", fixed_len_page_freeslots(page));
+
 	
 }

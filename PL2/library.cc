@@ -94,17 +94,21 @@ int fixed_len_page_capacity(Page *page){
 
 int fixed_len_page_freeslots(Page *page){
 	char* header = (char *)page->data;
-	int numb_slots = page->page_size/page->slot_size;
-	return 1; //for now
-	// Move to the header
-	for (int i = 0; i < numb_slots+1; i++){
-		header += sizeof(char);
+	int numb_slots = page->page_size/page->slot_size - 1;
+
+	// Move to end of the header
+	header+=page->page_size-4;
+	int count = 0;
+	for (int i = 0; i < numb_slots; i++){
+		if (*(--header) == 0){
+			count++;
+		}
 	}
-	return 0;
+	return count;
 }
 
 int add_fixed_len_page(Page *page, Record *r){
-	int numb_slots = page->page_size/page->slot_size;
+	int numb_slots = page->page_size/page->slot_size -1 ;
 	char* header = (char *)page->data;
 
 	if (fixed_len_page_freeslots(page) == 0){
@@ -118,13 +122,33 @@ int add_fixed_len_page(Page *page, Record *r){
 
 	// Find an empty slot.
 	for (int i = 0; i < numb_slots; i++){
-		if (header == 0){
+		if (*(header) == 0){
 			// Empty slot found
-			char* buffer;
-			buffer = (char *)malloc(sizeof(char)*1000);
+			char* slot = (char *)page->data;
+			slot += page->slot_size * i;
+
+			char* buffer = (char *)malloc(sizeof(char)*1000);
 			fixed_len_write(r, buffer);
-			char* slot = (char *)buffer;
+			*slot = *buffer;
+
+			// Change header to 1
+			*(header) = 1;
+			return 0;
 		}
 		header+= sizeof(char*);
 	}
+}
+
+void write_fixed_len_page(Page *page, int slot, Record *r){
+
+
+}
+
+void read_fixed_len_page(Page *page, int slot, Record *r){
+	char* _slot = (char *)page->data;
+	_slot += page->slot_size * slot;
+
+	char* buffer = (char *)malloc(sizeof(char)*1000);
+
+	fixed_len_read(buffer, page->slot_size, r);
 }

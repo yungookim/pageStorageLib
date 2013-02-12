@@ -116,8 +116,8 @@ int fixed_len_page_freeslots(Page *page){
 }
 
 int add_fixed_len_page(Page *page, Record *r){
-        int numb_slots = fixed_len_page_capacity(page);
-        int* header = (int *)page->data;
+  int numb_slots = fixed_len_page_capacity(page);
+  int* header = (int *)page->data;
 	// Go to header location
 	header+=page->page_size/sizeof(int) - 1;
 

@@ -10,7 +10,7 @@ int main( int argc, const char* argv[] )
 	V bdate = "12/01/01"; 
  
 	//Pad with empty space character
-	V nameEmpty = "           ";
+	V nameEmpty = "                                                                                           ";
 	V ageEmpty = "    ";
 	V bdateEmpty = "        ";
   
@@ -76,7 +76,7 @@ int main( int argc, const char* argv[] )
 
 	Record person4;
 	V nameEmpty2 = "SasdsfasdfasdfsdfT";
-	V ageEmpty2 = "ssdfdsasdsdsdjkjkjkjkjkjkjkjkjkjkjkjkjkjjkjkjkjkjkjksdjksjdksjdksjkdjskdjksjdksjdkjskdjskjdksjdksjkdjskdjksjdksjdkjskdjksjdksjdksjdkjskdjksjdksjdkjskdjskjdksjdksjdkjskdjskdjksjdksjdksjkdjskdjskjdksjdkjskdjskjdksjdksjdksjdksjkdjskdjskjdsjdksjdksjkdjskdjskjdksdjksjdksjdksjdkjskdjskdjksdjksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjkdjskdjskjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdsdfasdfasdfafasdfasdfasdfasdfsdfasdffg";
+	V ageEmpty2 = "ssdfdsasjkjkjkjkjksdjksjdksjdksjkdjskdjksjdksjdkjskdjskjdksjdksjkdjskdjksjdksjdkjskdjksjdksjdksjdkjskdjksjdksjdkjskdjskjdksjdksjdkjskdjskdjksjdksjdksjkdjskdjskjdksjdkjskdjskjdksjdksjdksjdksjkdjskdjskjdsjdksjdksjkdjskdjskjdksdjksjdksjdksjdkjskdjskdjksdjksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjkdjskdjskjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdksjdsdfasdfasdfafasdfasdfasdfasdfsdfasdffg";
 	V bdateEmpty2 = "";
 	V name2 = "SasdsfasdfasdfsdfT";
 	person4.push_back(nameEmpty2);
@@ -119,15 +119,26 @@ int main( int argc, const char* argv[] )
 
 	Page* page = (Page *)malloc(sizeof(Page));
 
-	init_fixed_len_page(page, 10000, 1000);
+	init_fixed_len_page(page, 100000, 23);
 
 	printf("Page capacity : %d =? 9\n", fixed_len_page_capacity(page));
 	printf("Page freeslots : %d =? 9\n", fixed_len_page_freeslots(page));
 
 	add_fixed_len_page(page, &person1);
+
+	// char* _slot = (char *)page->data;
+	// for (int i = 0; i < page->page_size; i ++){
+	// 	printf(" %c", *_slot);
+	// 	_slot++;
+	// }
+	// printf("\n");
+
 	add_fixed_len_page(page, &person1);
 	add_fixed_len_page(page, &person1);
 	add_fixed_len_page(page, &person1);
+
+	write_fixed_len_page(page, 5, &person2);
+
 	printf("Page freeslots : %d =? 5\n", fixed_len_page_freeslots(page));
 
 	Record person21;
@@ -135,5 +146,10 @@ int main( int argc, const char* argv[] )
 	person21.push_back(ageEmpty);
 	person21.push_back(bdateEmpty);
 
+	printf("Size of the fixed serialized record person21: %d\n", fixed_len_sizeof(&person21));
 	read_fixed_len_page(page, 0, &person21);
+
+	char* fname = "test";
+	write_page_to_file(fname, page);
+
 }

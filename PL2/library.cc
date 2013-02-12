@@ -30,7 +30,6 @@ void fixed_len_read(void *buf, int size, Record *record){
 		i = i + strlen(record->at(curVal));
 		curVal++;
 	}
-	free(bufptr);
 }
 
 int var_len_sizeof(Record *record){
@@ -80,12 +79,13 @@ void init_fixed_len_page(Page *page, int page_size, int slot_size){
 	// Last record size of the bytes are used for header.
 	int numb_slots = floor((page_size-sizeof(int)) / (slot_size + sizeof(int)));
 
-	header+=page_size-sizeof(int);
-	*(header) = numb_slots;
+	header+=(page_size/sizeof(int))-1;
 
+	*(header) = numb_slots;
 	for (int i = 0; i < numb_slots; i++){
 		// Mark all empty
-		*(--header) = 0;
+		header--;
+		*(header) = 0;
 	}
 }
 
@@ -99,16 +99,19 @@ int fixed_len_page_freeslots(Page *page){
 	= floor((page->page_size-sizeof(int)) / (page->slot_size + sizeof(int)));
 
 	// Move to end of the header
-	header+=page->page_size-sizeof(int);
-	header-=sizeof(int);
+	header+=(page_size/sizeof(int))-1;
+	header--;
 
 	int count = 0;
+	//printf("Header [");
 	for (int i = 0; i < numb_slots; i++){
-		if (*(header) == 0){
+	//	printf("%d", *header);
+		if (*header == 0){
 			count++;
 		}
-		header-=sizeof(int);
+		header--;
 	}
+//	printf("]\n");
 	return count;
 }
 
@@ -125,10 +128,11 @@ int add_fixed_len_page(Page *page, Record *r){
 
 	// Find an empty slot.
 	for (int i = 0; i < numb_slots; i++){
+		header -= sizeof(int);
 		if (*(header) == 0){
 			// Empty slot found
 			char* slot = (char *)page->data;
-			slot += page->slot_size * i;
+			slot += (page->slot_size * i);
 
 			fixed_len_write(r, slot);
 
@@ -137,22 +141,27 @@ int add_fixed_len_page(Page *page, Record *r){
 
 			return 0;
 		}
-		header -= sizeof(int);
 	}
 }
 
 void write_fixed_len_page(Page *page, int slot, Record *r){
 	char* ptr = (char *)page->data;
-  ptr = ptr + slot*page->slot_size;
-  fixed_len_write(r, ptr);
-  int* ptr2 = (int *)page->data;
-  ptr2 = ptr2 - (4 + slot);
-  *ptr2 = 1; 
+	ptr = ptr + slot*page->slot_size;
+	fixed_len_write(r, ptr);
+	int* header  = (int *)page->data;
+	header = header + (page->page_size - (sizeof(int) + slot*sizeof(int)));
+	*header = 1;
 }
 
 void read_fixed_len_page(Page *page, int slot, Record *r){
 	char* _slot = (char *)page->data;
 	_slot += page->slot_size * slot;
+	fixed_len_read(_slot, page->slot_size, r);
+}
 
-	fixed_len_read(_slot, 23, r);
+void write_page_to_file(char* fname, Page* page){
+	FILE * f;
+	f = fopen(fname, "a");
+	fwrite (page->data , 1 , page->page_size , f );
+  fclose (f);
 }

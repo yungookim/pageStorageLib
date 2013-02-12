@@ -35,15 +35,14 @@ int main( int argc, const char* argv[] )
 			// Assume 100 Attributes
 			for (int i = 0; i < 100; i++){
 				infile.getline(token, 254, ',');
-				// printf("%s ", token);
 				record.push_back(token);
 			}
-			// printf("\n");
 			add_fixed_len_page(page, &record);
 
 			if (fixed_len_page_freeslots(page) == 0){
 				// printf("asdfasdfasdf\n");
 				write_page_to_file(page_file, page);
+				// free(page);
 				page = (Page *)malloc(sizeof(Page));
 			}
 		}

@@ -133,12 +133,9 @@ int add_fixed_len_page(Page *page, Record *r){
 			// Empty slot found
 			char* slot = (char *)page->data;
 			slot += (page->slot_size * i);
-
 			fixed_len_write(r, slot);
-
 			// Change header to 1
 			*(header) = 1;
-
 			return 0;
 		}
 	}

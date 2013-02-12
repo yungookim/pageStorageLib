@@ -36,17 +36,18 @@ int main( int argc, const char* argv[] )
 
 		Record record;
 		while(std::getline(lineStream,cell,',')) {
-			record.push_back(cell.c_str());
-			cout << cell << " ";
+                       char* attribute = (char *)malloc(sizeof(cell.c_str()));
+                       strcpy(attribute, cell.c_str());
+		       record.push_back(attribute);
 		}
+
 		add_fixed_len_page(page, &record);
 	}
 
-	char* c = (char*)page->data;
-	for (int i = 0; i < 10000; i++){
-		printf("%c", *c);
-		c++;
-	}
+	 //char* c = (char*)page->data;
+	// for (int i = 0; i < 10000; i++){
+	// 	printf("%c", *(c+i));
+	// }
 
 
 	write_page_to_file(page_file, page);

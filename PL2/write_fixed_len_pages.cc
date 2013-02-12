@@ -36,19 +36,14 @@ int main( int argc, const char* argv[] )
 			// Assume 100 Attributes
 			for (int i = 0; i < 100; i++){
 				infile.getline(token, 254, ',');
-				for (int k = 0; k < 10; k++){
-					record.push_back(token[k]);
-				}
+				record.push_back(token);
+				printf(token);
+				printf("-%d ", i);
 			}
-			// add_fixed_len_page(page, &record);
-
-			write_fixed_len_page(page, j++, &record);
-
-			if (j == fixed_len_page_capacity(page)){
-				write_page_to_file(page_file, page);
-				j = 0;
-			}
+			printf("\n");
+			add_fixed_len_page(page, &record);
 		}
+		write_page_to_file(page_file, page);
 		infile.close();
 		free(page);
 	} else {

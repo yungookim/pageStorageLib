@@ -128,3 +128,12 @@ int add_fixed_len_page(Page *page, Record *r){
 		header+= sizeof(char*);
 	}
 }
+
+void write_fixed_len_page(Page *page, int slot, Record *r){
+    char* ptr = (char *)page->data;
+    ptr = ptr + slot*page->slot_size;
+    fixed_len_write(r, ptr);
+    int* ptr2 = (int *)page->data;
+    ptr2 = ptr2 - (4 + slot);
+    *ptr2 = 1; 
+}

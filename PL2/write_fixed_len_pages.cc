@@ -2,10 +2,12 @@
 #include <stdlib.h>
 #include "library.h"
 #include <string>
+#include <string.h>
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <string>
+#include <time.h>
+#include <sys/timeb.h>
 using namespace std;
 
 int main( int argc, const char* argv[] )
@@ -15,6 +17,10 @@ int main( int argc, const char* argv[] )
 		printf( "Must put <csv_file> <page_file> <page_size>\n" );
 		return 0;
 	}
+
+	struct timeb _t;
+	ftime(&_t);
+	long init = _t.time * 1000 + _t.millitm;
 
 	const char* csv_file = argv[1];
 	char* page_file = (char*)argv[2];
@@ -28,49 +34,36 @@ int main( int argc, const char* argv[] )
 	// Open the csv file
 
 	std::ifstream data(csv_file);
-
 	std::string line;
+
+	int j = 0;
+
 	while(std::getline(data,line)) {
 		std::stringstream lineStream(line);
 		std::string cell;
 
 		Record record;
 		while(std::getline(lineStream,cell,',')) {
-			record.push_back(cell.c_str());
-			cout << cell << " ";
+			char* attribute = (char *)malloc(sizeof(cell.c_str()));
+			strcpy(attribute, cell.c_str());
+			record.push_back(attribute);
 		}
+
 		add_fixed_len_page(page, &record);
+
+
 	}
-
-	// char* c = (char*)page->data;
-	// for (int i = 0; i < 10000; i++){
-	// 	printf("%c", *c);
-	// 	c++;
-	// }
-
 
 	write_page_to_file(page_file, page);
 	data.close();
 	free(page);
 
-	// if (infile.is_open()) {
-	// 	while (infile.good()) {
-	// 		Record record;
-	// 		// Assume 100 Attributes
-	// 		for (int i = 0; i < 100; i++){
-	// 			infile.getline(token, 1100, ',');
-	// 			record.push_back(token);
-	// 			printf(token);
-	// 			printf("-%d ", i);
-	// 		}
-	// 		printf("\n");
-	// 		add_fixed_len_page(page, &record);
-	// 	}
-	// 	write_page_to_file(page_file, page);
-	// 	infile.close();
-	// 	free(page);
-	// } else {
-	// 	cout << "Error opening file";
-	// }
+	ftime(&_t);
+	long done = _t.time * 1000 + _t.millitm;
+	long _time = done-init;
+
+	cout << "NUMBER OF RECORDS: " << fixed_len_page_capacity(page) << "\n";
+	cout << "TIME : " << _time << " milliseconds\n";
+
   return 0;
 }

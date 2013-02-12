@@ -42,11 +42,11 @@ int main( int argc, const char* argv[] )
 		add_fixed_len_page(page, &record);
 	}
 
-	char* c = (char*)page->data;
-	for (int i = 0; i < 10000; i++){
-		printf("%c", *c);
-		c++;
-	}
+	// char* c = (char*)page->data;
+	// for (int i = 0; i < 10000; i++){
+	// 	printf("%c", *c);
+	// 	c++;
+	// }
 
 
 	write_page_to_file(page_file, page);

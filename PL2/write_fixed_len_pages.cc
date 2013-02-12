@@ -37,6 +37,7 @@ int main( int argc, const char* argv[] )
 	std::string line;
 
 	int j = 0;
+	int numb_pages = 0;
 
 	while(std::getline(data,line)) {
 		std::stringstream lineStream(line);
@@ -49,12 +50,18 @@ int main( int argc, const char* argv[] )
 			record.push_back(attribute);
 		}
 
-		add_fixed_len_page(page, &record);
+		// add_fixed_len_page(page, &record);
+		write_fixed_len_page(page, j++, &record);
 
+		if (j == fixed_len_page_capacity(page)){
+			write_page_to_file(page_file, page);
+			j = 0;
+			numb_pages++;
+		}
 
 	}
 
-	write_page_to_file(page_file, page);
+	
 	data.close();
 	free(page);
 
@@ -62,7 +69,8 @@ int main( int argc, const char* argv[] )
 	long done = _t.time * 1000 + _t.millitm;
 	long _time = done-init;
 
-	cout << "NUMBER OF RECORDS: " << fixed_len_page_capacity(page) << "\n";
+	cout << "NUMBER OF RECORDS : " << fixed_len_page_capacity(page) << "\n";
+	cout << "NUMBER OF PAGES : " << numb_pages << "\n";
 	cout << "TIME : " << _time << " milliseconds\n";
 
   return 0;

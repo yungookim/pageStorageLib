@@ -70,13 +70,13 @@ void var_len_read(void *buf, int size, Record *record){
 }
 
 void init_fixed_len_page(Page *page, int page_size, int slot_size){	 
-	page = (Page *)malloc(sizeof(Page));
 	page->page_size = page_size;
 	page->slot_size = slot_size;
 
 	page->data = malloc(page_size);
 
 	int* header = (int*) page->data;
+	// Last record size of the bytes are used for header.
 	int numb_slots = (page_size/slot_size)-1;
 
 	header+=page_size-4;
@@ -89,7 +89,7 @@ void init_fixed_len_page(Page *page, int page_size, int slot_size){
 }
 
 int fixed_len_page_capacity(Page *page){
-	return page->page_size/page->slot_size;
+	return page->page_size/page->slot_size - 1;
 }
 
 int fixed_len_page_freeslots(Page *page){
@@ -116,12 +116,15 @@ int add_fixed_len_page(Page *page, Record *r){
 		header += sizeof(char);
 	}
 
-	// // Find an empty slot.
-	// for (int i = 0; i < numb_slots; i++){
-	// 	if (header == 0){
-	// 		// Empty slot found
-	// 		char* slot = (char *)
-	// 	}
-	// 	header+= sizeof(char*);
-	// }
+	// Find an empty slot.
+	for (int i = 0; i < numb_slots; i++){
+		if (header == 0){
+			// Empty slot found
+			char* buffer;
+			buffer = (char *)malloc(sizeof(char)*1000);
+			fixed_len_write(r, buffer);
+			char* slot = (char *)buffer;
+		}
+		header+= sizeof(char*);
+	}
 }

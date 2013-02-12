@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 
 int fixed_len_sizeof(Record *record){
 	int total_byte = 0;
@@ -77,7 +78,7 @@ void init_fixed_len_page(Page *page, int page_size, int slot_size){
 
 	int* header = (int*) page->data;
 	// Last record size of the bytes are used for header.
-	int numb_slots = (page_size/slot_size)-1;
+	int numb_slots = floor((page_size-sizeof(int)) / (slot_size + sizeof(int)));
 
 	header+=page_size-4;
 	*(header) = numb_slots;
@@ -94,7 +95,8 @@ int fixed_len_page_capacity(Page *page){
 
 int fixed_len_page_freeslots(Page *page){
 	char* header = (char *)page->data;
-	int numb_slots = page->page_size/page->slot_size - 1;
+	int numb_slots 
+	= floor((page->page_size-sizeof(int)) / (page->slot_size + sizeof(int)));
 
 	// Move to end of the header
 	header+=page->page_size-4;
@@ -108,16 +110,14 @@ int fixed_len_page_freeslots(Page *page){
 }
 
 int add_fixed_len_page(Page *page, Record *r){
-	int numb_slots = page->page_size/page->slot_size -1 ;
-	char* header = (char *)page->data;
+	int numb_slots 
+	= floor((page->page_size-sizeof(int)) / (page->slot_size + sizeof(int)));
+	int* header = (int *)page->data;
+	// Go to header location
+	header+=page->page_size-4;
 
 	if (fixed_len_page_freeslots(page) == 0){
 		return -1;
-	}
-
-	// Go to header location
-	for (int i = 0; i < numb_slots+1; i++){
-		header += sizeof(char);
 	}
 
 	// Find an empty slot.
@@ -127,7 +127,7 @@ int add_fixed_len_page(Page *page, Record *r){
 			char* slot = (char *)page->data;
 			slot += page->slot_size * i;
 
-			char* buffer = (char *)malloc(sizeof(char)*1000);
+			char* buffer = (char *)malloc(sizeof(char)*page->slot_size);
 			fixed_len_write(r, buffer);
 			*slot = *buffer;
 
@@ -135,7 +135,7 @@ int add_fixed_len_page(Page *page, Record *r){
 			*(header) = 1;
 			return 0;
 		}
-		header+= sizeof(char*);
+		header-= sizeof(int*);
 	}
 }
 
@@ -152,5 +152,5 @@ void read_fixed_len_page(Page *page, int slot, Record *r){
 	char* _slot = (char *)page->data;
 	_slot += page->slot_size * slot;
 
-	fixed_len_read(_slot, page->slot_size, r);
+	fixed_len_read(_slot, 23, r);
 }

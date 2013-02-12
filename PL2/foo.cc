@@ -130,5 +130,10 @@ int main( int argc, const char* argv[] )
 	add_fixed_len_page(page, &person1);
 	printf("Page freeslots : %d =? 5\n", fixed_len_page_freeslots(page));
 
-	
+	Record person21;
+	person21.push_back(nameEmpty);
+	person21.push_back(ageEmpty);
+	person21.push_back(bdateEmpty);
+
+	read_fixed_len_page(page, 0, &person21);
 }

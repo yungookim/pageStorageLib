@@ -119,7 +119,7 @@ int main( int argc, const char* argv[] )
 
 	Page* page = (Page *)malloc(sizeof(Page));
 
-	init_fixed_len_page(page, 100000, 23);
+	init_fixed_len_page(page, 1000, 23);
 
 	printf("Page capacity : %d =? 9\n", fixed_len_page_capacity(page));
 	printf("Page freeslots : %d =? 9\n", fixed_len_page_freeslots(page));

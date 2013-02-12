@@ -80,18 +80,17 @@ void init_fixed_len_page(Page *page, int page_size, int slot_size){
 	//int numb_slots = floor((page_size-sizeof(int)) / (slot_size + sizeof(int)));
         int numb_slots = fixed_len_page_capacity(page);
 	
-        header+=(page_size/sizeof(int))-1;
+	header+=(page_size/sizeof(int))-1;
 	*(header) = numb_slots;
-	
-        for (int i = 0; i < numb_slots; i++){
-		// Mark all empty
+
+	for (int i = 0; i < numb_slots; i++){
+	// Mark all empty
 		header--;
 		*(header) = 0;
 	}
 }
 
 int fixed_len_page_capacity(Page *page){
-
 	return floor((page->page_size-sizeof(int)) / (page->slot_size + sizeof(int)));
 }
 
@@ -159,6 +158,7 @@ void read_fixed_len_page(Page *page, int slot, Record *r){
 void write_page_to_file(char* fname, Page* page){
 	FILE * f;
 	f = fopen(fname, "a");
+	// char * buf = (char *)page->data;
 	fwrite (page->data , 1 , page->page_size , f );
   fclose (f);
 }

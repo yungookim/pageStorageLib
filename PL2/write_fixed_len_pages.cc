@@ -29,24 +29,28 @@ int main( int argc, const char* argv[] )
 	ifstream infile;
 	char token[10] ;
 	infile.open (csv_file, ifstream::in);
+	int j = 0;
 	if (infile.is_open()) {
 		while (infile.good()) {
 			Record record;
 			// Assume 100 Attributes
 			for (int i = 0; i < 100; i++){
 				infile.getline(token, 254, ',');
-				record.push_back(token);
+				for (int k = 0; k < 10; k++){
+					record.push_back(token[k]);
+				}
 			}
-			add_fixed_len_page(page, &record);
+			// add_fixed_len_page(page, &record);
 
-			if (fixed_len_page_freeslots(page) == 0){
-				// printf("asdfasdfasdf\n");
+			write_fixed_len_page(page, j++, &record);
+
+			if (j == fixed_len_page_capacity(page)){
 				write_page_to_file(page_file, page);
-				// free(page);
-				page = (Page *)malloc(sizeof(Page));
+				j = 0;
 			}
 		}
 		infile.close();
+		free(page);
 	} else {
 		cout << "Error opening file";
 	}

@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <iostream>
+using namespace std;
 
 int fixed_len_sizeof(Record *record){
 	int total_byte = 0;
@@ -78,7 +80,7 @@ void init_fixed_len_page(Page *page, int page_size, int slot_size){
 	int* header = (int*) page->data;
 	// Last record size of the bytes are used for header.
 	//int numb_slots = floor((page_size-sizeof(int)) / (slot_size + sizeof(int)));
-        int numb_slots = fixed_len_page_capacity(page);
+  int numb_slots = fixed_len_page_capacity(page);
 	
 	header+=(page_size/sizeof(int))-1;
 	*(header) = numb_slots;
@@ -96,7 +98,7 @@ int fixed_len_page_capacity(Page *page){
 
 int fixed_len_page_freeslots(Page *page){
 	int* header = (int *)page->data;
-        int numb_slots = fixed_len_page_capacity(page);
+  int numb_slots = fixed_len_page_capacity(page);
 
 	// Move to end of the header
 	header+=(page->page_size/sizeof(int)) - 1;

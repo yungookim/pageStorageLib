@@ -29,10 +29,10 @@ int main( int argc, const char* argv[] )
 	Page* page = (Page *)malloc(sizeof(Page));
 
 	// Initialize page
-	init_fixed_len_page(page, page_size, 1000);
+	int SLOT_SIZE = 1000;
+	init_fixed_len_page(page, page_size, SLOT_SIZE);
 
 	// Open the csv file
-
 	std::ifstream data(csv_file);
 	std::string line;
 
@@ -52,15 +52,12 @@ int main( int argc, const char* argv[] )
 
 		// add_fixed_len_page(page, &record);
 		write_fixed_len_page(page, j++, &record);
-
 		if (j == fixed_len_page_capacity(page)){
 			write_page_to_file(page_file, page);
 			j = 0;
 			numb_pages++;
 		}
-
 	}
-
 	
 	data.close();
 	free(page);

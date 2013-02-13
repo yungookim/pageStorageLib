@@ -151,5 +151,4 @@ int main( int argc, const char* argv[] )
 
 	char* fname = "test";
 	write_page_to_file(fname, page);
-
 }

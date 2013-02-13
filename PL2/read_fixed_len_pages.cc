@@ -47,7 +47,7 @@ int main( int argc, const char* argv[] )
         while(!feof(file)){
             bzero(pageBuf, page_size);
             fread(pageBuf, sizeof(char), page_size, file);
-            //if(feof(file)) break; 
+            if(feof(file)) break; 
             
             //set page data to page buf
             page->data = pageBuf;

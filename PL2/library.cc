@@ -27,6 +27,7 @@ void fixed_len_read(void *buf, int size, Record *record){
 	char* bufptr = (char *)buf;
 	int i = 0;
 	int curVal = 0;
+
 	while (i < size) {
 		record->at(curVal) = strndup(bufptr+i, strlen(record->at(curVal)));
 		i = i + strlen(record->at(curVal));
@@ -143,12 +144,15 @@ int add_fixed_len_page(Page *page, Record *r){
 }
 
 void write_fixed_len_page(Page *page, int slot, Record *r){
+
 	char* ptr = (char *)page->data;
-	ptr = ptr + slot*page->slot_size;
-	fixed_len_write(r, ptr);
 	int* header  = (int *)page->data;
-	header += (page->page_size/sizeof(int) - (1 + slot));
-	*header = 1;
+
+	ptr = ptr + slot*page->slot_size;
+	header += page->page_size/sizeof(int) - 1;
+	fixed_len_write(r, ptr);
+	header--;
+	*(header - slot) = 1;
 }
 
 void read_fixed_len_page(Page *page, int slot, Record *r){
@@ -160,7 +164,11 @@ void read_fixed_len_page(Page *page, int slot, Record *r){
 void write_page_to_file(char* fname, Page* page){
 	FILE * f;
 	f = fopen(fname, "a");
-	// char * buf = (char *)page->data;
+	int * buf = (int *)page->data;
 	fwrite (page->data , 1 , page->page_size , f );
   fclose (f);
+}
+
+void init_heapfile(Heapfile *heapfile, int page_size, FILE *file) {
+	
 }

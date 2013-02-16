@@ -1,7 +1,14 @@
 #include <vector>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <math.h>
+#include <iostream>
 
 typedef const char* V;
+
 typedef std::vector<V> Record;
+
 typedef struct {
 	void *data;
 	int page_size;
@@ -11,7 +18,7 @@ typedef struct {
 typedef struct {
 	FILE *file_ptr;
 	int page_size;
-} Heapfile
+} Heapfile;
 
 typedef int PageID;
  

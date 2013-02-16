@@ -1,9 +1,5 @@
 #include "library.h"
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-#include <iostream>
+
 using namespace std;
 
 int fixed_len_sizeof(Record *record){
@@ -170,5 +166,26 @@ void write_page_to_file(char* fname, Page* page){
 }
 
 void init_heapfile(Heapfile *heapfile, int page_size, FILE *file) {
-	
+	heapfile->page_size = page_size;
+	heapfile->file_ptr = file;
+}
+
+PageID alloc_page(Heapfile *heapfile){
+	// Set the position value to the EOF
+	fseek(heapfile->file_ptr, 0, SEEK_END);
+	long 	size = ftell(heapfile->file_ptr);
+
+	// Write NULL buffer to the file
+	char *buffer = (char*)malloc(heapfile->page_size);
+	fwrite(buffer, sizeof(char*), heapfile->page_size, heapfile->file_ptr);
+
+	fclose(heapfile->file_ptr);
+}
+
+void read_page(Heapfile *heapfile, PageID pid, Page *page){
+
+}
+
+void write_page(Page *page, Heapfile *heapfile, PageID pid){
+
 }

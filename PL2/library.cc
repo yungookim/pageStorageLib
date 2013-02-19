@@ -201,7 +201,7 @@ void read_page(Heapfile *heapfile, PageID pid, Page *page){
 
 void write_page(Page *page, Heapfile *heapfile, PageID pid){
 	// Set the position value to the given
-	fseek(heapfile->file_ptr, 0, SEEK_END);
+	fseek(heapfile->file_ptr, pid, SEEK_SET);
 	char* buf = (char *)page->data;
 	fwrite (buf, sizeof(char*), page->page_size , heapfile->file_ptr);
 }

@@ -1,11 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "library.h"
-#include <string>
-#include <string.h>
-#include <fstream>
-#include <iostream>
-#include <sstream>
 #include <time.h>
 #include <sys/timeb.h>
 using namespace std;

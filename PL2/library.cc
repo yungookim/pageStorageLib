@@ -76,7 +76,6 @@ void init_fixed_len_page(Page *page, int page_size, int slot_size){
 
 	int* header = (int*) page->data;
 	// Last record size of the bytes are used for header.
-	//int numb_slots = floor((page_size-sizeof(int)) / (slot_size + sizeof(int)));
   int numb_slots = fixed_len_page_capacity(page);
 	
 	header+=(page_size/sizeof(int))-1;
@@ -152,7 +151,7 @@ void write_fixed_len_page(Page *page, int slot, Record *r){
 }
 
 void read_fixed_len_page(Page *page, int slot, Record *r){
-	char* _slot = (char *)page->data;
+	char* _slot = (char *)page->data;	
 	_slot += page->slot_size * slot;
 	fixed_len_read(_slot, page->slot_size, r);
 }
@@ -160,26 +159,40 @@ void read_fixed_len_page(Page *page, int slot, Record *r){
 void write_page_to_file(char* fname, Page* page){
 	FILE * f;
 	f = fopen(fname, "a");
-	int * buf = (int *)page->data;
-	fwrite (page->data , 1 , page->page_size , f );
+	char* buf = (char *)page->data;
+	fwrite (buf, 1 , page->page_size , f);
   fclose (f);
 }
 
 void init_heapfile(Heapfile *heapfile, int page_size, FILE *file) {
+	// First int stores the offset to the second heap directory
+	int heapOffset = 0;
+	fwrite(&heapOffset, sizeof(int), 1, file);
+	
+	// Number of pages per heap file
+	int NUMB_PAGES = 1000;
+	// Number of slots in heap
+	int numb_slots = (NUMB_PAGES - sizeof(int)) / (2*sizeof(int));
+	// Allocate heap
+	int* heap = (int*)malloc(numb_slots * 2 * sizeof(int));
+	fwrite(&heap, sizeof(int)*2, numb_slots, file);
+
 	heapfile->page_size = page_size;
 	heapfile->file_ptr = file;
+
 }
 
 PageID alloc_page(Heapfile *heapfile){
 	// Set the position value to the EOF
 	fseek(heapfile->file_ptr, 0, SEEK_END);
-	long 	size = ftell(heapfile->file_ptr);
+	long size = ftell(heapfile->file_ptr);
 
 	// Write NULL buffer to the file
 	char *buffer = (char*)malloc(heapfile->page_size);
 	fwrite(buffer, sizeof(char*), heapfile->page_size, heapfile->file_ptr);
 
-	fclose(heapfile->file_ptr);
+	// TODO return the offset for now
+	return size;
 }
 
 void read_page(Heapfile *heapfile, PageID pid, Page *page){
@@ -187,5 +200,8 @@ void read_page(Heapfile *heapfile, PageID pid, Page *page){
 }
 
 void write_page(Page *page, Heapfile *heapfile, PageID pid){
-
+	// Set the position value to the given
+	fseek(heapfile->file_ptr, 0, SEEK_END);
+	char* buf = (char *)page->data;
+	fwrite (buf, sizeof(char*), page->page_size , heapfile->file_ptr);
 }

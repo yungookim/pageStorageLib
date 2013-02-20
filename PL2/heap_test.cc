@@ -38,9 +38,12 @@ int main( int argc, const char* argv[] )
 
 		write_fixed_len_page(page, j++, &record);
 		if (j == fixed_len_page_capacity(page)){
-			
-			write_page(page, hf, alloc_page(hf));
-
+			PageID id = alloc_page(hf);
+			if (id != -1){
+				write_page(page, hf, id);
+			} else {
+				printf("Heap Full\n");
+			}
 			j = 0;
 			numb_pages++;
 		}

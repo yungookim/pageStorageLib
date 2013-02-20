@@ -217,13 +217,18 @@ PageID alloc_page(Heapfile *heapfile){
 		fread(&pageId, sizeof(int), 1, heapfile->file_ptr);
 		fread(&numb_written_pages, sizeof(int), 1, heapfile->file_ptr);
 		// TODO : check if the page is full or not.
-		// instead of checking if it's empty
+		// instead of checking if it's empty.
+		// Right now, this assumes that all pages coming
+		// in are full.
 		if (numb_written_pages == 0){
 			printf("free page at : %d\n", pageId);
 			rewind(heapfile->file_ptr);
 			return pageId;
 		}
 	}
+
+	// TODO page is full
+	return -1;
 }
 
 void read_page(Heapfile *heapfile, PageID pid, Page *page){

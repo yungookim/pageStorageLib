@@ -166,12 +166,12 @@ void write_page_to_file(char* fname, Page* page){
 
 void init_heapfile(Heapfile *heapfile, int page_size, FILE *file) {
 	// Size of the each heap directory
-	int  heap_size = page_size;
+	int heap_size = page_size;
 	// Number of slots in heap
 	int numb_slots = floor((heap_size - sizeof(int)) / (2*sizeof(int)));
         
-        // 0 indicates that there is no next heap linked to this heap
-        int nextHeapID = 0;
+	// 0 indicates that there is no next heap linked to this heap
+	int nextHeapID = 0;
 	fwrite(&nextHeapID, sizeof(int), 1, file);
 	// Move the position to after the heapID
 	fseek(file, sizeof(int), SEEK_SET);
@@ -211,59 +211,59 @@ PageID alloc_page(Heapfile *heapfile){
 		fread(&pageId, sizeof(int), 1, heapfile->file_ptr);
 		fread(&free_space, sizeof(int), 1, heapfile->file_ptr);
 	
-                // Check if there is a free page in this heap directory.
-                if (free_space == heapfile->page_size){
+		// Check if there is a free page in this heap directory.
+		if (free_space == heapfile->page_size){
 			printf("free page at : %d\n", pageId);
 			rewind(heapfile->file_ptr);
 			return pageId;
 		}
-                curpid++;
-                // If free page is not found yet (end of the slots)
-                if(curpid == numb_slots*(curHeapId + 1)) {
-                    // If there is a next heap directory linked to this heap directory
-                    if(nextHeapId > 0){
-                        // Set current HeapId to nextHeapId and continue search
-                        curHeapId++;
-                        // Advance the fileposition to the next heap directory 
-                        int heapOffset = (curHeapId)*(numb_slots + 1)*heapfile->page_size;
-                        fseek(heapfile->file_ptr, heapOffset,  SEEK_SET);
-	                
-                        // Get nextHeapId of current heap and store it to nextHeapId variable
-                        fread(&nextHeapId, sizeof(int), 1, heapfile->file_ptr);
-                        
-                        // Move the cursor back to the begining of the directory + one slot 
-	                fseek(heapfile->file_ptr, heapOffset + sizeof(int),  SEEK_SET);
-                    
-                    //write next heap directory
-                    } else {
+		curpid++;
+		// If free page is not found yet (end of the slots)
+		if(curpid == numb_slots*(curHeapId + 1)) {
+		// If there is a next heap directory linked to this heap directory
+			if(nextHeapId > 0){
+				// Set current HeapId to nextHeapId and continue search
+				curHeapId++;
+				// Advance the fileposition to the next heap directory 
+				int heapOffset = (curHeapId)*(numb_slots + 1)*heapfile->page_size;
+				fseek(heapfile->file_ptr, heapOffset,  SEEK_SET);
 
-                        curHeapId++;
-                        
-                        // Link this  heap directory ID to previous heap directory
-                        int heapOffset = (curHeapId - 1)*(numb_slots + 1)*heapfile->page_size;
-                        fseek(heapfile->file_ptr, heapOffset , SEEK_SET);
-	                fwrite(&curHeapId, sizeof(int), 1, heapfile->file_ptr);
+				// Get nextHeapId of current heap and store it to nextHeapId variable
+				fread(&nextHeapId, sizeof(int), 1, heapfile->file_ptr);
 
-                        // Initialize new Heap directory with curHeapId
-                        heapOffset = (curHeapId)*(numb_slots + 1)*heapfile->page_size;
-	                fseek(heapfile->file_ptr, heapOffset,  SEEK_SET);
-                        // 0 indicates that theire is no next heap linked to this heap
-                        nextHeapId = 0;
-	                fwrite(&nextHeapId, sizeof(int), 1, heapfile->file_ptr);
-                       
-	                // Move the position to after the heapID
-	                fseek(heapfile->file_ptr, heapOffset + sizeof(int),  SEEK_SET);
-                        // Preload the heap with the pageIds and free space
-	                for (int i = curpid; i < numb_slots*(curHeapId + 1); i++){
-                            fwrite(&i, sizeof(int), 1, heapfile->file_ptr);
-		            fwrite(&heapfile->page_size, sizeof(int), 1, heapfile->file_ptr);
-	                }
-                        // Move the cursor back to the begining of the directory + one slot 
-	                fseek(heapfile->file_ptr, heapOffset + sizeof(int),  SEEK_SET);
-                    }
+				// Move the cursor back to the begining of the directory + one slot 
+				fseek(heapfile->file_ptr, heapOffset + sizeof(int),  SEEK_SET);
 
-                }
-        }
+				//write next heap directory
+			} else {
+
+				curHeapId++;
+
+				// Link this  heap directory ID to previous heap directory
+				int heapOffset = (curHeapId - 1)*(numb_slots + 1)*heapfile->page_size;
+				fseek(heapfile->file_ptr, heapOffset , SEEK_SET);
+				fwrite(&curHeapId, sizeof(int), 1, heapfile->file_ptr);
+
+				// Initialize new Heap directory with curHeapId
+				heapOffset = (curHeapId)*(numb_slots + 1)*heapfile->page_size;
+				fseek(heapfile->file_ptr, heapOffset,  SEEK_SET);
+				// 0 indicates that theire is no next heap linked to this heap
+				nextHeapId = 0;
+				fwrite(&nextHeapId, sizeof(int), 1, heapfile->file_ptr);
+
+				// Move the position to after the heapID
+				fseek(heapfile->file_ptr, heapOffset + sizeof(int),  SEEK_SET);
+				// Preload the heap with the pageIds and free space
+				for (int i = curpid; i < numb_slots*(curHeapId + 1); i++){
+					fwrite(&i, sizeof(int), 1, heapfile->file_ptr);
+					fwrite(&heapfile->page_size, sizeof(int), 1, heapfile->file_ptr);
+				}
+				// Move the cursor back to the begining of the directory + one slot 
+				fseek(heapfile->file_ptr, heapOffset + sizeof(int),  SEEK_SET);
+				}
+
+			}
+		}
         // Unexpected result
 	return -1;
 }
@@ -275,24 +275,24 @@ void read_page(Heapfile *heapfile, PageID pid, Page *page){
 void write_page(Page *page, Heapfile *heapfile, PageID pid){
 	// Number of slots in heap
 	int numb_slots = (heapfile->page_size - sizeof(int)) / (2*sizeof(int));
-        // Id of the heap directory in which the page with pid is located 
-        int heapId = floor(pid/numb_slots);
-       
-        // Right postion of the heap directory and page slot with given pid and heapId.
-        int heapOffset = heapId*(numb_slots + 1)*heapfile->page_size;
-        int pageOffset = heapfile->page_size*(heapId + 1) + heapfile->page_size * pid;
-	
-        // Set the position value to the given
+	// Id of the heap directory in which the page with pid is located 
+	int heapId = floor(pid/numb_slots);
+
+	// Right postion of the heap directory and page slot with given pid and heapId.
+	int heapOffset = heapId*(numb_slots + 1)*heapfile->page_size;
+	int pageOffset = heapfile->page_size*(heapId + 1) + heapfile->page_size * pid;
+
+	// Set the position value to the given
 	fseek(heapfile->file_ptr, pageOffset, SEEK_SET);
 	char* buf = (char *)page->data;
 	// Write the page
 	fwrite(buf, sizeof(char), page->page_size , heapfile->file_ptr);
         
-        // Free space slot of the page with pid in the heap directory
-        int freeSlot = sizeof(int) + (pid % numb_slots) * sizeof(int) * 2 + sizeof(int);
+	// Free space slot of the page with pid in the heap directory
+	int freeSlot = sizeof(int) + (pid % numb_slots) * sizeof(int) * 2 + sizeof(int);
 	// Update the heap
-        fseek(heapfile->file_ptr, heapOffset + freeSlot , SEEK_SET);
-        int free_space = 0;
+	fseek(heapfile->file_ptr, heapOffset + freeSlot , SEEK_SET);
+	int free_space = 0;
 	fwrite(&free_space, sizeof(int), 1, heapfile->file_ptr);
 	rewind(heapfile->file_ptr);
 }

@@ -23,6 +23,8 @@ int main( int argc, const char* argv[] )
 	std::ifstream data(csv_file);
 	std::string line;
 
+alloc_page(hf);
+
 	int j = 0;		
 	int numb_pages = 0;
 	while(std::getline(data,line)) {
@@ -39,7 +41,7 @@ int main( int argc, const char* argv[] )
 		write_fixed_len_page(page, j++, &record);
 		if (j == fixed_len_page_capacity(page)){
 			
-			write_page(page, hf, alloc_page(hf));
+			// write_page(page, hf, alloc_page(hf));
 
 			j = 0;
 			numb_pages++;

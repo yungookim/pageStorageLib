@@ -39,6 +39,7 @@ int main( int argc, const char* argv[] )
 		write_fixed_len_page(page, j++, &record);
 		if (j == fixed_len_page_capacity(page)){
 			PageID id = alloc_page(hf);
+
 			if (id != -1){
 				write_page(page, hf, id);
 			} else {

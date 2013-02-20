@@ -210,15 +210,17 @@ PageID alloc_page(Heapfile *heapfile){
 	// Every first slot contains the page offset, 
 	// the second slot contains the number of free pages.
 	PageID pageId = 0;
-	int numb_free_pages = 0;
+	int numb_written_pages = 0;
 	for (int i = 0; i < numb_slots; i++){
+		// The position indicator of the stream is advanced by 
+		// the total amount of bytes read.
 		fread(&pageId, sizeof(int), 1, heapfile->file_ptr);
-		fseek(heapfile->file_ptr, sizeof(int), ftell(heapfile->file_ptr));
-		fread(&numb_free_pages, sizeof(int), 1, heapfile->file_ptr);
-		fseek(heapfile->file_ptr, sizeof(int), ftell(heapfile->file_ptr));
-
-		if (numb_free_pages == 0){
+		fread(&numb_written_pages, sizeof(int), 1, heapfile->file_ptr);
+		// TODO : check if the page is full or not.
+		// instead of checking if it's empty
+		if (numb_written_pages == 0){
 			printf("free page at : %d\n", pageId);
+			rewind(heapfile->file_ptr);
 			return pageId;
 		}
 	}
@@ -229,8 +231,22 @@ void read_page(Heapfile *heapfile, PageID pid, Page *page){
 }
 
 void write_page(Page *page, Heapfile *heapfile, PageID pid){
+	// Number of pages per heap file
+	int NUMB_PAGES = 1000;
+	// Number of slots in heap
+	int numb_slots = (NUMB_PAGES - sizeof(int)) / (2*sizeof(int));
+	int heap_size = (numb_slots * 2 * sizeof(int)) + sizeof(int);
+
+	int pageOffset = heap_size + heapfile->page_size * pid;
 	// Set the position value to the given
-	fseek(heapfile->file_ptr, pid, SEEK_SET);
+	fseek(heapfile->file_ptr, pageOffset, SEEK_SET);
 	char* buf = (char *)page->data;
-	fwrite (buf, sizeof(char*), page->page_size , heapfile->file_ptr);
+	// Write the page
+	fwrite(buf, sizeof(char*), page->page_size , heapfile->file_ptr);
+
+	// Update the heap
+	fseek(heapfile->file_ptr, sizeof(int) + pid * sizeof(int) * 2 + sizeof(int), SEEK_SET);
+	int written = 1;
+	fwrite(&written, sizeof(int), 1, heapfile->file_ptr);
+	rewind(heapfile->file_ptr);
 }

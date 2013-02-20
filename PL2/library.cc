@@ -168,21 +168,32 @@ void init_heapfile(Heapfile *heapfile, int page_size, FILE *file) {
 	// First int stores the offset to the second heap directory
 	int heapOffset = 0;
 	fwrite(&heapOffset, sizeof(int), 1, file);
+	// Move the position to after the heapID
+	fseek(file, sizeof(int), SEEK_SET);
 	
 	// Number of pages per heap file
 	int NUMB_PAGES = 1000;
 	// Number of slots in heap
 	int numb_slots = (NUMB_PAGES - sizeof(int)) / (2*sizeof(int));
+	// Page starts from (numb_slots * 2 * sizeof(int)) + sizeof(int)
+
 	// Allocate heap
 	int* heap = (int*)malloc(numb_slots * 2 * sizeof(int));
-	fwrite(&heap, sizeof(int)*2, numb_slots, file);
+	// Set the headers to all zero
+	bzero(heap, numb_slots * 2 * sizeof(int));
+	fwrite(heap, sizeof(int)*2, numb_slots, file);
+
+	// Reset the file position to the beginning of the file
+	fseek(file, 0, SEEK_SET);
 
 	heapfile->page_size = page_size;
 	heapfile->file_ptr = file;
-
 }
 
 PageID alloc_page(Heapfile *heapfile){
+	// Read through the header and find an empty spot
+
+
 	// Set the position value to the EOF
 	fseek(heapfile->file_ptr, 0, SEEK_END);
 	long size = ftell(heapfile->file_ptr);

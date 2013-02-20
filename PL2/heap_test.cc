@@ -6,7 +6,8 @@ int main( int argc, const char* argv[] )
 
 	Heapfile *hf = (Heapfile*)malloc(sizeof(Heapfile*));
 	int page_size = 1024;
-	// Truncate  file  to  zero length or create a file for writing
+	// Truncate  file to  zero length or create a file for writing
+	// READ & WRITE
 	FILE *f = fopen("heap_directory", "w+");
 
 	init_heapfile(hf, page_size, f);

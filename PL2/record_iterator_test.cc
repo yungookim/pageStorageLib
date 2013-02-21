@@ -32,8 +32,8 @@ int main( int argc, const char* argv[] )
 	  }
 	  printf("\n");
 
-	  printf("curPID %d\n", iterator->curPID);
-	  printf("cur %d\n", iterator->cur);
+	  // printf("curPID %d\n", iterator->curPID);
+	  // printf("cur %d\n", iterator->cur);
 	  
 	  iterate_record(iterator);
   }

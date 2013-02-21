@@ -331,8 +331,6 @@ void iterate_record(RecordIterator *iterator){
 
     Page *page = (Page*)malloc(sizeof(Page));
 
-    printf("iterator->curPID : %d\n", iterator->curPID);
-
     init_fixed_len_page(page, iterator->page_size, iterator->slot_size);
     read_page(iterator->heapfile, iterator->curPID, page);
 

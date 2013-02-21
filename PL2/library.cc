@@ -210,7 +210,6 @@ PageID alloc_page(Heapfile *heapfile){
 
         // Check if there is a free page in this heap directory.
         if (free_space == heapfile->page_size){
-            printf("free page at : %d\n", pageId);
             rewind(heapfile->file_ptr);
             return pageId;
         }
@@ -310,21 +309,6 @@ void init_record_iterator(RecordIterator *iterator, Heapfile *heapfile,
     init_fixed_len_page(page, page_size, slot_size);
     read_page(heapfile, 0, page);
 
-    Record temp;
-    int NUMB_ATTRIBUTE = 100;
-    for(int i = 0; i < NUMB_ATTRIBUTE; i++){
-        V content = "          ";
-        temp.push_back(content);
-    }
-
-    // Check if the next record exists
-    read_fixed_len_page(page, iterator->next, &temp);
-    V empty = "          ";
-    iterator->hasNext = true;
-    if (strncmp(temp.at(0), empty, 10) == 0){
-        iterator->hasNext = false;
-    }
-
     iterator->heapfile = heapfile;
     iterator->curPID = 0;
     iterator->nextPID = 0;
@@ -332,6 +316,11 @@ void init_record_iterator(RecordIterator *iterator, Heapfile *heapfile,
     iterator->next = 1;
     iterator->page_size = page_size;
     iterator->slot_size = slot_size;
+
+    iterator->hasNext = false;
+    if (iterator->nextPID <= getMaxPID(iterator->heapfile, iterator->page_size)){
+        iterator->hasNext = true;
+    }
 }
 
 void iterate_record(RecordIterator *iterator){
@@ -355,29 +344,22 @@ void iterate_record(RecordIterator *iterator){
         read_page(iterator->heapfile, iterator->nextPID, page);
     } 
 
-    // Check if the next record exists
-    Record temp;
-    int NUMB_ATTRIBUTE = 100;
-    for(int i = 0; i < NUMB_ATTRIBUTE; i++){
-        V content = "          ";
-        temp.push_back(content);
+    iterator->hasNext = false;
+    if (iterator->nextPID <= getMaxPID(iterator->heapfile, iterator->page_size)){
+        iterator->hasNext = true;
     }
-
-    // read_fixed_len_page(page, iterator->next, &temp);
-
-    printf("iterator->next %d\n", iterator->next);
-    printf("iterator->nextPID %d\n", iterator->nextPID);
-
-    // V empty = "          ";
-    // iterator->hasNext = true;
-    // if (strncmp(temp.at(0), empty, 10) == 0){
-    //     iterator->hasNext = false;
-    //     printf("NO NEXT");
-    // }
 }
 
-bool checkNext(Page *page, int slot){
-    return false;
+PageID getMaxPID(Heapfile *heapfile, int page_size){
+    int numb_pages_each_heap = (page_size - sizeof(int)) / (2*sizeof(int));
+    
+    fseek(heapfile->file_ptr, 0L, SEEK_END);
+    long heap_size = ftell(heapfile->file_ptr);
+    rewind(heapfile->file_ptr);
+
+    int number_of_pages = heap_size/page_size;
+
+    return number_of_pages-2;  // TODO subtract number of heap files
 }
 
 void read_current_record(RecordIterator *iterator, Record *record){

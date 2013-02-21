@@ -35,7 +35,7 @@ debug : foo.cc library.o read_fixed_len_pages.o
 .PHONY: clean
 
 clean : 
-	rm -rf foo write_fixed_len_pages read_fixed_len_pages heap_test csv2heapfile heapfile2csv
-	rm *.o
-	rm heap_directory
-	rm *.test
+	rm -f foo write_fixed_len_pages read_fixed_len_pages heap_test csv2heapfile heapfile2csv record_iterator_test
+	rm -f *.o
+	rm -f heap_directory
+	rm -f *.test

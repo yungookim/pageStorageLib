@@ -68,10 +68,9 @@ void var_len_read(void *buf, int size, Record *record){
     }
 }
 
-void init_fixed_len_page(Page *page, int page_size, int slot_size){	 
+void init_fixed_len_page(Page *page, int page_size, int slot_size){  
     page->page_size = page_size;
     page->slot_size = slot_size;
-
     page->data = malloc(page_size);
 
     int* header = (int*) page->data;
@@ -88,29 +87,26 @@ void init_fixed_len_page(Page *page, int page_size, int slot_size){
     }
 }
 
-int fixed_len_page_capacity(Page *page){
+int fixed_len_page_capacity (Page *page){
     return floor((page->page_size-sizeof(int)) / (page->slot_size + sizeof(int)));
 }
 
 int fixed_len_page_freeslots(Page *page){
-	int* header = (int *)page->data;
-	int numb_slots = fixed_len_page_capacity(page);
+    int* header = (int *)page->data;
+    int numb_slots = fixed_len_page_capacity(page);
 
-	// Move to end of the header
-	header+=(page->page_size/sizeof(int)) - 1;
-	header--;
+    // Move to end of the header
+    header+=(page->page_size/sizeof(int)) - 1;
+    header--;
 
-	int count = 0;
-	//printf("Header [");
-	for (int i = 0; i < numb_slots; i++){
-    //	printf("%d", *header);
+    int count = 0;
+    for (int i = 0; i < numb_slots; i++){
     if (*header == 0){
         count++;
     }
     header--;
-	}
-	//	printf("]\n");
-	return count;
+    }
+    return count;
 }
 
 int add_fixed_len_page(Page *page, Record *r){
@@ -151,8 +147,9 @@ void write_fixed_len_page(Page *page, int slot, Record *r){
 }
 
 void read_fixed_len_page(Page *page, int slot, Record *r){
-    char* _slot = (char *)page->data;	
+    char* _slot = (char *)page->data;
     _slot += page->slot_size * slot;
+
     fixed_len_read(_slot, page->slot_size, r);
 }
 
@@ -304,4 +301,89 @@ void write_page(Page *page, Heapfile *heapfile, PageID pid){
   int free_space = 0;
   fwrite(&free_space, sizeof(int), 1, heapfile->file_ptr);
   rewind(heapfile->file_ptr);
+}
+
+void init_record_iterator(RecordIterator *iterator, Heapfile *heapfile, 
+    int slot_size, int page_size){ 
+
+    // Read in the first page from the heap
+    Page *page = (Page*)malloc(sizeof(Page));
+    init_fixed_len_page(page, page_size, slot_size);
+    read_page(heapfile, 0, page);
+
+    Record temp;
+    int NUMB_ATTRIBUTE = 100;
+    for(int i = 0; i < NUMB_ATTRIBUTE; i++){
+        V content = "          ";
+        temp.push_back(content);
+    }
+
+    // Check if the next record exists
+    read_fixed_len_page(page, iterator->next, &temp);
+    V empty = "          ";
+    iterator->hasNext = true;
+    if (strncmp(temp.at(0), empty, 10) == 0){
+        iterator->hasNext = false;
+    }
+
+    iterator->heapfile = heapfile;
+    iterator->curPID = 0;
+    iterator->nextPID = 0;
+    iterator->cur = 0;
+    iterator->next = 1;
+    iterator->page_size = page_size;
+    iterator->slot_size = slot_size;
+}
+
+void iterate_record(RecordIterator *iterator){
+    iterator->cur = iterator->next;
+    iterator->curPID = iterator->nextPID;
+
+    iterator->next = iterator->cur + 1;
+
+    Page *page = (Page*)malloc(sizeof(Page));
+
+    printf("iterator->curPID : %d\n", iterator->curPID);
+
+    init_fixed_len_page(page, iterator->page_size, iterator->slot_size);
+    read_page(iterator->heapfile, iterator->curPID, page);
+
+    if (fixed_len_page_capacity(page) <= iterator->next){
+        // GO to the next page
+        iterator->next = 0;
+        iterator->nextPID++;
+        // Move to the next page
+        read_page(iterator->heapfile, iterator->nextPID, page);
+    } 
+
+    // Check if the next record exists
+    Record temp;
+    int NUMB_ATTRIBUTE = 100;
+    for(int i = 0; i < NUMB_ATTRIBUTE; i++){
+        V content = "          ";
+        temp.push_back(content);
+    }
+
+    // read_fixed_len_page(page, iterator->next, &temp);
+
+    printf("iterator->next %d\n", iterator->next);
+    printf("iterator->nextPID %d\n", iterator->nextPID);
+
+    // V empty = "          ";
+    // iterator->hasNext = true;
+    // if (strncmp(temp.at(0), empty, 10) == 0){
+    //     iterator->hasNext = false;
+    //     printf("NO NEXT");
+    // }
+}
+
+bool checkNext(Page *page, int slot){
+
+}
+
+void read_current_record(RecordIterator *iterator, Record *record){
+    Page *page = (Page*)malloc(sizeof(Page));
+    init_fixed_len_page(page, iterator->page_size, iterator->slot_size);
+    read_page(iterator->heapfile, iterator->curPID, page);
+    read_fixed_len_page(page, iterator->cur, record);
 }

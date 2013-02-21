@@ -29,6 +29,17 @@ typedef struct {
 	int slot;
 } RecordID;
 
+typedef struct {
+  Heapfile *heapfile;
+  PageID curPID;  // PID of the current slot
+  PageID nextPID; // PID of the next slot
+  int cur;        // Current slot #
+  int next;       // Next slot #
+  bool hasNext;
+  int page_size;
+  int slot_size;
+} RecordIterator;
+
 /**
  * Compute the number of bytes required to serialize record
  */
@@ -74,7 +85,7 @@ int fixed_len_page_capacity(Page *page);
  * Calculate the free space (number of free slots) in the page
  */
 int fixed_len_page_freeslots(Page *page);
- 
+
 /**
  * Add a record to the page
  * Returns:
@@ -114,3 +125,19 @@ void read_page(Heapfile *heapfile, PageID pid, Page *page);
  * Write a page from memory to disk
  */
 void write_page(Page *page, Heapfile *heapfile, PageID pid);
+
+/**
+ *	Initialize record iterator
+ */
+void init_record_iterator(RecordIterator *iterator, Heapfile *heapfile, 
+	int slot_size, int page_size);
+
+/**
+ *  Move the iterator to the next record
+ */
+void iterate_record(RecordIterator *iterator);
+
+/**
+ *  Read the current record
+ */
+void read_current_record(RecordIterator *iterator, Record *record);

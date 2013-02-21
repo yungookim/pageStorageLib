@@ -5,7 +5,7 @@ int main( int argc, const char* argv[] )
 {
 
 	Heapfile *hf = (Heapfile*)malloc(sizeof(Heapfile*));
-	int page_size = 1024;
+	int page_size = 10000;
 	// Truncate  file to  zero length or create a file for writing
 	// READ & WRITE
 	FILE *f = fopen("heap_directory", "w+");
@@ -56,7 +56,7 @@ int main( int argc, const char* argv[] )
   page1->page_size = page_size;
   page1->slot_size = 1000;
   page1->data = (char*)malloc(sizeof(char)*page_size);
-  read_page(hf, 1, page1);
+  read_page(hf, 0, page1);
 
   int SLOT_SIZE = 1000;
   int NUMB_ATTRIBUTE = 100;
@@ -75,9 +75,9 @@ int main( int argc, const char* argv[] )
     //print out this record in csv form
     for(int i = 0; i < record.size(); i++){
       if(i == record.size() - 1){
-          printf("%s\n", record.at(i));
+          // printf("%s\n", record.at(i));
       } else {
-          printf("%s,", record.at(i));
+          // printf("%s,", record.at(i));
       }
     }
   }

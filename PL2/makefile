@@ -17,6 +17,7 @@ read_fixed_len_pages : read_fixed_len_pages.cc
 
 heap_test : 
 	$(CC) library.o heap_test.cc -o heap_test
+	$(CC) library.o record_iterator_test.cc -o record_iterator_test
 
 debug : foo.cc library.o read_fixed_len_pages.o
 	g++ -g library.cc library.h foo.cc -o foo
@@ -26,7 +27,7 @@ debug : foo.cc library.o read_fixed_len_pages.o
 .PHONY: clean
 
 clean : 
-	rm -rf foo write_fixed_len_pages read_fixed_len_pages heap_test
-	rm *.o
-	rm heap_directory
-	rm *.test
+	rm -f foo write_fixed_len_pages read_fixed_len_pages heap_test 2>/dev/null
+	rm -f *.o
+	rm -f heap_directory
+	rm -f *.test

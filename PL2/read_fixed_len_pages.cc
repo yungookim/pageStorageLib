@@ -32,7 +32,7 @@ int main( int argc, const char* argv[] )
     }
     //initialize a page for above records
     Page* page = (Page *)malloc(sizeof(page));
-    init_fixed_len_page(page, page_size, SLOT_SIZE);
+    init_fixed_len_page(page, page_size*sizeof(char), SLOT_SIZE);
     
     //Open page_file to be read
     FILE *file;
@@ -45,8 +45,8 @@ int main( int argc, const char* argv[] )
 	long init = _t.time * 1000 + _t.millitm;
     int numb_pages = 0;
     while(!feof(file)){
-        bzero(pageBuf, page_size);
-        fread(pageBuf, sizeof(char), page_size, file);
+        bzero(pageBuf, page_size*sizeof(char));
+        fread(pageBuf, sizeof(char), page_size*sizeof(char), file);
         if(feof(file)) break; 
         
         //set page data to page buf

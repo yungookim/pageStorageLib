@@ -16,8 +16,6 @@ int main( int argc, const char* argv[] )
 
 	init_record_iterator(iterator, heapfile, SLOT_SIZE, PAGE_SIZE);
 
-	// printf("hasNext : %s\n", iterator->hasNext ? "True" : "False");
-
 	while(iterator->hasNext){
 
 		Record cur;
@@ -31,10 +29,6 @@ int main( int argc, const char* argv[] )
 	      printf("%s,", cur.at(i));
 	  }
 	  printf("\n");
-
-	  // printf("curPID %d\n", iterator->curPID);
-	  // printf("cur %d\n", iterator->cur);
-	  
 	  iterate_record(iterator);
   }
   

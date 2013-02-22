@@ -357,7 +357,7 @@ PageID getMaxPID(Heapfile *heapfile, int page_size){
 
     int number_of_pages = heap_size/page_size;
 
-    return number_of_pages-2;  // TODO subtract number of heap files
+    return number_of_pages-2; // TODO : This should be -1
 }
 
 void read_current_record(RecordIterator *iterator, Record *record){

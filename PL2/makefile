@@ -42,3 +42,5 @@ clean :
 	rm -f *.o
 	rm -f heap_directory
 	rm -f *.test
+	rm -f _view
+	rm -f view

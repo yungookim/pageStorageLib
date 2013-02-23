@@ -27,8 +27,10 @@ void fixed_len_read(void *buf, int size, Record *record){
     while (i < size) {
         record->at(curVal) = strndup(bufptr+i, strlen(record->at(curVal)));
         i = i + strlen(record->at(curVal));
+        // printf("%s ",record->at(curVal));
         curVal++;
     }
+    // printf("\n");
 }
 
 int var_len_sizeof(Record *record){
@@ -149,8 +151,9 @@ void write_fixed_len_page(Page *page, int slot, Record *r){
 
 void read_fixed_len_page(Page *page, int slot, Record *r){
     char* _slot = (char *)page->data;
-    _slot += page->slot_size * slot;
-
+    _slot += (page->slot_size * slot);
+    // printf("%s  ", page->data);
+    // printf("\n");
     fixed_len_read(_slot, page->slot_size, r);
 }
 
@@ -343,7 +346,7 @@ void iterate_record(RecordIterator *iterator){
     } 
 
     iterator->hasNext = false;
-    if (iterator->nextPID <= getMaxPID(iterator->heapfile, iterator->page_size)){
+    if (iterator->nextPID < getMaxPID(iterator->heapfile, iterator->page_size)){
         iterator->hasNext = true;
     }
 }

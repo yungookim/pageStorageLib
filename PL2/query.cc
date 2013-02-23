@@ -50,17 +50,15 @@ int main( int argc, const char* argv[] )
   init_record_iterator(iterator, heapfile, SLOT_SIZE, page_size);
 
   FILE *T = fopen("view", "w+");
-  char space = ' ';
 
-  while(iterator->hasNext){
-
+  while(true){
     Record cur;
     int NUMB_ATTRIBUTE = 100;
     for(int i = 0; i < NUMB_ATTRIBUTE; i++){
-
         V content = "          ";
         cur.push_back(content);
     }
+
     read_current_record(iterator, &cur);
     // A1 = cur.at(0)
     // WHERE A1 >= start AND A1 <= end
@@ -73,7 +71,11 @@ int main( int argc, const char* argv[] )
       fwrite(&cur.at(1)[4], sizeof(char), 1, T);
       fwrite(&cur.at(1)[5], sizeof(char), 1, T);
     }
-    iterate_record(iterator);
+    if (iterator->hasNext){
+      iterate_record(iterator);  
+    } else {
+      break;
+    }
   }
   // Heap file no longer needed
   fclose(f);

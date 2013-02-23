@@ -54,7 +54,8 @@ int main( int argc, const char* argv[] )
         
         // If page->data is eof, get out of the loop
         if(!*(char *)page->data) break;
-        for (int slot = 0; slot < fixed_len_page_capacity(page); slot++){
+        for (int slot = 0; slot < fixed_len_page_capacity(page) &&
+                *((char *)page->data + page->slot_size*slot); slot++){
             //Read the page into records
             read_fixed_len_page(page, slot, &record);
             numRec++;

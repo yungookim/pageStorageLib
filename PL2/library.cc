@@ -71,7 +71,7 @@ void var_len_read(void *buf, int size, Record *record){
 void init_fixed_len_page(Page *page, int page_size, int slot_size){  
     page->page_size = page_size;
     page->slot_size = slot_size;
-    page->data = malloc(page_size);
+    page->data = calloc(page_size, sizeof(char));
 
     int* header = (int*) page->data;
     // Last record size of the bytes are used for header.

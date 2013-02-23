@@ -13,7 +13,10 @@ int main( int argc, const char* argv[] )
 	char* heapfile = (char*)argv[2];
 	int page_size =  atoi((argv[3]));
 
-	Heapfile *hf = (Heapfile*)malloc(sizeof(Heapfile*));
+        int SLOT_SIZE = 1000;
+        int NUMB_ATTRIBUTE = 100;
+	
+        Heapfile *hf = (Heapfile*)malloc(sizeof(Heapfile*));
 	// Truncate  file to  zero length or create a file for writing
 	// READ & WRITE
 	FILE *f = fopen(heapfile, "w+");
@@ -23,7 +26,7 @@ int main( int argc, const char* argv[] )
 	Page* page = (Page *)malloc(sizeof(Page));
 
 	// Initialize page
-	init_fixed_len_page(page, page_size, 1000);
+	init_fixed_len_page(page, page_size, SLOT_SIZE);
 
 	// Open the csv file
 	std::ifstream data(csv_file);
@@ -58,11 +61,25 @@ int main( int argc, const char* argv[] )
 			} else {
 				printf("Unexpected Page ID Error\n");
 			}
+                        // Initialize new page
+                        init_fixed_len_page(page, page_size, SLOT_SIZE);
 			j = 0;
 			numb_pages++;
 		}
 	}
+        // If there is remaining page now writt yet, write the last page to file
+        if(j != 0) {
+            PageID id = alloc_page(hf);
 
+            if (id != -1){
+                write_page(page, hf, id);
+            } else {
+                printf("Unexpected Page ID Error\n");
+            }
+            numb_pages++;
+        }
+
+        free(page);
 	data.close();
 	fclose(f);
 

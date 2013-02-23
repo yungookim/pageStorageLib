@@ -28,6 +28,9 @@ heap_test :
 query : query.cc
 	$(CC) library.o query.cc -o query
 
+query_test : 
+	make clean && make && ./csv2heapfile random heap_directory 50000 && ./query heap_directory A Z 50000
+
 debug : foo.cc library.o read_fixed_len_pages.o
 	g++ -g library.cc library.h foo.cc -o foo
 	g++ -g library.cc library.h write_fixed_len_pages.cc -o write_fixed_len_pages

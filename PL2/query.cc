@@ -5,7 +5,6 @@ bool checkedAlready(char* str, FILE *f){
   long position = ftell(f);
   int substring_length = 5;
 
-
   char* _subsring = (char*)malloc(sizeof(char) * substring_length);
   int byteRead = fread(_subsring, sizeof(char), substring_length, f);
 
@@ -120,6 +119,5 @@ int main( int argc, const char* argv[] )
 
   fclose(temp);
   fclose(T);
-  
   return 0;
 }

@@ -6,15 +6,15 @@ int main( int argc, const char* argv[] )
 {
 
 	if (argc != 4) {
-		printf( "Must put <csv_file> <heapfile> <page_size>\n");
+		printf( "Must put <csv_file> <index_heap_file> <page_size>\n");
 		return 0;
 	}
 	const char* csv_file = argv[1];
 	char* heapfile = (char*)argv[2];
 	int page_size =  atoi((argv[3]));
 
-  int SLOT_SIZE = 1000;
-  int NUMB_ATTRIBUTE = 100;
+  int SLOT_SIZE = 200;
+  int NUMB_ATTRIBUTE = 2;
 
   Heapfile *hf = (Heapfile*)malloc(sizeof(Heapfile*));
 	// Truncate  file to  zero length or create a file for writing
@@ -45,10 +45,12 @@ int main( int argc, const char* argv[] )
 		std::string cell;
 
 		Record record;
-		while(std::getline(lineStream,cell,',')) {
+		int i = 0;
+		while(std::getline(lineStream,cell,',') && i < 2) {
 			char* attribute = (char *)malloc(sizeof(cell.c_str()));
 			strcpy(attribute, cell.c_str());
 			record.push_back(attribute);
+			i++;
 		}
 
 		write_fixed_len_page(page, j++, &record);

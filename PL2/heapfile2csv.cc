@@ -41,6 +41,7 @@ int main( int argc, const char* argv[] )
     long init = _t.time * 1000 + _t.millitm;
     int pid = 0;
     int numRec = 0;
+    int firstRecord = 1;
     while(true){
         Record record;
         for(int i = 0; i < NUMB_ATTRIBUTE; i++){
@@ -60,9 +61,14 @@ int main( int argc, const char* argv[] )
             read_fixed_len_page(page, slot, &record);
             numRec++;
             //print out this record in csv form
+            if (firstRecord){
+                firstRecord = 0;
+            } else {
+                fprintf(cfile, "\n");
+            }
             for(int i = 0; i < record.size(); i++){
                 if(i == record.size() - 1){
-                    fprintf(cfile, "%s\n", record.at(i));
+                    fprintf(cfile, "%s", record.at(i));
                 } else {
                     fprintf(cfile, "%s,", record.at(i));
                 }
@@ -78,8 +84,8 @@ int main( int argc, const char* argv[] )
 	long done = _t.time * 1000 + _t.millitm;
 	long _time = done-init;
 
-	cout << "NUMBER OF RECORDS WRITTEN: " << numRec << "\n";
-	cout << "NUMBER OF PAGES WRITTEN: " << pid << "\n";
+	cout << "NUMBER OF RECORDS: " << numRec << "\n";
+	cout << "NUMBER OF PAGES: " << pid << "\n";
 	cout << "TIME : " << _time << " milliseconds\n";
 
     return 0;

@@ -1,5 +1,6 @@
 #include "library.h"
 #include <sys/timeb.h>
+using namespace std;
 
 bool checkedAlready(char* str, FILE *f){
   long position = ftell(f);
@@ -23,10 +24,12 @@ bool checkedAlready(char* str, FILE *f){
 
 int main( int argc, const char* argv[] )
 {
-  
-  if (argc != 5){
-    printf( "Must put <heapfile> <start> <end> <page_size>\n" );
+  bool verbose = true;
+  if (argc < 5){
+    printf( "Must put <heapfile> <start> <end> <page_size> <verbose_off(optional)>\n" );
     return 0;
+  } else if (argc == 6){
+    verbose = false;
   }
 
   const char* heapfile_name = argv[1];
@@ -43,6 +46,11 @@ int main( int argc, const char* argv[] )
   Heapfile *heapfile=(Heapfile*)malloc(sizeof(Heapfile*));
   heapfile->page_size=page_size;
   heapfile->file_ptr = f;
+
+  //Record Start Time 
+  struct timeb _t;    
+  ftime(&_t);
+  long init = _t.time * 1000 + _t.millitm;  
 
   // Prepare records
   RecordIterator* iterator = (RecordIterator*)malloc(sizeof(RecordIterator*));
@@ -110,10 +118,11 @@ int main( int argc, const char* argv[] )
     }
     // Write to a temp file
     fwrite(&substring, sizeof(char), substring_length, temp);
-    // fwrite(&count, sizeof(int), 1, temp);
-    printf("%s ", substring);
-    printf("%d\n", count);
-
+    if (verbose){
+      printf("%s ", substring);
+      printf("%d\n", count);
+    }
+    
     fseek(T, cursor_position, SEEK_SET);
     total_read+=substring_length;
     free(substring);
@@ -121,5 +130,12 @@ int main( int argc, const char* argv[] )
 
   fclose(temp);
   fclose(T);
+
+  ftime(&_t);
+  long done = _t.time * 1000 + _t.millitm;
+  long _time = done-init;
+
+  cout << "TIME : " << _time << " milliseconds\n";
+
   return 0;
 }

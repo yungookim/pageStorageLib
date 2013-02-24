@@ -18,10 +18,16 @@ csv2idxfile :
 query_idx_heapfile :
 	$(CC) library.o query_idx_heapfile.cc -o query_idx_heapfile
 
+test_query : 
+	./csv2heapfile random a.test 3000 && ./query a.test A Z 3000 F
+	
+test_idx_query : 
+	./csv2idxfile random b.test 3000 && ./query_idx_heapfile b.test A Z 3000 F
+
 test : 
 	./csv2heapfile random a.test 1008
 	./csv2idxfile random b.test 1008
-	./query_idx_heapfile b.test A Z 1008
+	./query_idx_heapfile b.test A Z 1008 F
 
 query_test : 
 	make clean && make && ./csv2heapfile random heap_directory 50000 && ./query heap_directory A Z 50000

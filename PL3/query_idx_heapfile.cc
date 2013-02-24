@@ -27,7 +27,7 @@ int main( int argc, const char* argv[] )
   
   bool verbose = true;
   if (argc < 5){
-    printf( "Must put <index_heap_file> <start> <end> <page_size> <verbose_off>\n" );
+    printf( "Must put <index_heap_file> <start> <end> <page_size> <verbose_off(optional)>\n" );
     return 0;
   } else if (argc == 6){
     verbose = false;
@@ -63,7 +63,7 @@ int main( int argc, const char* argv[] )
 
   while(true){
     Record cur;
-    int NUMB_ATTRIBUTE = 100;
+    int NUMB_ATTRIBUTE = 2;
     for(int i = 0; i < NUMB_ATTRIBUTE; i++){
         V content = "          ";
         cur.push_back(content);

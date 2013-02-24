@@ -6,6 +6,7 @@ int main( int argc, const char* argv[] )
 {
 
 	if (argc != 4) {
+		// TODO remove page size
 		printf( "Must put <csv_file> <index_heap_file> <page_size>\n");
 		return 0;
 	}
@@ -13,7 +14,7 @@ int main( int argc, const char* argv[] )
 	char* heapfile = (char*)argv[2];
 	int page_size =  atoi((argv[3]));
 
-  int SLOT_SIZE = 200;
+  int SLOT_SIZE = 20;
   int NUMB_ATTRIBUTE = 2;
 
   Heapfile *hf = (Heapfile*)malloc(sizeof(Heapfile*));

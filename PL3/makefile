@@ -1,6 +1,8 @@
 # Makefile
 CC = g++
 
+.PHONY: all clean test test_run
+
 all : library.o csv2heapfile query csv2idxfile query_idx_heapfile
 
 library : library.cc library.h
@@ -25,9 +27,11 @@ test_idx_query :
 	./csv2idxfile random b.test 3000 && ./query_idx_heapfile b.test A Z 3000 F
 
 test : 
-	./csv2heapfile random a.test $(PG)
-	./csv2idxfile random b.test $(PG)
+	./csv2heapfile random_big a.test $(PG) 
+	./csv2idxfile random_big b.test $(PG)
+	./query a.test A Z $(PG) F 
 	./query_idx_heapfile b.test A Z $(PG) F
+	rm -f *.test
 
 test_run :
 	make test PG=1008
@@ -37,6 +41,12 @@ test_run :
 	make test PG=5000
 	make test PG=6000
 	make test PG=7000
+	make test PG=8000
+	make test PG=9000
+	make test PG=10000
+	make test PG=11000
+	make test PG=12000
+	make test PG=13000
 
 query_test : 
 	make clean && make && ./csv2heapfile random heap_directory 50000 && ./query heap_directory A Z 50000

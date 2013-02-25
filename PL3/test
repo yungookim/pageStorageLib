@@ -1,0 +1,11 @@
+make test PG=1008
+make[1]: Entering directory `/deploy/CSC443/PL3'
+./csv2heapfile random_big a.test 1008 
+NUMBER OF RECORDS : 100000
+NUMBER OF PAGES : 100000
+TIME : 250778 milliseconds
+./csv2idxfile random_big b.test 1008
+NUMBER OF RECORDS : 100000
+NUMBER OF PAGES : 2440
+TIME : 572 milliseconds
+./query a.test A Z 1008 F 

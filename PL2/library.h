@@ -142,5 +142,3 @@ void iterate_record(RecordIterator *iterator);
  *  Read the current record
  */
 void read_current_record(RecordIterator *iterator, Record *record);
-
-PageID getMaxPID(Heapfile *heapfile, int page_size);

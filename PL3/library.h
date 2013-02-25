@@ -31,6 +31,7 @@ typedef struct {
 
 typedef struct {
   Heapfile *heapfile;
+  Page *page;
   PageID curPID;  // PID of the current slot
   PageID nextPID; // PID of the next slot
   int cur;        // Current slot #
@@ -141,5 +142,3 @@ void iterate_record(RecordIterator *iterator);
  *  Read the current record
  */
 void read_current_record(RecordIterator *iterator, Record *record);
-
-PageID getMaxPID(Heapfile *heapfile, int page_size);

@@ -306,66 +306,44 @@ void write_page(Page *page, Heapfile *heapfile, PageID pid){
 
 void init_record_iterator(RecordIterator *iterator, Heapfile *heapfile, 
     int slot_size, int page_size){ 
-
     // Read in the first page from the heap
     Page *page = (Page*)malloc(sizeof(Page));
     init_fixed_len_page(page, page_size, slot_size);
     read_page(heapfile, 0, page);
-
+    
     iterator->heapfile = heapfile;
+    iterator->page = page;
     iterator->curPID = 0;
     iterator->nextPID = 0;
     iterator->cur = 0;
-    iterator->next = 1;
+    iterator->next = 0;
     iterator->page_size = page_size;
     iterator->slot_size = slot_size;
-
-    iterator->hasNext = false;
-    if (iterator->nextPID <= getMaxPID(iterator->heapfile, iterator->page_size)){
-        iterator->hasNext = true;
-    }
+    
+    iterator->hasNext = *((char *)page->data);
 }
 
 void iterate_record(RecordIterator *iterator){
     iterator->cur = iterator->next;
     iterator->curPID = iterator->nextPID;
-
+    
     iterator->next = iterator->cur + 1;
 
-    Page *page = (Page*)malloc(sizeof(Page));
+    read_page(iterator->heapfile, iterator->curPID, iterator->page);
 
-    init_fixed_len_page(page, iterator->page_size, iterator->slot_size);
-    read_page(iterator->heapfile, iterator->curPID, page);
-
-    if (fixed_len_page_capacity(page) <= iterator->next){
-        // GO to the next page
+    if (fixed_len_page_capacity(iterator->page) <= iterator->next){
+        // Allocate and go to the next page
         iterator->next = 0;
         iterator->nextPID++;
         // Move to the next page
-        read_page(iterator->heapfile, iterator->nextPID, page);
+        init_fixed_len_page(iterator->page, iterator->page_size, iterator->slot_size);
+        read_page(iterator->heapfile, iterator->nextPID, iterator->page);
     } 
-
-    iterator->hasNext = false;
-    if (iterator->nextPID < getMaxPID(iterator->heapfile, iterator->page_size)){
-        iterator->hasNext = true;
-    }
-}
-
-PageID getMaxPID(Heapfile *heapfile, int page_size){
-    int numb_pages_each_heap = (page_size - sizeof(int)) / (2*sizeof(int));
-    
-    fseek(heapfile->file_ptr, 0L, SEEK_END);
-    long heap_size = ftell(heapfile->file_ptr);
-    rewind(heapfile->file_ptr);
-
-    int number_of_pages = heap_size/page_size;
-
-    return number_of_pages-2; // TODO : This should be -1
+    iterator->hasNext = *((char *)iterator->page->data + iterator->page->slot_size*iterator->next);
+    //printf("Iterate Record: NEXT(pid, rid): (%d, %d) \n", iterator->curPID, iterator->cur);
 }
 
 void read_current_record(RecordIterator *iterator, Record *record){
-    Page *page = (Page*)malloc(sizeof(Page));
-    init_fixed_len_page(page, iterator->page_size, iterator->slot_size);
-    read_page(iterator->heapfile, iterator->curPID, page);
-    read_fixed_len_page(page, iterator->cur, record);
+    read_page(iterator->heapfile, iterator->curPID, iterator->page);
+    read_fixed_len_page(iterator->page, iterator->cur, record);
 }

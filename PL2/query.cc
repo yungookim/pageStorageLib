@@ -40,25 +40,25 @@ int main( int argc, const char* argv[] )
 
   int SLOT_SIZE = 1000;
   FILE *f = fopen(heapfile_name, "r");
-  Heapfile *heapfile=(Heapfile*)malloc(sizeof(Heapfile*));
-  heapfile->page_size=page_size;
+  Heapfile *heapfile = (Heapfile*)malloc(sizeof(Heapfile));
+  heapfile->page_size = page_size;
   heapfile->file_ptr = f;
 
   // Prepare records
-  RecordIterator* iterator = (RecordIterator*)malloc(sizeof(RecordIterator*));
-
+  Record cur;
+  int NUMB_ATTRIBUTE = 100;
+  for(int i = 0; i < NUMB_ATTRIBUTE; i++){
+      V content = "          ";
+      cur.push_back(content);
+  }
+  RecordIterator* iterator = (RecordIterator*)malloc(sizeof(RecordIterator));
   init_record_iterator(iterator, heapfile, SLOT_SIZE, page_size);
 
   FILE *T = fopen("view", "w+");
-
-  while(true){
-    Record cur;
-    int NUMB_ATTRIBUTE = 100;
-    for(int i = 0; i < NUMB_ATTRIBUTE; i++){
-        V content = "          ";
-        cur.push_back(content);
-    }
-
+  int numRec = 0;
+  while(iterator->hasNext){
+    iterate_record(iterator);  
+    
     read_current_record(iterator, &cur);
     // A1 = cur.at(0)
     // WHERE A1 >= start AND A1 <= end
@@ -71,11 +71,8 @@ int main( int argc, const char* argv[] )
       fwrite(&cur.at(1)[4], sizeof(char), 1, T);
       fwrite(&cur.at(1)[5], sizeof(char), 1, T);
     }
-    if (iterator->hasNext){
-      iterate_record(iterator);  
-    } else {
-      break;
-    }
+    
+    numRec++;
   }
   // Heap file no longer needed
   fclose(f);
@@ -121,5 +118,6 @@ int main( int argc, const char* argv[] )
 
   fclose(temp);
   fclose(T);
+  printf("NUMBER OF RECORDS : %d\n", numRec);
   return 0;
 }

@@ -31,6 +31,7 @@ typedef struct {
 
 typedef struct {
   Heapfile *heapfile;
+  Page *page;
   PageID curPID;  // PID of the current slot
   PageID nextPID; // PID of the next slot
   int cur;        // Current slot #

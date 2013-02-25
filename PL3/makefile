@@ -25,9 +25,18 @@ test_idx_query :
 	./csv2idxfile random b.test 3000 && ./query_idx_heapfile b.test A Z 3000 F
 
 test : 
-	./csv2heapfile random a.test 1008
-	./csv2idxfile random b.test 1008
-	./query_idx_heapfile b.test A Z 1008 F
+	./csv2heapfile random a.test $(PG)
+	./csv2idxfile random b.test $(PG)
+	./query_idx_heapfile b.test A Z $(PG) F
+
+test_run :
+	make test PG=1008
+	make test PG=2012
+	make test PG=3000
+	make test PG=4000
+	make test PG=5000
+	make test PG=6000
+	make test PG=7000
 
 query_test : 
 	make clean && make && ./csv2heapfile random heap_directory 50000 && ./query heap_directory A Z 50000

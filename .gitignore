@@ -4,6 +4,10 @@
 *.test
 *.tsv
 
+random_huge
+random_medium
+random_big
+
 # Libraries
 *.lib
 *.a

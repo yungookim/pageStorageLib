@@ -2,26 +2,6 @@
 #include <sys/timeb.h>
 using namespace std;
 
-bool checkedAlready(char* str, FILE *f){
-  long position = ftell(f);
-  int substring_length = 5;
-
-  char* _subsring = (char*)malloc(sizeof(char) * substring_length);
-  int byteRead = fread(_subsring, sizeof(char), substring_length, f);
-
-  while(byteRead > 0){
-    if (strcmp(_subsring, str) == 0){
-      return true;
-    }
-
-    free(_subsring);
-    _subsring = (char*)malloc(sizeof(char) * substring_length);
-    byteRead = fread(_subsring, sizeof(char), substring_length, f);
-  }
-  return false;
-}
-
-
 int main( int argc, const char* argv[] )
 {
   bool verbose = true;
@@ -54,78 +34,60 @@ int main( int argc, const char* argv[] )
 
   // Prepare records
   RecordIterator* iterator = (RecordIterator*)malloc(sizeof(RecordIterator));
-    Record cur;
-    int NUMB_ATTRIBUTE = 100;
-    for(int i = 0; i < NUMB_ATTRIBUTE; i++){
-      V content = "          ";
-      cur.push_back(content);
-    }
+  Record cur;
+  Record view;
+  int NUMB_ATTRIBUTE = 100;
+  for(int i = 0; i < NUMB_ATTRIBUTE; i++){
+    V content = "          ";
+    cur.push_back(content);
+  }
 
   init_record_iterator(iterator, heapfile, SLOT_SIZE, page_size);
 
-  FILE *T = fopen("view", "w+");
   int numRec = 0;
   while(iterator->hasNext){
-    iterate_record(iterator);  
+    iterate_record(iterator); 
     read_current_record(iterator, &cur);
     // A1 = cur.at(0)
     // WHERE A1 >= start AND A1 <= end
     if (cur.at(0)[0] >= start[0] && cur.at(0)[0] <= end[0]){
       // A2 = cur.at(1)
-      // Save queried to the view file
-      fwrite(&cur.at(1)[1], sizeof(char), 1, T);
-      fwrite(&cur.at(1)[2], sizeof(char), 1, T);
-      fwrite(&cur.at(1)[3], sizeof(char), 1, T);
-      fwrite(&cur.at(1)[4], sizeof(char), 1, T);
-      fwrite(&cur.at(1)[5], sizeof(char), 1, T);
+      char* tmp = (char*)malloc(sizeof(char) * 5);
+      memcpy(tmp, &cur.at(1)[1], 5);
+      view.push_back(tmp);
     }
     numRec++;
   }
   // Heap file no longer needed
   fclose(f);
-  
-  // // Start Grouping and store the occurance
-  // int substring_length = 5;
 
-  // long T_length = ftell(T);
+  // Start Grouping and store the occurance
+  int substring_length = 5;
 
-  // rewind(T);
-  
-  // FILE *temp = fopen("_view", "w+");
+  Record checked;
+  bool isChecked = false;
+  for (int i = 0; i < view.size(); i++){
+    int counter = 0;
+    isChecked = false;
+    for (int j = 0; j < checked.size(); j++){
+      if (strcmp(checked.at(j),view.at(i)) == 0){
+        isChecked = true;
+      }
+    }
 
-  // int total_read = 0;
-  // while (total_read < T_length){
-  //   char* substring = (char*)malloc(sizeof(char) * substring_length);
-  //   fread(substring, sizeof(char), substring_length, T);
-  //   long cursor_position = ftell(T);
-  //   // Let us count the number of occurance!
-  //   rewind(T);
-  //   int total_read_1 = 0;
-  //   int count = 0;
-  //   while (total_read_1 < T_length){
-  //     char* _subsring = (char*)malloc(sizeof(char) * substring_length);
-  //     fread(_subsring, sizeof(char), substring_length, T);
-  //     int comp = strcmp(substring, _subsring);
-  //     if (comp == 0 && !checkedAlready(substring, temp)){
-  //       count++;
-  //     }
-  //     total_read_1 += substring_length;
-  //     free(_subsring);
-  //   }
-  //   // Write to a temp file
-  //   fwrite(&substring, sizeof(char), substring_length, temp);
-  //   if (verbose){
-  //     printf("%s ", substring);
-  //     printf("%d\n", count);
-  //   }
-    
-  //   fseek(T, cursor_position, SEEK_SET);
-  //   total_read+=substring_length;
-  //   free(substring);
-  // }
-
-  // fclose(temp);
-  fclose(T);
+    if (!isChecked){
+      for (int k = 0; k < view.size(); k++){
+        if (strcmp(view.at(i), view.at(k)) == 0){
+          counter++;
+        }
+      }
+      checked.push_back(view.at(i));
+      if (verbose) {
+        printf("%s ", view.at(i));
+        printf("%d\n", counter);  
+      }  
+    }
+  }
 
   ftime(&_t);
   long done = _t.time * 1000 + _t.millitm;

@@ -2,26 +2,6 @@
 #include <sys/timeb.h>
 using namespace std;
 
-bool checkedAlready(char* str, FILE *f){
-  long position = ftell(f);
-  int substring_length = 5;
-
-  char* _subsring = (char*)malloc(sizeof(char) * substring_length);
-  int byteRead = fread(_subsring, sizeof(char), substring_length, f);
-
-  while(byteRead > 0){
-    if (strcmp(_subsring, str) == 0){
-      return true;
-    }
-
-    free(_subsring);
-    _subsring = (char*)malloc(sizeof(char) * substring_length);
-    byteRead = fread(_subsring, sizeof(char), substring_length, f);
-  }
-  return false;
-}
-
-
 int main( int argc, const char* argv[] )
 {
   
@@ -85,61 +65,30 @@ int main( int argc, const char* argv[] )
   // Start Grouping and store the occurance
   int substring_length = 5;
 
+  Record checked;
+  bool isChecked = false;
   for (int i = 0; i < view.size(); i++){
     int counter = 0;
-    for (int k = 0; k < view.size(); k++){
-      if (strcmp(view.at(i), view.at(k)) == 0){
-        counter++;
+    isChecked = false;
+    for (int j = 0; j < checked.size(); j++){
+      if (strcmp(checked.at(j),view.at(i)) == 0){
+        isChecked = true;
       }
     }
-    // if (verbose) {
-      printf("%s ", view.at(i));
-      printf("%d\n", counter);  
-    // }  
+
+    if (!isChecked){
+      for (int k = 0; k < view.size(); k++){
+        if (strcmp(view.at(i), view.at(k)) == 0){
+          counter++;
+        }
+      }
+      checked.push_back(view.at(i));
+      if (verbose) {
+        printf("%s ", view.at(i));
+        printf("%d\n", counter);  
+      }  
+    }
   }
-
-
-  // long T_length = ftell(T);
-
-  // rewind(T);
-  
-  // FILE *temp = fopen("_view", "w+");
-
-  // int total_read = 0;
-  // while (total_read < T_length){
-  //   char* substring = (char*)malloc(sizeof(char) * substring_length);
-  //   fread(substring, sizeof(char), substring_length, T);
-  //   long cursor_position = ftell(T);
-  //   // Let us count the number of occurance!
-  //   rewind(T);
-  //   int total_read_1 = 0;
-  //   int count = 0;
-  //   while (total_read_1 < T_length){
-  //     char* _subsring = (char*)malloc(sizeof(char) * substring_length);
-  //     fread(_subsring, sizeof(char), substring_length, T);
-  //     int comp = strcmp(substring, _subsring);
-  //     if (comp == 0 && !checkedAlready(substring, temp)){
-  //       count++;
-  //     }
-  //     total_read_1 += substring_length;
-  //     free(_subsring);
-  //   }
-  //   // Write to a temp file
-  //   fwrite(&substring, sizeof(char), substring_length, temp);
-    
-  //   if (verbose) {
-  //     printf("%s ", substring);
-  //     printf("%d\n", count);  
-  //   }
-
-  //   fseek(T, cursor_position, SEEK_SET);
-  //   total_read+=substring_length;
-  //   free(substring);
-  // }
-
-  // fclose(temp);
-  // fclose(T);
-
 
   ftime(&_t);
   long done = _t.time * 1000 + _t.millitm;

@@ -73,8 +73,7 @@ int main( int argc, const char* argv[] )
     // WHERE A1 >= start AND A1 <= end
     if (cur.at(0)[0] >= start[0] && cur.at(0)[0] <= end[0]){
       // A2 = cur.at(1)
-      // Save queried to the view file
-      char tmp[5];
+      char* tmp = (char*)malloc(sizeof(char) * 5);
       memcpy(tmp, &cur.at(1)[1], 5);
       view.push_back(tmp);
     }
@@ -86,7 +85,18 @@ int main( int argc, const char* argv[] )
   // Start Grouping and store the occurance
   int substring_length = 5;
 
-  
+  for (int i = 0; i < view.size(); i++){
+    int counter = 0;
+    for (int k = 0; k < view.size(); k++){
+      if (strcmp(view.at(i), view.at(k)) == 0){
+        counter++;
+      }
+    }
+    // if (verbose) {
+      printf("%s ", view.at(i));
+      printf("%d\n", counter);  
+    // }  
+  }
 
 
   // long T_length = ftell(T);

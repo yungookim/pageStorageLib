@@ -1,5 +1,4 @@
 #include "library.h"
-
 using namespace std;
 
 int fixed_len_sizeof(Record *record){

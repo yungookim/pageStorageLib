@@ -87,8 +87,8 @@ int main( int argc, const char* argv[] )
 	long done = _t.time * 1000 + _t.millitm;
 	long _time = done-init;
 
-	cout << "NUMBER OF RECORDS : " << numRec << "\n";
-	cout << "NUMBER OF PAGES : " << numb_pages << "\n";
-	cout << "TIME : " << _time << " milliseconds\n";
+	// cout << "NUMBER OF RECORDS : " << numRec << "\n";
+	// cout << "NUMBER OF PAGES : " << numb_pages << "\n";
+	// cout << "TIME : " << _time << " milliseconds\n";
 	return 0;
 }

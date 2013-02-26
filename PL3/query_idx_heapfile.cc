@@ -56,6 +56,7 @@ int main( int argc, const char* argv[] )
 
   // Prepare records
   Record cur;
+  Record view;
   int NUMB_ATTRIBUTE = 2;
   for(int i = 0; i < NUMB_ATTRIBUTE; i++){
       V content = "          ";
@@ -64,21 +65,18 @@ int main( int argc, const char* argv[] )
   RecordIterator* iterator = (RecordIterator*)malloc(sizeof(RecordIterator));
   init_record_iterator(iterator, heapfile, SLOT_SIZE, page_size);
 
-  FILE *T = fopen("view", "w+");
   int numRec = 0;
   while(iterator->hasNext){
     iterate_record(iterator); 
     read_current_record(iterator, &cur);
     // A1 = cur.at(0)
     // WHERE A1 >= start AND A1 <= end
-    if (cur.at(0)[0] >= start[0] && cur.at(0)[9] <= end[0]){
+    if (cur.at(0)[0] >= start[0] && cur.at(0)[0] <= end[0]){
       // A2 = cur.at(1)
       // Save queried to the view file
-      fwrite(&cur.at(1)[1], sizeof(char), 1, T);
-      fwrite(&cur.at(1)[2], sizeof(char), 1, T);
-      fwrite(&cur.at(1)[3], sizeof(char), 1, T);
-      fwrite(&cur.at(1)[4], sizeof(char), 1, T);
-      fwrite(&cur.at(1)[5], sizeof(char), 1, T);
+      char tmp[5];
+      memcpy(tmp, &cur.at(1)[1], 5);
+      view.push_back(tmp);
     }
     numRec++;
   }
@@ -88,46 +86,49 @@ int main( int argc, const char* argv[] )
   // Start Grouping and store the occurance
   int substring_length = 5;
 
-  long T_length = ftell(T);
-
-  rewind(T);
   
-  FILE *temp = fopen("_view", "w+");
 
-  int total_read = 0;
-  while (total_read < T_length){
-    char* substring = (char*)malloc(sizeof(char) * substring_length);
-    fread(substring, sizeof(char), substring_length, T);
-    long cursor_position = ftell(T);
-    // Let us count the number of occurance!
-    rewind(T);
-    int total_read_1 = 0;
-    int count = 0;
-    while (total_read_1 < T_length){
-      char* _subsring = (char*)malloc(sizeof(char) * substring_length);
-      fread(_subsring, sizeof(char), substring_length, T);
-      int comp = strcmp(substring, _subsring);
-      if (comp == 0 && !checkedAlready(substring, temp)){
-        count++;
-      }
-      total_read_1 += substring_length;
-      free(_subsring);
-    }
-    // Write to a temp file
-    fwrite(&substring, sizeof(char), substring_length, temp);
+
+  // long T_length = ftell(T);
+
+  // rewind(T);
+  
+  // FILE *temp = fopen("_view", "w+");
+
+  // int total_read = 0;
+  // while (total_read < T_length){
+  //   char* substring = (char*)malloc(sizeof(char) * substring_length);
+  //   fread(substring, sizeof(char), substring_length, T);
+  //   long cursor_position = ftell(T);
+  //   // Let us count the number of occurance!
+  //   rewind(T);
+  //   int total_read_1 = 0;
+  //   int count = 0;
+  //   while (total_read_1 < T_length){
+  //     char* _subsring = (char*)malloc(sizeof(char) * substring_length);
+  //     fread(_subsring, sizeof(char), substring_length, T);
+  //     int comp = strcmp(substring, _subsring);
+  //     if (comp == 0 && !checkedAlready(substring, temp)){
+  //       count++;
+  //     }
+  //     total_read_1 += substring_length;
+  //     free(_subsring);
+  //   }
+  //   // Write to a temp file
+  //   fwrite(&substring, sizeof(char), substring_length, temp);
     
-    if (verbose) {
-      printf("%s ", substring);
-      printf("%d\n", count);  
-    }
+  //   if (verbose) {
+  //     printf("%s ", substring);
+  //     printf("%d\n", count);  
+  //   }
 
-    fseek(T, cursor_position, SEEK_SET);
-    total_read+=substring_length;
-    free(substring);
-  }
+  //   fseek(T, cursor_position, SEEK_SET);
+  //   total_read+=substring_length;
+  //   free(substring);
+  // }
 
-  fclose(temp);
-  fclose(T);
+  // fclose(temp);
+  // fclose(T);
 
 
   ftime(&_t);

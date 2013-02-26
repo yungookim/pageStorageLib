@@ -1,0 +1,275 @@
+A to B
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 4301 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 2925 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to C
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 4011 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 2915 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to D
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 4032 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 2937 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to E
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 7320 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 3097 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to F
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 4525 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 3202 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to G
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 4236 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 3209 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to H
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 4188 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 3255 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to I
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 4248 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 3151 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to J
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 4177 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 2999 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to K
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 4154 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 2931 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to L
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 4180 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 2897 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to M
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 4059 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 3118 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to N
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 4207 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 3505 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to O
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 4412 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 3119 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to P
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 4308 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 3025 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to Q
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 4642 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 2912 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to R
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 4223 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 2920 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to S
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 4079 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 2951 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to T
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 4266 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 2980 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to U
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 4223 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 3011 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to V
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 4107 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 3082 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to W
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 4246 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 3072 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to X
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 4204 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 2977 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to Y
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 4268 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 3063 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to Z
+make[1]: Entering directory `/deploy/CSC443/PL3'
+Query
+NUMBER OF RECORDS : 100000
+TIME : 4314 milliseconds
+=============================
+Idx query
+NUMBER OF RECORDS : 100000
+TIME : 3112 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'

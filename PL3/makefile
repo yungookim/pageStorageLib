@@ -39,7 +39,7 @@ bench :
 	@rm -f _view view
 	@echo "============================="
 	@echo "Idx query"
-	@./query_idx_heapfile b.test A Z $(PG) F
+	@./query_idx_heapfile b.test A $(END) $(PG) F
 	@rm -f _view view
 	@echo "============================="
 
@@ -60,8 +60,8 @@ test_run :
 
 
 bench_mark :
-	@./csv2heapfile random_huge a.test 131072
-	@./csv2idxfile random_huge b.test 131072
+	@./csv2heapfile random_med a.test 131072
+	@./csv2idxfile random_med b.test 131072
 	@echo "A to B"
 	@make bench PG=131072 END=B
 	@echo "A to C"

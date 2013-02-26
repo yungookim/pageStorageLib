@@ -46,6 +46,7 @@ int main( int argc, const char* argv[] )
   init_record_iterator(iterator, heapfile, SLOT_SIZE, page_size);
 
   int numRec = 0;
+  int numRecS = 0;
   while(iterator->hasNext){
     iterate_record(iterator); 
     read_current_record(iterator, &cur);
@@ -63,8 +64,24 @@ int main( int argc, const char* argv[] )
   fclose(f);
 
   // Start Grouping and store the occurance
-  int substring_length = 5;
-
+  for ( int i = 0; i< view.size(); i++){
+      int counter = 1;
+      int k = i + 1;
+      while (k < view.size()){
+          if (strcmp(view.at(i), view.at(k)) == 0){
+                counter++;
+                view.erase(view.begin() + k); 
+            } else {
+                k++;
+            }
+        }
+      numRecS++;
+      if (verbose) {
+          printf("%s ", view.at(i));
+          printf("%d\n", counter);
+        }
+  }
+/*
   Record checked;
   bool isChecked = false;
   for (int i = 0; i < view.size(); i++){
@@ -89,12 +106,13 @@ int main( int argc, const char* argv[] )
       }  
     }
   }
-
+*/
   ftime(&_t);
   long done = _t.time * 1000 + _t.millitm;
   long _time = done-init;
 
   printf("NUMBER OF RECORDS : %d\n", numRec);
+  printf("NUMBER OF RECORDS SELECTED: %d\n", numRecS);
   cout << "TIME : " << _time << " milliseconds\n";
 
   return 0;

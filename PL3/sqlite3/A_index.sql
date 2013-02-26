@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS T;
 DROP INDEX IF EXISTS idx_A;
-PRAGMA page_size = 1008;
+-- PRAGMA page_size = 1008;
 
 CREATE TABLE T
 (

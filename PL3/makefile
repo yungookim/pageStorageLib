@@ -34,13 +34,9 @@ test :
 	rm -f *.test
 
 bench : 
-	@echo "Query"
-	@./query a.test A $(END) $(PG) F 
-	@rm -f _view view
+	./query a.test A $(END) $(PG) F 
 	@echo "============================="
-	@echo "Idx query"
-	@./query_idx_heapfile b.test A Z $(PG) F
-	@rm -f _view view
+	./query_idx_heapfile b.test A $(END) $(PG) F
 	@echo "============================="
 
 test_run :
@@ -60,8 +56,8 @@ test_run :
 
 
 bench_mark :
-	@./csv2heapfile random_huge a.test 131072
-	@./csv2idxfile random_huge b.test 131072
+	@./csv2heapfile random_100000 a.test 131072
+	@./csv2idxfile random_100000 b.test 131072
 	@echo "A to B"
 	@make bench PG=131072 END=B
 	@echo "A to C"

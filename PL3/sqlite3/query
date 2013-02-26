@@ -1,5 +1,5 @@
 .mode csv
-.import ../random_big T
+.import ../random T
 .output tmp
 
 SELECT substr(A2, 1, 5), COUNT(*) FROM T

@@ -1,0 +1,97 @@
+A to B
+make[1]: Entering directory `/deploy/CSC443/PL3'
+./query a.test A B 131072 F 
+NUMBER OF RECORDS : 100000
+TIME : 7540 milliseconds
+=============================
+./query_idx_heapfile b.test A B 131072 F
+NUMBER OF RECORDS : 100000
+TIME : 6273 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to C
+make[1]: Entering directory `/deploy/CSC443/PL3'
+./query a.test A C 131072 F 
+NUMBER OF RECORDS : 100000
+TIME : 12235 milliseconds
+=============================
+./query_idx_heapfile b.test A C 131072 F
+NUMBER OF RECORDS : 100000
+TIME : 10358 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to D
+make[1]: Entering directory `/deploy/CSC443/PL3'
+./query a.test A D 131072 F 
+NUMBER OF RECORDS : 100000
+TIME : 19073 milliseconds
+=============================
+./query_idx_heapfile b.test A D 131072 F
+NUMBER OF RECORDS : 100000
+TIME : 16587 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to E
+make[1]: Entering directory `/deploy/CSC443/PL3'
+./query a.test A E 131072 F 
+NUMBER OF RECORDS : 100000
+TIME : 30238 milliseconds
+=============================
+./query_idx_heapfile b.test A E 131072 F
+NUMBER OF RECORDS : 100000
+TIME : 31785 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to F
+make[1]: Entering directory `/deploy/CSC443/PL3'
+./query a.test A F 131072 F 
+NUMBER OF RECORDS : 100000
+TIME : 46698 milliseconds
+=============================
+./query_idx_heapfile b.test A F 131072 F
+NUMBER OF RECORDS : 100000
+TIME : 51175 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to G
+make[1]: Entering directory `/deploy/CSC443/PL3'
+./query a.test A G 131072 F 
+NUMBER OF RECORDS : 100000
+TIME : 68069 milliseconds
+=============================
+./query_idx_heapfile b.test A G 131072 F
+NUMBER OF RECORDS : 100000
+TIME : 67591 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to H
+make[1]: Entering directory `/deploy/CSC443/PL3'
+./query a.test A H 131072 F 
+NUMBER OF RECORDS : 100000
+TIME : 97336 milliseconds
+=============================
+./query_idx_heapfile b.test A H 131072 F
+NUMBER OF RECORDS : 100000
+TIME : 86401 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to I
+make[1]: Entering directory `/deploy/CSC443/PL3'
+./query a.test A I 131072 F 
+NUMBER OF RECORDS : 100000
+TIME : 133927 milliseconds
+=============================
+./query_idx_heapfile b.test A I 131072 F
+NUMBER OF RECORDS : 100000
+TIME : 104672 milliseconds
+=============================
+make[1]: Leaving directory `/deploy/CSC443/PL3'
+A to J
+make[1]: Entering directory `/deploy/CSC443/PL3'
+./query a.test A J 131072 F 
+NUMBER OF RECORDS : 100000
+TIME : 177415 milliseconds
+=============================
+./query_idx_heapfile b.test A J 131072 F
+NUMBER OF RECORDS : 100000
+TIME : 123334 milliseconds

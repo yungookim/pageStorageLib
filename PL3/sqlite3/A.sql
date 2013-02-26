@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS T;
-PRAGMA page_size = 1008;
+-- PRAGMA page_size = 1008;
 
 CREATE TABLE T
 (

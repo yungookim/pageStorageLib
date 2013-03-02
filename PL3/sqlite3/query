@@ -3,5 +3,5 @@
 .output tmp
 
 SELECT substr(A2, 1, 5), COUNT(*) FROM T
-WHERE A1 >= "A" AND A1 <= "Z"
+WHERE A1 >= "A" AND A1 <= "O"
 GROUP BY substr(A2, 1, 5);

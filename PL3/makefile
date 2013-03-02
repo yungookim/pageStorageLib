@@ -29,9 +29,9 @@ test_idx_query :
 test : 
 	./csv2heapfile random a.test $(PG) 
 	./csv2idxfile random b.test $(PG)
-	./query a.test A Z $(PG) F 
-	./query_idx_heapfile b.test A Z $(PG) F
-	rm -f *.test
+	./query a.test A Z $(PG)  
+	./query_idx_heapfile b.test A Z $(PG)
+	@rm -f *.test
 
 bench : 
 	./query a.test A $(END) $(PG) F 
@@ -54,10 +54,9 @@ test_run :
 	make test PG=12000
 	make test PG=13000
 
-
 bench_mark :
-	@./csv2heapfile random_100000 a.test 131072
-	@./csv2idxfile random_100000 b.test 131072
+	@./csv2heapfile random a.test 131072
+	@./csv2idxfile random b.test 131072
 	@echo "A to B"
 	@make bench PG=131072 END=B
 	@echo "A to C"

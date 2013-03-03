@@ -39,11 +39,17 @@ int main(int argc, const char* argv[]) {
 		strcpy(attribute, cell.c_str());
 
 		key = attribute;
-		// The value contains the key as well as described in the instruction
-		value = line;
+		
+		std::getline(lineStream,cell,',');
+		char* attribute2 = (char *)malloc(sizeof(cell.c_str()));
+		strcpy(attribute2, cell.c_str());		
+		value = attribute2;
 
-		db->Put(woptions, key, line);
+		// cout << value.ToString() << "\n";
+
+		db->Put(woptions, key, value);
 		free(attribute);
+		free(attribute2);
 	}
 
 	delete db;

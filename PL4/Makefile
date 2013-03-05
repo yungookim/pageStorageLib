@@ -23,7 +23,7 @@ query_idx_leveldb: query_idx_leveldb.cc
 	$(CC) -o $@ $< $(OPTS)
 
 clean:
-	rm -rf read write query_leveldb csv2leveldb leveldb_dir query_idx_leveldb csv2idx_leveldb
+	rm -rf a read write query_leveldb csv2leveldb leveldb_dir query_idx_leveldb csv2idx_leveldb
 
 test: all
 	./write

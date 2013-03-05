@@ -4,7 +4,10 @@
 #include <fstream>
 #include <sstream>
 #include "leveldb/db.h"
+#include <vector>
 using namespace std;
+
+typedef std::vector<string> Record;
 
 int main(int argc, const char* argv[]) {
 	if (argc != 4) {
@@ -31,15 +34,38 @@ int main(int argc, const char* argv[]) {
 	leveldb::Slice end(end_arg, sizeof(end_arg));
 
 	leveldb::Iterator* it = db->NewIterator(leveldb::ReadOptions());
+
+	// Initialize Record
+	Record records;
+
 	for (it->Seek(start); it->Valid() && it->key().ToString().compare(end.ToString()) <= -1; it->Next()) {
-		leveldb::Slice key = it->key();
+		// leveldb::Slice key = it->key();
 		leveldb::Slice value = it->value();
 
-		std::string key_str = key.ToString();
-		std::string val_str = value.ToString();
-		cout << key_str << " : "  << val_str << endl;
-		// cout << key_str << "\n";
+		// std::string key_str = key.ToString();
+		// std::string val_str = value.ToString();
+		// cout << key_str << " : "  << val_str << endl;
+		// // cout << key_str << "\n";
+
+		std:string val = value.ToString().substr(1, 5);
+		records.push_back(val);
 	}
 	assert(it->status().ok());  // Check for any errors found during the scan
+
+	for (int i = 0; i < records.size(); i++){
+		int counter = 1;
+		int k = i + 1;
+		while (k < records.size()){
+			if (records.at(i).compare(records.at(k)) == 0){
+				counter++;
+				records.erase(records.begin() + k);
+			} else {
+				k++;
+			}
+		}
+
+		cout << records.at(i) << " " << counter << "\n";
+	}
+
 	delete it;
 }

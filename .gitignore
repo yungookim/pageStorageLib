@@ -4,7 +4,7 @@
 *.test
 *.tsv
 *.db
-leveldb_dir/*
+*.random
 
 # Libraries
 *.lib

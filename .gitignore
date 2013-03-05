@@ -8,7 +8,6 @@ leveldb_dir/*
 
 # Libraries
 *.lib
-*.a
 
 # Shared objects (inc. Windows DLLs)
 *.dll

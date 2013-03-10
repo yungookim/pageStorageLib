@@ -3,18 +3,32 @@
 int main( int argc, const char* argv[] )
 {
 
-	if (argc != 3) {
-		printf( "Must put <input_file> <output_file>\n");
-		return 0;
-	}
-	char* input_file = (char*)argv[1];
-	char* output_file = (char*)argv[2];
+  if (argc != 4) {
+    printf( "Must put <input_file> <output_file> <RUN_LENGTH>\n");
+    return 0;
+  }
+  char* input_file = (char*)argv[1];
+  char* output_file = (char*)argv[2];
+  int RUN_LENGTH = atoi((argv[3]));
 
-	FILE *in_f = fopen(input_file, "r");
-	FILE *out_f = fopen(output_file, "w+");
+  FILE *in_f = fopen(input_file, "r");
+  FILE *out_f = fopen(output_file, "w+");
 
-	mk_runs(in_f, out_f, 11);
+  // Sort run
+  mk_runs(in_f, out_f, RUN_LENGTH);
 
-	fclose(in_f);
-	fclose(out_f);
+  int RECORD_SIZE = 9;
+
+  //out_f is already n-sorted
+  RecordIterator* ri = RunIterator(out_f, 0, RUN_LENGTH, RECORD_SIZE * RUN_LENGTH);
+
+  Next(ri);
+  cout << ri->rec;
+  Next(ri);
+  cout << ri->rec;
+  Next(ri);
+  cout << ri->rec;
+
+  fclose(in_f);
+  fclose(out_f);
 }

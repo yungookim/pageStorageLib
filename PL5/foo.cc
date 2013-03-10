@@ -22,12 +22,10 @@ int main( int argc, const char* argv[] )
   //out_f is already n-sorted
   RecordIterator* ri = RunIterator(out_f, 0, RUN_LENGTH, RECORD_SIZE * RUN_LENGTH);
 
-  Next(ri);
-  cout << ri->rec;
-  Next(ri);
-  cout << ri->rec;
-  Next(ri);
-  cout << ri->rec;
+  while (ri->rec != NULL){
+    Next(ri);
+    cout << ri->rec;
+  }
 
   free(ri);
   fclose(in_f);

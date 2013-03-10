@@ -7,6 +7,7 @@ foo: foo.cc
 	$(CC) -o $@ library.o $<
 
 test_foo: 
+	make clean
 	python mkrandom.py a.random 100
 	make && ./foo a.random a.test 100
 

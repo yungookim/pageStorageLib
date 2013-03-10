@@ -55,12 +55,13 @@ RecordIterator* RunIterator(FILE *fp, long start_pos, long run_length,
   // Q : Should this be start_pos * RECORD_SIZE instead?
   fseek(fp, start_pos, SEEK_SET);
   fread(ri->data, sizeof(char), RECORD_SIZE * run_length, fp);
-  
+
   return ri;
 }
 
 Record Next(RecordIterator* ri){
   if (ri->cur == ri->run_length-1){
+    ri->rec = NULL;
     return NULL;
   }
   

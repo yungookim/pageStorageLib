@@ -29,6 +29,7 @@ int main( int argc, const char* argv[] )
   Next(ri);
   cout << ri->rec;
 
+  free(ri);
   fclose(in_f);
   fclose(out_f);
 }

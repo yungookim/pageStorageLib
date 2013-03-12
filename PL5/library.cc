@@ -14,7 +14,6 @@ void mk_runs(FILE *in_fp, FILE *out_fp, long run_length){
   //Should assert if run_length > number of total records in the file
   int numb_sorted = 0;
 
-  // TODO : This should improve
   Record records[run_length];
   while (numb_sorted < run_length){
 
@@ -135,6 +134,7 @@ void merge_runs(FILE *out_fp, RunIterator* iterators[], int num_iterators,
 
     for (int i = 0; i < num_iterators; i++){
       fprintf(out_fp, "%s", records[i]);
+      free(records[i]);
     }
   }
 }

@@ -56,5 +56,8 @@ int main( int argc, const char* argv[] )
 
   merge_runs(out_f, iterators, k, floor(mem_capacity/k));
 
+  fclose(in_f);
+  fclose(out_f);
+  fclose(tmp_out);
 	return 0;
 }

@@ -11,6 +11,8 @@ typedef char* Record;
 typedef struct {
   FILE *fp;
   int cur;
+  int cur_pos;
+  int buf_size;
   long run_length;
   Record rec;
   void *data;

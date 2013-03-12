@@ -90,25 +90,32 @@ RunIterator* getMinimum(RunIterator* iterators[], int num_iterators){
   return min;
 }
 
+bool isDone(RunIterator* iterators[], int num_iterators){
+  for (int i = 0; i < num_iterators; i++){
+    if (iterators[i]->rec != NULL){
+      return false;
+    }
+  }
+  return true;
+}
+
 void merge_runs(FILE *out_fp, RunIterator* iterators[], int num_iterators, 
   long buf_size){
 
   Record records[num_iterators];
-  RunIterator* temp;
-  int k = 0;
-  for (int i = 0; i < 25; i++){
-    // while (iterators[i]->rec != NULL){
-    //   cout << iterators[i]->rec;  
-      // Next(iterators[i]);
-    // }
-    // getMinimum(iterators, num_iterators);
-    // printf("%s", getMinimum(iterators, num_iterators)->rec);
-    // strcpy(records[i], getMinimum(iterators, num_iterators)->rec);
-    records[k] = (Record)malloc(sizeof(Record)*100);
-    strcpy(records[k], getMinimum(iterators, num_iterators)->rec);
-    k++;
-    Next(getMinimum(iterators, num_iterators));
+
+  while(!isDone(iterators, num_iterators)){
+    int k = 0;
+    for (int i = 0; i < num_iterators; i++){
+      Record record = (Record)malloc(9);
+      strcpy(record, getMinimum(iterators, num_iterators)->rec);
+      records[k] = record;
+      k++;
+      Next(getMinimum(iterators, num_iterators));
+    }
+
+    for (int i = 0; i < num_iterators; i++){
+      fprintf(out_fp, "%s", records[i]);
+    }
   }
-
-
 }

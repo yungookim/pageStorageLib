@@ -50,12 +50,12 @@ RunIterator* GetRunIterator(FILE *fp, long start_pos, long run_length,
   RunIterator* ri = (RunIterator*)malloc(sizeof(RunIterator));
   // reduce the buffer size down to the factor of the record size
   ri->buf_size = floor(buf_size/RECORD_SIZE) * RECORD_SIZE;
+  // printf("buf size %ld\n", ri->buf_size);
   ri->data = (void*)malloc(ri->buf_size);
   ri->fp = fp;
   ri->run_length = run_length;
   ri->cur = 0;
   ri->read = 0;
-  ri->rec = (Record)malloc(sizeof(char) * RECORD_SIZE);
 
   // Seek to the start_pos
   // Q : Should this be start_pos * RECORD_SIZE instead?
@@ -82,11 +82,14 @@ Record Next(RunIterator* ri){
   }
 
   char* temp = (char*)ri->data;
-  temp += RECORD_SIZE * (ri->read/RECORD_SIZE);
+  temp += ri->read;
+  // printf("%s\n", temp);
+  free(ri->rec);
+  ri->rec = (Record)calloc(sizeof(char), RECORD_SIZE);
   strncpy(ri->rec, temp, RECORD_SIZE);
   ri->cur++;
   ri->read += RECORD_SIZE;
-  // TODO should read in more data from the disk if buf_size < sizeof(fp)
+  // printf("\n%lu, %s-\n", sizeof(ri->rec), ri->rec);
   return ri->rec;
 }
 

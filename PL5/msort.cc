@@ -11,7 +11,7 @@ int main( int argc, const char* argv[] )
   char* output_file = (char*)argv[2];
   int mem_capacity = atoi((argv[3]));
   int k = atoi((argv[4]));
-  
+
  	int RECORD_SIZE = 9;
   FILE *in_f = fopen(input_file, "r");
   FILE *out_f = fopen(output_file, "w+");
@@ -31,12 +31,13 @@ int main( int argc, const char* argv[] )
   RunIterator* iterators[k];
 
   int offset = 0;
-  iterators[0] = GetRunIterator(tmp_out, offset, k, RECORD_SIZE * k);
+  int buf_sz = RECORD_SIZE * k;
+  iterators[0] = GetRunIterator(tmp_out, offset, k, buf_sz);
   for (int i = 1; i < k; i++){
-  	iterators[i] = GetRunIterator(tmp_out, offset += RECORD_SIZE * k, k, RECORD_SIZE * k);
+  	iterators[i] = GetRunIterator(tmp_out, offset += RECORD_SIZE * k, k, buf_sz);
   }
 
-  merge_runs(out_f, iterators, k, 100);
+  merge_runs(out_f, iterators, k, mem_capacity);
 
 	return 0;
 }

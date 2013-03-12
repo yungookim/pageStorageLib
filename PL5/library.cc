@@ -1,5 +1,6 @@
 #include "library.h"
 #include <math.h>
+#include <assert.h>
 
 int cmpstringp(const void *a, const void *b){
   const char **ia = (const char **)a;
@@ -103,15 +104,18 @@ void merge_runs(FILE *out_fp, RunIterator* iterators[], int num_iterators,
   long buf_size){
 
   Record records[num_iterators];
+  // Enforce the buffer size
+  assert(num_iterators*9 <= buf_size);
 
   while(!isDone(iterators, num_iterators)){
     int k = 0;
     for (int i = 0; i < num_iterators; i++){
       Record record = (Record)malloc(9);
-      strcpy(record, getMinimum(iterators, num_iterators)->rec);
+      RunIterator* tmp = getMinimum(iterators, num_iterators);
+      strcpy(record, tmp->rec);
       records[k] = record;
       k++;
-      Next(getMinimum(iterators, num_iterators));
+      Next(tmp);
     }
 
     for (int i = 0; i < num_iterators; i++){

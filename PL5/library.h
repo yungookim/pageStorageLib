@@ -39,6 +39,8 @@ Record Next(RunIterator* ri);
  * merges the iterators using long buf_size, 
  * and writes the result to FILE *out_fp. 
  * This will create longer runs in FILE *out_fp.
+ * Note : buf_size given here resembles the buf_size
+ * allowed by the sorted buffer not for the entire sorting.
  */
 void merge_runs(FILE *out_fp, RunIterator* iterators[], int num_iterators, 
 	long buf_size);	

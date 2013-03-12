@@ -82,12 +82,11 @@ RunIterator* getMinimum(RunIterator* iterators[], int num_iterators){
   RunIterator* min = NULL;
   for (int i = 0; i < num_iterators; i++){
     if (iterators[i]->rec != NULL){
-      if (min == NULL || strcmp(min->rec, iterators[i]->rec) < 0){
+      if (min == NULL || strcmp(min->rec, iterators[i]->rec) > 0){
         min = iterators[i];
       }
     }
   }
-  Next(min);
   return min;
 }
 
@@ -95,13 +94,21 @@ void merge_runs(FILE *out_fp, RunIterator* iterators[], int num_iterators,
   long buf_size){
 
   Record records[num_iterators];
-
-  for (int i = 0; i < 2; i++){
+  RunIterator* temp;
+  int k = 0;
+  for (int i = 0; i < 25; i++){
     // while (iterators[i]->rec != NULL){
     //   cout << iterators[i]->rec;  
       // Next(iterators[i]);
     // }
-
-    printf("%s", getMinimum(iterators, num_iterators)->rec);
+    // getMinimum(iterators, num_iterators);
+    // printf("%s", getMinimum(iterators, num_iterators)->rec);
+    // strcpy(records[i], getMinimum(iterators, num_iterators)->rec);
+    records[k] = (Record)malloc(sizeof(Record)*100);
+    strcpy(records[k], getMinimum(iterators, num_iterators)->rec);
+    k++;
+    Next(getMinimum(iterators, num_iterators));
   }
+
+
 }

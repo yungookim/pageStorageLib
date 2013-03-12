@@ -52,7 +52,6 @@ int main( int argc, const char* argv[] )
   iterators[3] = GetRunIterator(out, offset += RECORD_SIZE * 5, 5, RECORD_SIZE * 5);
   iterators[4] = GetRunIterator(out, offset += RECORD_SIZE * 5, 5, RECORD_SIZE * 5);
 
-
   FILE *final_out = fopen("final.out", "w+");
   merge_runs(final_out, iterators, 5, 100);
 

@@ -48,19 +48,21 @@ RunIterator* GetRunIterator(FILE *fp, long start_pos, long run_length,
   long buf_size){
 
   RunIterator* ri = (RunIterator*)malloc(sizeof(RunIterator));
-  ri->data = (void*)malloc(buf_size);
+  // reduce the buffer size down to the factor of the record size
+  ri->buf_size = floor(buf_size/RECORD_SIZE) * RECORD_SIZE;
+  ri->data = (void*)malloc(ri->buf_size);
   ri->fp = fp;
   ri->run_length = run_length;
   ri->cur = 0;
+  ri->read = 0;
   ri->rec = (Record)malloc(sizeof(char) * RECORD_SIZE);
-  ri->buf_size = buf_size;
 
   // Seek to the start_pos
   // Q : Should this be start_pos * RECORD_SIZE instead?
   fseek(fp, start_pos, SEEK_SET);
-  fread(ri->data, sizeof(char), run_length * RECORD_SIZE, fp);
-  // Next(ri);
-  // printf("%s\n", ri->rec);
+  fread(ri->data, sizeof(char), ri->buf_size, fp);
+  ri->cur_file_pos = ftell(fp);
+  Next(ri);
   return ri;
 }
 
@@ -68,12 +70,22 @@ Record Next(RunIterator* ri){
   if (ri->cur == ri->run_length){
     ri->rec = NULL;
     return NULL;
-  } 
+  } else if (ri->read == ri->buf_size){
+    // Read in the next batch
+    // printf("CUR BATCH %ld\n", ftell(ri->fp));
+    ri->read = 0;
+    ri->data = (void*)malloc(ri->buf_size);
+    fseek(ri->fp, ri->cur_file_pos, SEEK_SET);
+    fread(ri->data, sizeof(char), ri->buf_size, ri->fp);
+    ri->cur_file_pos = ftell(ri->fp);
+    // printf("NEXT BATCH %ld\n", ftell(ri->fp));
+  }
+
   char* temp = (char*)ri->data;
-  temp += RECORD_SIZE * ri->cur;
+  temp += RECORD_SIZE * (ri->read/RECORD_SIZE);
   strncpy(ri->rec, temp, RECORD_SIZE);
   ri->cur++;
-
+  ri->read += RECORD_SIZE;
   // TODO should read in more data from the disk if buf_size < sizeof(fp)
   return ri->rec;
 }
@@ -105,7 +117,7 @@ void merge_runs(FILE *out_fp, RunIterator* iterators[], int num_iterators,
 
   Record records[num_iterators];
   // Enforce the buffer size
-  // assert(num_iterators*9 <= buf_size);
+  assert(num_iterators*9 <= buf_size);
 
   while(!isDone(iterators, num_iterators)){
     int k = 0;

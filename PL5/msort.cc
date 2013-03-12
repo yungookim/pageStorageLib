@@ -11,8 +11,13 @@ int main( int argc, const char* argv[] )
   char* output_file = (char*)argv[2];
   int mem_capacity = atoi((argv[3]));
   int k = atoi((argv[4]));
-
  	int RECORD_SIZE = 9;
+
+  if (RECORD_SIZE > mem_capacity/k){
+    printf("mem_capacity is too small\n");
+    return 1;
+  }
+
   FILE *in_f = fopen(input_file, "r");
   FILE *out_f = fopen(output_file, "w+");
 
@@ -31,25 +36,25 @@ int main( int argc, const char* argv[] )
 
   int offset = 0;
   int eachRunSize = floor(numb_records/k);
-  int buf_sz = eachRunSize * RECORD_SIZE;
-  
-  // int buf_sz = floor(mem_capacity / k);
+  // int buf_sz = eachRunSize * RECORD_SIZE;
+  int buf_sz = floor(mem_capacity/k);
+
   iterators[0] = GetRunIterator(tmp_out, offset, 
     eachRunSize, buf_sz);
   for (int i = 1; i < k; i++){
     offset += eachRunSize * RECORD_SIZE;
-    // printf("Offset : %d\n", offset);
   	iterators[i] = GetRunIterator(tmp_out, offset, 
       eachRunSize, buf_sz);
   }
 
   // for (int i = 0; i < k; i++){
+  //   printf("%s", iterators[i]->rec);
   //   while (Next(iterators[i]) != NULL){
   //     printf("%s", iterators[i]->rec);
   //   }
   // }
 
-  merge_runs(out_f, iterators, k, mem_capacity);
+  merge_runs(out_f, iterators, k, floor(mem_capacity/k));
 
 	return 0;
 }

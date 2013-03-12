@@ -1,7 +1,22 @@
+make[1]: Entering directory `/deploy/CSC443/PL5'
+rm -f foo library.o foo *.test msort bsort
+make[1]: Leaving directory `/deploy/CSC443/PL5'
+make[1]: Entering directory `/deploy/CSC443/PL5'
+g++    -c -o library.o library.cc
+g++  -o bsort bsort.cc -lpthread ./libleveldb.a -I ./include
+make[1]: Leaving directory `/deploy/CSC443/PL5'
+
+Sort Performance comparisons
+Bench marking...bsort.bench
 fileSize	time
-100000	0:00.35
-200000	0:01.04
-300000	0:01.89
-400000	0:02.37
-500000	0:03.59
-600000	0:03.71
+100000	0:00.53
+200000	0:00.67
+300000	0:01.35
+400000	0:01.86
+500000	0:02.31
+600000	0:02.93
+700000	0:02.31
+800000	0:02.59
+900000	0:03.55
+1000000	0:04.97
+Done

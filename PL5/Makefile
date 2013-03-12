@@ -58,50 +58,101 @@ bench_small_me:
 # 1. using bsort 
 # 2. using msort with somewhat poorly chosen parameters 
 # 3. using msort with a well tuned parameters
-bench_compare_small:
-	@make clean
-	@make library.o msort bsort
+bench_compare_msort_small:
 	@echo ""
 	@echo "Sort Performance comparisons"
-	@echo "Bench marking..."
-	@echo "fileSize\ttime" > bsort.bench
-	@echo "fileSize\tmsort(Poor)\t1024mem and 3-way" > msortPoor.bench
-	@echo "fileSize\tmsort(Good)\5242880mem and 10-way" > msortGood.bench
+	@echo "Bench marking...msort.bench 1024 3"
 	@for X in 100000 200000 300000 400000 500000 600000 700000 800000 900000 1000000; do \
-		echo "Sorting $$X tuples"; \
 		python mkrandom.py a.random $$X; \
-		echo -n "$$X\t" >> bsort.bench; \
-		/usr/bin/time -f "%E" ./bsort a.random a.db 2>> bsort.bench; \
-		echo -n "$$X\t" >> msortPoor.bench; \
-		/usr/bin/time -f "%E" ./msort a.random sorted.out 1024 3 2>> msortPoor.bench; \
-		echo -n "$$X\t" >> msortGood.bench; \
-		/usr/bin/time -f "%E" ./msort a.random sorted.out 5242880 10 2>> msortGood.bench; \
-		# rm -rf a.db a.random sorted.out; \
+		echo -n "$$X\t"; \
+		/usr/bin/time -f "%E" ./msort a.random sorted.out 1024 3 2>&1; \
+		# rm -rf a.random sorted.out; \
 	done
 	@echo "Done"
 
-bench_compare_large:
-	@make clean
-	@make library.o msort bsort
+bench_compare_msort_small_2:
 	@echo ""
 	@echo "Sort Performance comparisons"
-	@echo "Bench marking..."
-	@echo "fileSize\ttime" > bsort.bench
-	@echo "fileSize\tmsort(Poor)\t1024mem and 3-way" > msortPoor.bench
-	@echo "fileSize\tmsort(Good)\5242880mem and 10-way" > msortGood.bench
-	@for X in 1000000 2000000 3000000 4000000 5000000; do \
-		echo "Sorting $$X tuples"; \
+	@echo "Bench marking...msort.bench 1024 5"
+	@for X in 100000 200000 300000 400000 500000 600000 700000 800000 900000 1000000; do \
 		python mkrandom.py a.random $$X; \
-		echo -n "$$X\t" >> bsort.bench; \
-		/usr/bin/time -f "%E" ./bsort a.random a.db 2>> bsort.bench; \
-		echo -n "$$X\t" >> msortPoor.bench; \
-		/usr/bin/time -f "%E" ./msort a.random sorted.out 1024 3 2>> msortPoor.bench; \
-		echo -n "$$X\t" >> msortGood.bench; \
-		/usr/bin/time -f "%E" ./msort a.random sorted.out 5242880 10 2>> msortGood.bench; \
-		# rm -rf a.db a.random sorted.out; \
+		echo -n "$$X\t"; \
+		/usr/bin/time -f "%E" ./msort a.random sorted.out 1024 5 2>&1; \
+		# rm -rf a.random sorted.out; \
 	done
 	@echo "Done"
 
+bench_compare_msort_small_3:
+	@echo ""
+	@echo "Sort Performance comparisons"
+	@echo "Bench marking...msort.bench 1024 5"
+	@for X in 100000 200000 300000 400000 500000 600000 700000 800000 900000 1000000; do \
+		python mkrandom.py a.random $$X; \
+		echo -n "$$X\t"; \
+		/usr/bin/time -f "%E" ./msort a.random sorted.out 10000 5 2>&1; \
+		# rm -rf a.random sorted.out; \
+	done
+	@echo "Done"
+
+bench_bsort_small:
+	@echo ""
+	@echo "Sort Performance comparisons"
+	@echo "Bench marking...bsort.bench"
+	@echo "fileSize\ttime"
+	@for X in 100000 200000 300000 400000 500000 600000 700000 800000 900000 1000000; do \
+		python mkrandom.py a.random $$X; \
+		echo -n "$$X\t";\
+		/usr/bin/time -f "%E" ./bsort a.random a.db 2>&1; \
+		rm -rf a.db; \
+	done
+	@echo "Done"
+
+bench_msort_large:
+	@echo ""
+	@echo "Sort Performance comparisons"
+	@echo "Bench marking...msort.bench 1024 5"
+	@for X in 1000000 2000000 3000000 4000000 5000000 6000000 7000000 8000000 9000000 10000000; do \
+		python mkrandom.py a.random $$X; \
+		echo -n "$$X\t"; \
+		/usr/bin/time -f "%E" ./msort a.random sorted.out 1024 5 2>&1; \
+		# rm -rf a.random sorted.out; \
+	done
+	@echo "Done"
+
+bench_msort_large_2:
+	@echo ""
+	@echo "Sort Performance comparisons"
+	@echo "Bench marking...msort.bench 10000 5"
+	@for X in 1000000 2000000 3000000 4000000 5000000 6000000 7000000 8000000 9000000 10000000; do \
+		python mkrandom.py a.random $$X; \
+		echo -n "$$X\t"; \
+		/usr/bin/time -f "%E" ./msort a.random sorted.out 10000 5 2>&1; \
+		# rm -rf a.random sorted.out; \
+	done
+	@echo "Done"
+
+bench_bsort_large:
+	@echo ""
+	@echo "Sort Performance comparisons"
+	@echo "Bench marking...msort.bench 1024 5"
+	@for X in 1000000 2000000 3000000 4000000 5000000 6000000 7000000 8000000 9000000 10000000; do \
+		python mkrandom.py a.random $$X; \
+		echo -n "$$X\t";\
+		/usr/bin/time -f "%E" ./bsort a.random a.db 2>&1; \
+		rm -rf a.db; \
+	done
+	@echo "Done"
+
+bench_all:
+	@make clean
+	@make library.o msort bsort
+	@make bench_compare_msort_small
+	@make bench_compare_msort_small_2
+	@make bench_compare_msort_small_3
+	@make bench_msort_large
+	@make bench_msort_large_2
+	@make bench_bsort_small
+	@make bench_bsort_large
 
 clean: 
 	rm -f foo library.o foo *.test msort bsort

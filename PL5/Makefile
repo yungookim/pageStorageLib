@@ -1,10 +1,18 @@
 # Makefile
 CC = g++ 
 
-all: library.o foo
+all: library.o foo msort
 	
 foo: foo.cc
 	$(CC) -o $@ library.o $<
+
+msort: msort.cc
+	$(CC) -o $@ library.o $<
+
+test_msort: 
+	make clean
+	make
+	./msort a.random sorted.out 10000 10
 
 test_foo: 
 	make clean
@@ -19,7 +27,8 @@ make_randoms:
 	python mkrandom.py 5.random 5
 
 clean: 
-	rm -f foo library.o foo *.test
+	rm -f foo library.o foo *.test msort
 
-clean_files:
+cleanall:
+	make clean
 	rm -f *.random *.out

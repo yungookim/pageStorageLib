@@ -117,7 +117,7 @@ void merge_runs(FILE *out_fp, RunIterator* iterators[], int num_iterators,
 
   Record records[num_iterators];
   // Enforce the buffer size
-  assert(num_iterators*9 <= buf_size);
+  // assert(num_iterators*9 <= buf_size);
 
   while(!isDone(iterators, num_iterators)){
     int k = 0;

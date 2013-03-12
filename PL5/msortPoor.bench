@@ -1,9 +1,6 @@
 fileSize	msort(Poor)	
-100000	Command terminated by signal 11
-0:00.14
-200000	0:00.07
-300000	Command terminated by signal 11
-0:00.16
-400000	0:00.11
-500000	Command terminated by signal 11
-0:00.22
+100000	0:00.10
+200000	0:00.20
+300000	0:00.25
+400000	0:00.41
+500000	0:00.55

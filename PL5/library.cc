@@ -1,4 +1,5 @@
 #include "library.h"
+#include <math.h>
 
 int cmpstringp(const void *a, const void *b){
   const char **ia = (const char **)a;
@@ -13,6 +14,7 @@ void mk_runs(FILE *in_fp, FILE *out_fp, long run_length){
   //Should assert if run_length > number of total records in the file
   int numb_sorted = 0;
 
+  // TODO : This should improve
   Record records[run_length];
   while (numb_sorted < run_length){
 
@@ -42,11 +44,12 @@ void mk_runs(FILE *in_fp, FILE *out_fp, long run_length){
  * scan through a run that starts at `start_pos`
  * with length `run_length`
  */
-RecordIterator* RunIterator(FILE *fp, long start_pos, long run_length, 
+RunIterator* GetRunIterator(FILE *fp, long start_pos, long run_length, 
   long buf_size){
 
-  RecordIterator* ri = (RecordIterator*)malloc(sizeof(RecordIterator));
+  RunIterator* ri = (RunIterator*)malloc(sizeof(RunIterator));
   ri->data = (void*)malloc(buf_size);
+  ri->fp = fp;
   ri->run_length = run_length;
   ri->cur = 0;
   ri->rec = (Record)malloc(sizeof(char) * RECORD_SIZE);
@@ -54,13 +57,13 @@ RecordIterator* RunIterator(FILE *fp, long start_pos, long run_length,
   // Seek to the start_pos
   // Q : Should this be start_pos * RECORD_SIZE instead?
   fseek(fp, start_pos, SEEK_SET);
-  fread(ri->data, sizeof(char), RECORD_SIZE * run_length, fp);
+  fread(ri->data, sizeof(char), floor(buf_size/RECORD_SIZE) * RECORD_SIZE, fp);
 
   return ri;
 }
 
-Record Next(RecordIterator* ri){
-  if (ri->cur == ri->run_length-1){
+Record Next(RunIterator* ri){
+  if (ri->cur == ri->run_length){
     ri->rec = NULL;
     return NULL;
   }
@@ -69,5 +72,33 @@ Record Next(RecordIterator* ri){
   temp += RECORD_SIZE * ri->cur;
   strncpy(ri->rec, temp, RECORD_SIZE);
   ri->cur++;
+
+  // TODO should read in more data from the disk if buf_size < sizeof(fp)
   return ri->rec;
+}
+
+// Return the miniumn from the given set of iterators
+RunIterator* getMinimum(RunIterator* iterators[], int num_iterators){
+  RunIterator* min = iterators[0];
+  for (int i = 0; i < num_iterators; i++){
+    if (strcmp(min->rec, iterators[i]->rec) < 0){
+      min = iterators[i];
+    }
+  }
+  Next(min);
+  return min;
+}
+
+void merge_runs(FILE *out_fp, RunIterator* iterators[], int num_iterators, 
+  long buf_size){
+
+  Record records[num_iterators];
+
+  for (int i = 0; i < num_iterators * 5; i++){
+    // while (iterators[i]->rec != NULL){
+    //   cout << iterators[i]->rec;  
+    //   Next(iterators[i]);
+    // }
+    printf("%s", getMinimum(iterators, num_iterators)->rec);
+  }
 }

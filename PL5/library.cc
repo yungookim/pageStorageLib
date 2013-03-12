@@ -58,7 +58,7 @@ RunIterator* GetRunIterator(FILE *fp, long start_pos, long run_length,
   // Q : Should this be start_pos * RECORD_SIZE instead?
   fseek(fp, start_pos, SEEK_SET);
   fread(ri->data, sizeof(char), floor(buf_size/RECORD_SIZE) * RECORD_SIZE, fp);
-
+  Next(ri);
   return ri;
 }
 
@@ -79,10 +79,12 @@ Record Next(RunIterator* ri){
 
 // Return the miniumn from the given set of iterators
 RunIterator* getMinimum(RunIterator* iterators[], int num_iterators){
-  RunIterator* min = iterators[0];
+  RunIterator* min = NULL;
   for (int i = 0; i < num_iterators; i++){
-    if (strcmp(min->rec, iterators[i]->rec) < 0){
-      min = iterators[i];
+    if (iterators[i]->rec != NULL){
+      if (min == NULL || strcmp(min->rec, iterators[i]->rec) < 0){
+        min = iterators[i];
+      }
     }
   }
   Next(min);
@@ -94,11 +96,12 @@ void merge_runs(FILE *out_fp, RunIterator* iterators[], int num_iterators,
 
   Record records[num_iterators];
 
-  for (int i = 0; i < num_iterators * 5; i++){
+  for (int i = 0; i < 2; i++){
     // while (iterators[i]->rec != NULL){
     //   cout << iterators[i]->rec;  
-    //   Next(iterators[i]);
+      // Next(iterators[i]);
     // }
+
     printf("%s", getMinimum(iterators, num_iterators)->rec);
   }
 }

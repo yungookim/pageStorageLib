@@ -16,4 +16,4 @@ with open(filename, 'w') as f:
             row.append(''.join([random.choice(letters) for j in range(8)]))
         print >> f, "".join(row)
 
-print "Generated %d random tuples in %s." % (n, filename)
+# print "Generated %d random tuples in %s." % (n, filename)

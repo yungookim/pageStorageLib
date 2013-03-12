@@ -1,7 +1,8 @@
 # Makefile
 CC = g++ 
+OPTS =  -lpthread ./libleveldb.a -I ./include
 
-all: library.o foo msort
+all: library.o foo msort bsort
 	
 foo: foo.cc
 	$(CC) -o $@ library.o $<
@@ -9,11 +10,15 @@ foo: foo.cc
 msort: msort.cc
 	$(CC) -o $@ library.o $<
 
+bsort: bsort.cc
+	$(CC) -o $@ $< $(OPTS)
+
 test_msort: 
 	make clean
 	make
-	python mkrandom.py a.random 100
-	./msort a.random sorted.out 20 10
+	python mkrandom.py a.random 10
+	# <input_file> <out_file> <mem_capacity> <k>
+	./msort a.random sorted.out 30 2
 
 test_foo: 
 	make clean
@@ -30,6 +35,9 @@ make_randoms:
 make_random_10mb:
 	python mkrandom.py a.random 1000000
 
+make_random_1mb:
+	python mkrandom.py a.random 100000
+
 bench_small_me:
 	@make clean
 	@make all
@@ -43,10 +51,38 @@ bench_small_me:
 		time -f "%E" ./msort a.random sorted.out 1024 $$X; \
 	done
 
+# Plot the performances of different ways of sorting against 
+# varying file sizes. Plot the performance of at least three ways 
+# of sorting.
+# 1. using bsort 
+# 2. using msort with somewhat poorly chosen parameters 
+# 3. using msort with a well tuned parameters
+bench_compare:
+	@make clean
+	@make library.o msort bsort
+	@echo ""
+	@echo "Sort Performance comparisons"
+	@echo "Bench marking..."
+	@echo "fileSize\ttime" > bsort.bench
+	@echo "fileSize\tmsort(Poor)\t" > msortPoor.bench
+	@echo "fileSize\tmsort(Good)\t" > msortGood.bench
+	@for X in 100000 200000 300000 400000 500000; do \
+		echo "Sorting $$X tuples"; \
+		python mkrandom.py a.random $$X; \
+		echo -n "$$X\t" >> bsort.bench; \
+		/usr/bin/time -f "%E" ./bsort a.random a.db 2>> bsort.bench; \
+		echo -n "$$X\t" >> msortPoor.bench; \
+		/usr/bin/time -f "%E" ./msort a.random sorted.out 100000 3 2>> msortPoor.bench; \
+		echo -n "$$X\t" >> msortGood.bench; \
+		/usr/bin/time -f "%E" ./msort a.random sorted.out 100000 10 2>> msortGood.bench; \
+		# rm -rf a.db a.random sorted.out; \
+	done
+	@echo "Done"
 
 clean: 
-	rm -f foo library.o foo *.test msort
+	rm -f foo library.o foo *.test msort bsort
 
 cleanall:
 	make clean
-	rm -f *.random *.out
+	rm -rf *.random *.out
+	rm -rf *.db

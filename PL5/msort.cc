@@ -17,26 +17,37 @@ int main( int argc, const char* argv[] )
   FILE *out_f = fopen(output_file, "w+");
 
   fseek(in_f, 0L, SEEK_END);
-	int size = ftell(in_f)/RECORD_SIZE;
+	int numb_records = ftell(in_f)/RECORD_SIZE;
 	fseek(in_f, 0L, SEEK_SET);
 
   FILE *tmp_out = fopen("t.out", "w+");
-
   int i = 0;
-  while(i < size){
-  	mk_runs(in_f, tmp_out, k);
-  	i += k;
+  while(i < numb_records){
+  	mk_runs(in_f, tmp_out, numb_records/k);
+  	i += numb_records/k;
   }
   
   RunIterator* iterators[k];
 
   int offset = 0;
-  // int buf_sz = RECORD_SIZE * k;
-  int buf_sz = floor(mem_capacity / k);
-  iterators[0] = GetRunIterator(tmp_out, offset, k, buf_sz);
+  int eachRunSize = floor(numb_records/k);
+  int buf_sz = eachRunSize * RECORD_SIZE;
+  
+  // int buf_sz = floor(mem_capacity / k);
+  iterators[0] = GetRunIterator(tmp_out, offset, 
+    eachRunSize, buf_sz);
   for (int i = 1; i < k; i++){
-  	iterators[i] = GetRunIterator(tmp_out, offset += RECORD_SIZE * k, k, buf_sz);
+    offset += eachRunSize * RECORD_SIZE;
+    // printf("Offset : %d\n", offset);
+  	iterators[i] = GetRunIterator(tmp_out, offset, 
+      eachRunSize, buf_sz);
   }
+
+  // for (int i = 0; i < k; i++){
+  //   while (Next(iterators[i]) != NULL){
+  //     printf("%s", iterators[i]->rec);
+  //   }
+  // }
 
   merge_runs(out_f, iterators, k, mem_capacity);
 

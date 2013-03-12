@@ -54,14 +54,13 @@ RunIterator* GetRunIterator(FILE *fp, long start_pos, long run_length,
   ri->cur = 0;
   ri->rec = (Record)malloc(sizeof(char) * RECORD_SIZE);
   ri->buf_size = buf_size;
-  ri->cur_pos = start_pos;
 
   // Seek to the start_pos
   // Q : Should this be start_pos * RECORD_SIZE instead?
-  fseek(fp, ri->cur_pos, SEEK_SET);
-  fread(ri->data, sizeof(char), floor(buf_size/RECORD_SIZE) * RECORD_SIZE, fp);
-  ri->cur_pos = ftell(fp);
-  Next(ri);
+  fseek(fp, start_pos, SEEK_SET);
+  fread(ri->data, sizeof(char), run_length * RECORD_SIZE, fp);
+  // Next(ri);
+  // printf("%s\n", ri->rec);
   return ri;
 }
 
@@ -69,11 +68,7 @@ Record Next(RunIterator* ri){
   if (ri->cur == ri->run_length){
     ri->rec = NULL;
     return NULL;
-  } else if (ri->cur == floor(ri->buf_size/RECORD_SIZE)) {
-    fseek(ri->fp, ri->cur_pos, SEEK_SET);
-    fread(ri->data, sizeof(char), floor(ri->buf_size/RECORD_SIZE) * RECORD_SIZE, ri->fp);
-    ri->cur_pos = ftell(ri->fp);
-  }
+  } 
   char* temp = (char*)ri->data;
   temp += RECORD_SIZE * ri->cur;
   strncpy(ri->rec, temp, RECORD_SIZE);

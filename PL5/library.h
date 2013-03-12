@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <math.h>
 using namespace std;
 
 typedef char* Record;

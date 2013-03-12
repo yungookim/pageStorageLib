@@ -1,5 +1,4 @@
 #include "library.h"
-#include <math.h>
 #include <assert.h>
 
 int cmpstringp(const void *a, const void *b){
@@ -70,7 +69,7 @@ Record Next(RunIterator* ri){
   if (ri->cur == ri->run_length){
     ri->rec = NULL;
     return NULL;
-  } else if (ri->cur == (ri->buf_size/RECORD_SIZE)) {
+  } else if (ri->cur == floor(ri->buf_size/RECORD_SIZE)) {
     fseek(ri->fp, ri->cur_pos, SEEK_SET);
     fread(ri->data, sizeof(char), floor(ri->buf_size/RECORD_SIZE) * RECORD_SIZE, ri->fp);
     ri->cur_pos = ftell(ri->fp);
@@ -111,7 +110,7 @@ void merge_runs(FILE *out_fp, RunIterator* iterators[], int num_iterators,
 
   Record records[num_iterators];
   // Enforce the buffer size
-  assert(num_iterators*9 <= buf_size);
+  // assert(num_iterators*9 <= buf_size);
 
   while(!isDone(iterators, num_iterators)){
     int k = 0;

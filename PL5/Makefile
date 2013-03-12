@@ -12,7 +12,8 @@ msort: msort.cc
 test_msort: 
 	make clean
 	make
-	./memusg.sh ./msort a.random sorted.out 10000 10
+	python mkrandom.py a.random 100
+	./msort a.random sorted.out 20 10
 
 test_foo: 
 	make clean

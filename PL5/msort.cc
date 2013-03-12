@@ -31,7 +31,8 @@ int main( int argc, const char* argv[] )
   RunIterator* iterators[k];
 
   int offset = 0;
-  int buf_sz = RECORD_SIZE * k;
+  // int buf_sz = RECORD_SIZE * k;
+  int buf_sz = floor(mem_capacity / k);
   iterators[0] = GetRunIterator(tmp_out, offset, k, buf_sz);
   for (int i = 1; i < k; i++){
   	iterators[i] = GetRunIterator(tmp_out, offset += RECORD_SIZE * k, k, buf_sz);

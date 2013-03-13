@@ -26,3 +26,4 @@ PL1/create_random_file
 node_modules
 
 tags
+xapian-core-1.2.13

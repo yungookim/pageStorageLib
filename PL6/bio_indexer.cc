@@ -3,7 +3,11 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+<<<<<<< HEAD
 #include "xapian.h"
+=======
+#include <xapian.h>
+>>>>>>> .
 using namespace std;
 
 int main(int argc, const char* argv[]) {

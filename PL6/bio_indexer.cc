@@ -1,10 +1,11 @@
+#include <xapian.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "xapian.h"
 using namespace std;
+// using namespace Xapian;
 
 int main(int argc, const char* argv[]) {
 
@@ -25,11 +26,16 @@ int main(int argc, const char* argv[]) {
 	int lineno = 0;
 	while(std::getline(data,name)) {
 		std::getline(data,bio);
+		std::stringstream lineStream(bio);
 		// cout << name;
 		// cout << bio;
+		std::string term;
+		while(std::getline(lineStream,term,' ')){
+			cout << term;
+		}
 
-
-		doc.add_value(0, bio;
+		doc.add_value(0, name);
+		doc.add_value(1, bio);
 
 		db.add_document(doc);
 		doc.clear_terms();

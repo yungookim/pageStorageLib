@@ -16,30 +16,20 @@ int main(int argc, const char* argv[]) {
   char* index_name = (char*)argv[1];
   int topk = atoi((argv[2]));
 
+  Xapian::Query query;
+
   // Build query
-  vector<string> plus_terms;
-  vector<string> minus_terms;
-  vector<string> normal_terms;
+  std::string arg;
   for (int i = 3; i < argc; i++){
+    arg = argv[i];
     if (argv[i][0] == '+'){
-      plus_terms.push_back(argv[i]);
-      cout << argv[i] << " ";
+      query = Xapian::Query(Xapian::Query::OP_AND, query, Xapian::Query(arg.substr(1, sizeof(argv[i])-1)));
     } else if (argv[i][0] == '-'){
-      minus_terms.push_back(argv[i]);
+      query = Xapian::Query(Xapian::Query::OP_AND_NOT, query, Xapian::Query(arg.substr(1, sizeof(argv[i])-1)));
     } else {
-      normal_terms.push_back(argv[i]);
+      query = Xapian::Query(Xapian::Query::OP_OR, query, Xapian::Query(argv[i]));
     }
   }
-
-  Xapian::Query query(Xapian::Query::OP_AND_MAYBE,
-    Xapian::Query(Xapian::Query::OP_AND, plus_terms.begin(), plus_terms.end()),
-    Xapian::Query(Xapian::Query::OP_OR, normal_terms.begin(), normal_terms.end())
-  );
-
-  query = Xapian::Query(Xapian::Query::OP_AND_NOT,
-    query,
-    Xapian::Query(Xapian::Query::OP_OR, minus_terms.begin(), minus_terms.end())
-  );
 
   Xapian::Database db(index_name);
 

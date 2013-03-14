@@ -35,8 +35,14 @@ int main(int argc, const char* argv[]) {
     std::string term;
     while(std::getline(lineStream, term,' ')){
       if (term.compare("") != 0){
-        doc.add_term(term);
-      }
+        for (int i = 0; i < term.length(); i++) {
+          if(!(64 < term[i] && term[i] < 91) && !(96 < term[i] && term[i] < 123)){
+            term.erase(term.begin() + i);
+            i--;
+          }
+        }
+            doc.add_term(term);
+        }
     }
 
     db.add_document(doc);

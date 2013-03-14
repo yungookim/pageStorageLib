@@ -45,7 +45,9 @@ int main(int argc, const char* argv[]) {
     Xapian::Document doc = match.get_document();
 
     std::string name = doc.get_value(0);
+    std::string bio = doc.get_value(1);
     cout << name << endl;
+    cout << bio << endl;
   }
 
   return 0;

@@ -26,3 +26,6 @@ PL1/create_random_file
 node_modules
 
 tags
+include
+.libs
+xapian*

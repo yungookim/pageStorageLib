@@ -4,16 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-<<<<<<< HEAD
-<<<<<<< HEAD
-#include "xapian.h"
-=======
 #include <xapian.h>
->>>>>>> .
-=======
->>>>>>> c9560a6544936adfc69859a1678ae461c9a225e0
 using namespace std;
-// using namespace Xapian;
 
 int main(int argc, const char* argv[]) {
 
@@ -54,12 +46,6 @@ int main(int argc, const char* argv[]) {
     if(lineno % 1000 == 0) {
      db.commit();
     }
-<<<<<<< HEAD
   }
   return 0;
 }
-=======
-	}
-	return 0;
-}
->>>>>>> 0449af427a89157a9a6506975bdfeb25d78ab53d

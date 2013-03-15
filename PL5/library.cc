@@ -9,10 +9,10 @@ int cmpstringp(const void *a, const void *b){
 
 int RECORD_SIZE = 9;
 
-void mk_runs(FILE *in_fp, FILE *out_fp, long run_length){
+void mk_runs(FILE *in_fp, FILE *out_fp, unsigned long run_length){
 
   //Should assert if run_length > number of total records in the file
-  int numb_sorted = 0;
+  unsigned int numb_sorted = 0;
 
   Record records[run_length];
   while (numb_sorted < run_length){
@@ -23,7 +23,6 @@ void mk_runs(FILE *in_fp, FILE *out_fp, long run_length){
     if(rec[RECORD_SIZE-1] == '\n'){
       rec[RECORD_SIZE-1] = '\0';
     }
-
     records[numb_sorted] = rec;
     numb_sorted++;
   }

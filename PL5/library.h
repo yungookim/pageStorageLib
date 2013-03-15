@@ -23,7 +23,7 @@ typedef struct {
 /**
  * creates runs of length `run_length` in the `out_fp`.
  */
-void mk_runs(FILE *in_fp, FILE *out_fp, long run_length); 
+void mk_runs(FILE *in_fp, FILE *out_fp, unsigned long run_length); 
 
 /**
  * creates an iterator using the `buf_size` to

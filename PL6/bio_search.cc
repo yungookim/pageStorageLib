@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <sys/timeb.h>
 using namespace std;
 
 int main(int argc, const char* argv[]) {
@@ -17,6 +18,11 @@ int main(int argc, const char* argv[]) {
   int topk = atoi((argv[2]));
 
   Xapian::Query query;
+
+  //Record Start Time 
+  struct timeb _t;    
+  ftime(&_t);
+  long init = _t.time * 1000 + _t.millitm; 
 
   // Build query
   std::string arg;
@@ -49,6 +55,11 @@ int main(int argc, const char* argv[]) {
     cout << name << endl;
     cout << bio << endl;
   }
+
+  ftime(&_t);
+  long done = _t.time * 1000 + _t.millitm;
+  long _time = done-init;
+  cerr << _time;
 
   return 0;
 }

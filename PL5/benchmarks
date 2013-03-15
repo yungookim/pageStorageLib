@@ -1,0 +1,95 @@
+make[1]: Entering directory `/home/kimy/CSC443/PL5'
+rm -f foo library.o foo *.test msort bsort
+make[1]: Leaving directory `/home/kimy/CSC443/PL5'
+make[1]: Entering directory `/home/kimy/CSC443/PL5'
+g++    -c -o library.o library.cc
+g++  -o msort library.o msort.cc
+g++  -o bsort bsort.cc -lpthread ./libleveldb.a -I ./include
+make[1]: Leaving directory `/home/kimy/CSC443/PL5'
+make[1]: Entering directory `/home/kimy/CSC443/PL5'
+
+Sort Performance comparisons
+Bench marking...bench_compare_msort_small 1024 3
+1000000	0:01.56
+2000000	0:02.50
+3000000	0:03.09
+4000000	0:04.88
+5000000	0:06.36
+6000000	0:06.38
+7000000	0:09.15
+8000000	0:12.62
+9000000	0:10.43
+Done
+make[1]: Leaving directory `/home/kimy/CSC443/PL5'
+make[1]: Entering directory `/home/kimy/CSC443/PL5'
+
+Sort Performance comparisons
+Bench marking...bench_compare_msort_small_2 1024 5
+1000000	0:00.89
+2000000	0:01.91
+3000000	0:03.23
+4000000	0:04.04
+5000000	0:05.26
+6000000	0:06.57
+7000000	0:07.73
+8000000	0:09.04
+9000000	0:09.64
+Done
+make[1]: Leaving directory `/home/kimy/CSC443/PL5'
+make[1]: Entering directory `/home/kimy/CSC443/PL5'
+
+Sort Performance comparisons
+Bench marking...bench_compare_msort_small_3 1024 5
+1000000	0:00.87
+2000000	0:01.89
+3000000	0:02.93
+4000000	0:03.82
+5000000	0:05.13
+6000000	0:06.23
+7000000	0:07.19
+8000000	0:08.55
+9000000	0:09.57
+Done
+make[1]: Leaving directory `/home/kimy/CSC443/PL5'
+make[1]: Entering directory `/home/kimy/CSC443/PL5'
+
+Sort Performance comparisons
+Bench marking...bench_msort_large 1024 5
+1000000	0:00.84
+2000000	0:01.92
+3000000	0:03.08
+4000000	0:04.00
+5000000	0:05.19
+6000000	0:06.46
+7000000	0:07.50
+8000000	0:08.68
+9000000	0:09.68
+Done
+make[1]: Leaving directory `/home/kimy/CSC443/PL5'
+make[1]: Entering directory `/home/kimy/CSC443/PL5'
+
+Sort Performance comparisons
+Bench marking...bench_msort_large_2 10000 5
+1000000	0:00.82
+2000000	0:01.91
+3000000	0:02.92
+4000000	0:04.02
+5000000	0:05.11
+6000000	0:06.18
+7000000	0:07.18
+8000000	0:08.55
+9000000	0:09.40
+Done
+make[1]: Leaving directory `/home/kimy/CSC443/PL5'
+make[1]: Entering directory `/home/kimy/CSC443/PL5'
+
+Sort Performance comparisons
+Bench marking...bench_msort_ver_large 5242880 5
+10000000	0:10.75
+20000000	0:25.29
+30000000	0:40.28
+40000000	Command terminated by signal 9
+0:36.71
+50000000	Command terminated by signal 9
+0:35.91
+make[1]: Leaving directory `/home/kimy/CSC443/PL5'

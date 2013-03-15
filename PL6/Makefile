@@ -1,7 +1,7 @@
 # Makefile
 CC = g++ 
 INCLUDE=-I ./include -L ./.libs
-LIBS=-lxapian -lz -luuid
+LIBS=-lxapian -lz 
 
 all: bio_indexer bio_search
 

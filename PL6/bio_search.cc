@@ -26,13 +26,16 @@ int main(int argc, const char* argv[]) {
 
   // Build query
   std::string arg;
+  std:vector<string> terms;
   for (int i = 3; i < argc; i++){
     arg = argv[i];
     if (argv[i][0] == '+'){
+      terms.push_back(arg.substr(1, sizeof(argv[i])-1));
       query = Xapian::Query(Xapian::Query::OP_AND, query, Xapian::Query(arg.substr(1, sizeof(argv[i])-1)));
     } else if (argv[i][0] == '-'){
       query = Xapian::Query(Xapian::Query::OP_AND_NOT, query, Xapian::Query(arg.substr(1, sizeof(argv[i])-1)));
     } else {
+      terms.push_back(argv[i]);
       query = Xapian::Query(Xapian::Query::OP_OR, query, Xapian::Query(argv[i]));
     }
   }
@@ -52,6 +55,16 @@ int main(int argc, const char* argv[]) {
 
     std::string name = doc.get_value(0);
     std::string bio = doc.get_value(1);
+    for (int i = 0; i < terms.size(); i++) {
+      std::string term = terms.at(i);
+      std::string hilight = std::string("<mark>") + term + "</mark>";
+      size_t index = 0;
+      while ((index = bio.find(term, index)) != string::npos){
+        bio.replace(index, term.length(), hilight);
+        index += 13 + term.length();
+      }
+    }
+
     cout << name << endl;
     cout << bio << endl;
   }

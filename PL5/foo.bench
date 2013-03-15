@@ -1,0 +1,75 @@
+Sort Performance comparisons
+Bench marking...bench_compare_msort_small 1024 3
+1000000	0:01.14
+2000000	0:02.72
+3000000	0:03.04
+4000000	0:04.99
+5000000	0:06.49
+6000000	0:06.50
+7000000	0:09.01
+8000000	0:09.68
+9000000	0:10.45
+Done
+make[1]: Leaving directory `/home/kimy/CSC443/PL5'
+make[1]: Entering directory `/home/kimy/CSC443/PL5'
+
+Sort Performance comparisons
+Bench marking...bench_compare_msort_small_2 1024 5
+1000000	0:01.04
+2000000	0:01.93
+3000000	0:03.12
+4000000	0:04.10
+5000000	0:04.91
+6000000	0:06.35
+7000000	0:07.18
+8000000	0:08.77
+9000000	0:09.38
+Done
+make[1]: Leaving directory `/home/kimy/CSC443/PL5'
+make[1]: Entering directory `/home/kimy/CSC443/PL5'
+
+Sort Performance comparisons
+Bench marking...bench_compare_msort_small_3 1024 5
+1000000	0:00.99
+2000000	0:02.03
+3000000	0:03.09
+4000000	0:04.08
+5000000	0:05.10
+6000000	0:06.45
+7000000	0:07.74
+8000000	0:08.65
+9000000	0:09.61
+Done
+make[1]: Leaving directory `/home/kimy/CSC443/PL5'
+make[1]: Entering directory `/home/kimy/CSC443/PL5'
+
+Sort Performance comparisons
+Bench marking...bench_msort_large 100000 3
+1000000	0:01.13
+2000000	0:02.24
+3000000	0:02.98
+4000000	0:04.84
+5000000	0:06.00
+6000000	0:06.27
+7000000	0:08.69
+8000000	0:09.59
+9000000	0:09.51
+Done
+make[1]: Leaving directory `/home/kimy/CSC443/PL5'
+make[1]: Entering directory `/home/kimy/CSC443/PL5'
+
+Sort Performance comparisons
+Bench marking...bench_msort_large_2 10000 5
+1000000	0:00.94
+2000000	0:01.81
+3000000	0:02.89
+4000000	0:03.93
+5000000	0:05.06
+6000000	0:06.10
+7000000	0:07.15
+8000000	0:08.40
+9000000	0:09.24
+Done
+make[1]: Leaving directory `/home/kimy/CSC443/PL5'
+make[1]: Entering directory `/home/kimy/CSC443/PL5'
+

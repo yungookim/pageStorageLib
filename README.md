@@ -12,7 +12,7 @@ Code converted from the submitted assignments from Database System Technology CS
   
 ###Page format for fixed length records
 
-<img src="https://dl.dropboxusercontent.com/u/36220055/fixed-page.png></img>
+<img src="https://dl.dropboxusercontent.com/u/36220055/fixed-page.png"></img>
   
 ###Requirements  
   * offers efficient append of new data,

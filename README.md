@@ -42,3 +42,13 @@ Each entry in the directory would be:
 Thus, each directory page can index up to: 16 KB49 bits=2674 pages=42 MB
 ```
 
+
+##Graphs##
+
+####Querying performances versus SQLite
+
+<img src="https://dl.dropboxusercontent.com/u/36220055/1.png"></img>
+
+<img src="https://dl.dropboxusercontent.com/u/36220055/2.png"></img>
+
+<img src="https://dl.dropboxusercontent.com/u/36220055/3.png"></img>

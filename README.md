@@ -151,7 +151,15 @@ void read_current_record(RecordIterator *iterator, Record *record);
 
 ##Graphs##
 
-####Querying performances versus SQLite
+###Querying performances versus SQLite
+  
+Parametrized SQL query
+```sql
+SELECT SUBSTRING(A2, 1, 5), COUNT(*) FROM T
+        WHERE A1 >= start AND A1 <= end
+        GROUP BY SUBSTRING(A2, 1, 5) 
+```
+
 
 <img src="https://dl.dropboxusercontent.com/u/36220055/1.png"></img>
 

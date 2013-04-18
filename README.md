@@ -2,11 +2,11 @@
   
 Code converted from the submitted assignments from Database System Technology CSC443, Winter 2013, at University of Toronto.
 
-
 ##Specification are as follows##
   
 ###Directory based heap file###
-  
+Images taken from http://dblab.cs.toronto.edu/courses/443/2013/03.data-layout.html
+
 <img src="https://dl.dropboxusercontent.com/u/36220055/directory-heapfile2.png"></img>
   
 ###Page format for fixed length records

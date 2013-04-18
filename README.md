@@ -1,6 +1,6 @@
 #Page based persistance storage library.#
   
-Code converted from the submitted assignments from Database System Technology CSC443, Winter 2013, at University of Toronto.
+Code is based on the submitted assignments from Database System Technology CSC443, Winter 2013, at University of Toronto.
 
 ##Specification are as follows##
   

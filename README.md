@@ -166,3 +166,5 @@ SELECT SUBSTRING(A2, 1, 5), COUNT(*) FROM T
 <img src="https://dl.dropboxusercontent.com/u/36220055/2.png"></img>
 
 <img src="https://dl.dropboxusercontent.com/u/36220055/3.png"></img>
+
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/76e0972b7f5f2ebe5b946ec1b967457d "githalytics.com")](http://githalytics.com/yungookim/pageStorageLib)

@@ -2,7 +2,7 @@
   
 Code is based on the submitted assignments from Database System Technology CSC443, Winter 2013, at University of Toronto.
 
-##Specification are as follows##
+##Specifications are as follows##
   
 ###Directory based heap file###
 Images taken from http://dblab.cs.toronto.edu/courses/443/2013/03.data-layout.html
